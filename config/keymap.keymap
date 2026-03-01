@@ -20,7 +20,14 @@
 &mkp_input_listener { input-processors = <&zip_temp_layer 4 10000>; };
 
 / {
-    combos { compatible = "zmk,combos"; };
+    combos {
+        compatible = "zmk,combos";
+
+        TEST_K {
+            bindings = <&none>;
+            key-positions = <34>;
+        };
+    };
 
     macros {
         macro_vim_dd: macro_delete_line {
