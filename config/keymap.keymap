@@ -15,6 +15,14 @@
     quick-tap-ms = <150>;
 };
 
+&zip_temp_layer {
+    excluded-positions = <
+        34 // K
+    >;
+
+    require-prior-idle-ms = <200>;
+};
+
 &pointing_listener { input-processors = <&zip_temp_layer 4 10000>; };
 
 &mkp_input_listener { input-processors = <&zip_temp_layer 4 10000>; };
