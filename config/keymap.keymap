@@ -172,21 +172,21 @@
 
         VIM_NORMAL_1 {
             bindings = <
-&none  &none                  &none      &none             &none              &none                       &none          &none          &none             &none          &none   &none
+&none  &none           &none          &none                      &none           &none                         &none      &none           &none         &none            &none                  &none
 &none  &none           &kp LC(RIGHT)  &kp LC(RIGHT)              &mm_vim_ctrl_r  &none                         &td_vim_y  &mm_vim_ctrl_u  &none         &mm_vim_shift_o  &kp LC(V)              &none
-&none  &kp LCTRL       &none          &mm_vim_ctrl_then_shift_d  &none           &none         &trans  &trans  &kp LEFT   &kp DOWN        &kp UP_ARROW  &kp RIGHT        &kp RCTRL              &none
+&none  &kp LCTRL       &none          &mm_vim_ctrl_then_shift_d  &none           &none         &none   &trans  &kp LEFT   &kp DOWN        &kp UP_ARROW  &kp RIGHT        &kp RCTRL              &none
 &none  &kp LEFT_SHIFT  &kp DELETE     &none                      &none           &kp LC(LEFT)  &trans  &trans  &none      &none           &none         &none            &mt RIGHT_SHIFT LC(F)  &none
-&none  &trans          &trans         &trans                     &trans          &trans        &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&none  &trans          &trans         &trans                     &trans          &trans        &trans  &trans  &trans     &trans          &trans        &trans           &trans                 &trans
             >;
         };
 
         VIM_NORMAL_2 {
             bindings = <
-&none  &none                  &none      &none             &none              &none                       &none          &none          &none             &none          &none   &none
-&none  &none           &none  &none  &mm_vim_shift_4  &none                  &trans  &trans  &trans  &trans  &trans  &none
-&none  &kp LCTRL       &none  &none  &none            &none  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &none
-&none  &kp LEFT_SHIFT  &none  &none  &none            &none  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &none
-&none  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&none  &none           &none   &none   &none            &none                   &none   &none   &none   &none   &none   &none
+&none  &none           &none   &none   &mm_vim_shift_4  &none                   &trans  &trans  &trans  &trans  &trans  &none
+&none  &kp LCTRL       &none   &none   &none            &none   &trans  &trans  &trans  &trans  &trans  &trans  &trans  &none
+&none  &kp LEFT_SHIFT  &none   &none   &none            &none   &trans  &trans  &trans  &trans  &trans  &trans  &trans  &none
+&none  &trans          &trans  &trans  &trans           &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
             >;
         };
 
