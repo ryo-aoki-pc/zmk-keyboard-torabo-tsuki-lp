@@ -163,10 +163,10 @@
         SYMBOL {
             bindings = <
 &trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &kp N1                 &kp N2     &kp N3            &kp N4             &kp N5                      &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &mt LCTRL TAB          &kp GRAVE  &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &kp DELETE   &none       &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &mt LEFT_SHIFT ESCAPE  &none      &none             &none              &none       &none   &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans                 &trans     &trans            &trans             &trans      &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
             >;
         };
 
