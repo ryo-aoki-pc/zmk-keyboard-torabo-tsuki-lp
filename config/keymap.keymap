@@ -8,12 +8,13 @@
 &mt {
     quick-tap-ms = <150>;
     tapping-term-ms = <150>;
+    flavor = "balanced";
 };
 
 &lt {
     tapping-term-ms = <150>;
     quick-tap-ms = <150>;
-    flavor = "hold-preferred";
+    flavor = "balanced";
 };
 
 &zip_temp_layer {
