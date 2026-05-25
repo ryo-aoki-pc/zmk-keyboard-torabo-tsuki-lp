@@ -110,7 +110,12 @@
         macro_vim_indent: macro_vim_indent {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp HOME>, <&macro_wait_time 100>, <&kp TAB>;
+            bindings =
+                <&macro_release &kp LSHIFT>,
+                <&macro_release &kp RSHIFT>,
+                <&kp HOME>,
+                <&macro_wait_time 100>,
+                <&macro_tap &kp TAB>;
 
             label = "MACRO_VIM_INDENT";
         };
@@ -118,7 +123,12 @@
         macro_vim_outdent: macro_vim_outdent {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp HOME>, <&macro_wait_time 100>, <&kp LS(TAB)>;
+            bindings =
+                <&macro_release &kp LSHIFT>,
+                <&macro_release &kp RSHIFT>,
+                <&kp HOME>,
+                <&macro_wait_time 100>,
+                <&macro_tap &kp LS(TAB)>;
 
             label = "MACRO_VIM_OUTDENT";
         };
