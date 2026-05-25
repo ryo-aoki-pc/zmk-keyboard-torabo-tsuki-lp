@@ -422,7 +422,7 @@
 &none  &none           &none                  &none                &none                 &none                                  &none                &none                 &none           &none                  &none                  &none
 &none  &none           &kp LS(LC(RIGHT))      &none                &none                 &none                                  &macro_vim_visual_y  &none                 &none           &none                  &macro_vim_visual_p    &none
 &none  &kp LCTRL       &none                  &macro_vim_visual_cut &none                &mm_vim_visual_g       &none  &none   &kp LS(LEFT)         &kp LS(DOWN)          &kp LS(UP)      &kp LS(RIGHT)          &kp RCTRL              &none
-&none  &kp LEFT_SHIFT  &macro_vim_visual_cut  &macro_vim_visual_cut &none                &kp LS(LC(LEFT))       &none  &none   &none                &none                 &mm_vim_lt      &mm_vim_gt             &kp RIGHT_SHIFT        &none
+&none  &kp LEFT_SHIFT  &macro_vim_visual_cut  &macro_vim_visual_cut &to 0                &kp LS(LC(LEFT))       &none  &none   &none                &none                 &mm_vim_lt      &mm_vim_gt             &kp RIGHT_SHIFT        &none
 &none  &none           &none                  &none                &none                 &none                  &to 0  &to 0   &to 0                &none                 &none           &none                  &none                  &none
             >;
         };
