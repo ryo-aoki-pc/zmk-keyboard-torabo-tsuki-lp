@@ -86,14 +86,6 @@
             label = "MACRO_VIM_SHIFT_O";
         };
 
-        macro_vim_shift_c: macro_vim_shift_c {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp LS(END)>, <&macro_wait_time 100>, <&kp LC(X)>;
-
-            label = "MACRO_VIM_SHIFT_C";
-        };
-
         macro_vim_join: macro_vim_join {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
@@ -180,7 +172,7 @@
             compatible = "zmk,behavior-tap-dance";
             label = "TD_VIM_D";
             #binding-cells = <0>;
-            bindings = <&kp LC(X)>, <&macro_vim_dd>;
+            bindings = <&none>, <&macro_vim_dd>;
         };
 
         mm_vim_shift_d: mm_vim_shift_d {
@@ -251,26 +243,10 @@
             bindings = <&none>, <&kp LC(HOME)>;
         };
 
-        td_vim_c: td_vim_c {
-            compatible = "zmk,behavior-tap-dance";
-            label = "TD_VIM_C";
-            #binding-cells = <0>;
-            bindings = <&none>, <&macro_vim_dd>;
-        };
-
         mm_vim_g: mm_vim_g {
             compatible = "zmk,behavior-mod-morph";
             label = "MM_VIM_G";
             bindings = <&td_vim_g>, <&kp LC(END)>;
-
-            #binding-cells = <0>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
-        };
-
-        mm_vim_c: mm_vim_c {
-            compatible = "zmk,behavior-mod-morph";
-            label = "MM_VIM_C";
-            bindings = <&td_vim_c>, <&macro_vim_shift_c>;
 
             #binding-cells = <0>;
             mods = <(MOD_LSFT|MOD_RSFT)>;
@@ -347,8 +323,8 @@
             bindings = <
 &none  &none           &none          &none                      &none           &none                       &none        &none           &none         &none            &none            &none
 &none  &none           &kp LC(RIGHT)  &kp LC(RIGHT)              &mm_vim_ctrl_r  &none                       &td_vim_y    &mm_vim_ctrl_u  &none         &mm_vim_shift_o  &kp LC(V)        &none
-&none  &kp LCTRL       &kp DELETE     &mm_vim_ctrl_then_shift_d  &none           &mm_vim_g     &none  &none  &kp LEFT     &mm_vim_j       &kp UP_ARROW  &kp RIGHT        &kp RCTRL        &none
-&none  &kp LEFT_SHIFT  &kp DELETE     &mm_vim_c                  &mm_vim_v       &kp LC(LEFT)  &none  &none  &none        &none           &none            &none           &kp RIGHT_SHIFT  &none
+&none  &kp LCTRL       &none          &mm_vim_ctrl_then_shift_d  &none           &mm_vim_g     &none  &none  &kp LEFT     &mm_vim_j       &kp UP_ARROW  &kp RIGHT        &kp RCTRL        &none
+&none  &kp LEFT_SHIFT  &kp DELETE     &none                      &mm_vim_v       &kp LC(LEFT)  &none  &none  &none        &none           &none            &none           &kp RIGHT_SHIFT  &none
 &none  &none           &trans         &trans                     &none           &none         &mo 3  &none  &lt 3 ENTER  &none           &none         &trans           &none            &none
             >;
         };
