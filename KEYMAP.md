@@ -18,11 +18,11 @@
 
 ### Row 1 (QWERTY 上段)
 
-| 操作 | (outer)<br>`&none` | Q<br>`&none` | W<br>`&kp LC(RIGHT)` | E<br>`&kp LC(RIGHT)` | R<br>`&mm_vim_ctrl_r` | T<br>`&none` | Y<br>`&td_vim_y` | U<br>`&mm_vim_ctrl_u` | I<br>`&none` | O<br>`&mm_vim_shift_o` | P<br>`&kp LC(V)` | (outer)<br>`&none` |
+| 操作 | (outer)<br>`&none` | Q<br>`&none` | W<br>`&kp LC(RIGHT)` | E<br>`&kp LC(RIGHT)` | R<br>`&mm_vim_ctrl_r` | T<br>`&none` | Y<br>`&mm_vim_shift_y` | U<br>`&mm_vim_ctrl_u` | I<br>`&none` | O<br>`&mm_vim_shift_o` | P<br>`&kp LC(V)` | (outer)<br>`&none` |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 単発タップ | 何もしない | 何もしない | Ctrl+→ 入力 | Ctrl+→ 入力 | 何もしない | 何もしない | Ctrl+C 入力 | Ctrl+Z 入力 | 何もしない | END → ENTER | Ctrl+V 入力 | 何もしない |
 | ダブルタップ | 何もしない | 何もしない | Ctrl+→ 入力 × 2 | Ctrl+→ 入力 × 2 | 何もしない | 何もしない | HOME → Shift+END → Ctrl+C | Ctrl+Z 入力 × 2 | 何もしない | END → ENTER（2 回実行） | Ctrl+V 入力 × 2 | 何もしない |
-| Shift+ | 何もしない | 何もしない | Shift + Ctrl+→（OS で合成） | Shift + Ctrl+→（OS で合成） | 何もしない | 何もしない | Shift + Ctrl+C（OS で合成） | Shift + Ctrl+Z（OS で合成） | 何もしない | HOME → ENTER → ↑ | Shift + Ctrl+V（OS で合成） | 何もしない |
+| Shift+ | 何もしない | 何もしない | Shift + Ctrl+→（OS で合成） | Shift + Ctrl+→（OS で合成） | 何もしない | 何もしない | Shift+END → Ctrl+C | Shift + Ctrl+Z（OS で合成） | 何もしない | HOME → ENTER → ↑ | Shift + Ctrl+V（OS で合成） | 何もしない |
 | Ctrl+ | 何もしない | 何もしない | Ctrl + Ctrl+→（OS で合成） | Ctrl + Ctrl+→（OS で合成） | Ctrl+Y 入力 | 何もしない | Ctrl + Ctrl+C（OS で合成） | PAGE_UP 入力 | 何もしない | END → ENTER（Ctrl 物理保持で実行） | Ctrl + Ctrl+V（OS で合成） | 何もしない |
 
 ### Row 2 (home row)
@@ -65,12 +65,12 @@
 
 ### Row 1 (QWERTY 上段)
 
-| 操作 | (outer)<br>`&none` | Q<br>`&none` | W<br>`&kp LC(RIGHT)` | E<br>`&kp LC(RIGHT)` | R<br>`&mm_vim_ctrl_r` | T<br>`&none` | Y<br>`&td_vim_y` | U<br>`&mm_vim_ctrl_u` | I<br>`&none` | O<br>`&mm_vim_shift_o` | P<br>`&kp LC(V)` | (outer)<br>`&none` |
+| 操作 | (outer)<br>`&none` | Q<br>`&none` | W<br>`&kp LC(RIGHT)` | E<br>`&kp LC(RIGHT)` | R<br>`&mm_vim_ctrl_r` | T<br>`&none` | Y<br>`&mm_vim_shift_y` | U<br>`&mm_vim_ctrl_u` | I<br>`&none` | O<br>`&mm_vim_shift_o` | P<br>`&kp LC(V)` | (outer)<br>`&none` |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 単発タップ | &none | &none | &kp LC(RIGHT) | &kp LC(RIGHT) | mm_vim_ctrl_r[0] → &none | &none | td_vim_y[0] → &kp LC(C) | mm_vim_ctrl_u[0] → &kp LC(Z) | &none | mm_vim_shift_o[0] → macro_vim_o | &kp LC(V) | &none |
-| ダブルタップ | &none | &none | &kp LC(RIGHT)（tap-dance 未定義、連打） | &kp LC(RIGHT)（tap-dance 未定義、連打） | mm_vim_ctrl_r[0] → &none | &none | td_vim_y[1] → macro_vim_yy | mm_vim_ctrl_u[0] → &kp LC(Z)（tap-dance 未定義、連打） | &none | mm_vim_shift_o[0] → macro_vim_o（連打） | &kp LC(V)（tap-dance 未定義、連打） | &none |
-| Shift+ | &none | &none | &kp LC(RIGHT)（物理 Shift は HID にそのまま伝わる） | &kp LC(RIGHT)（物理 Shift は HID にそのまま伝わる） | mm_vim_ctrl_r[0] (Shift は本 mod-morph 検知外) → &none | &none | td_vim_y[0] (tap-dance は mods 検知なし) → &kp LC(C)（物理 Shift は HID にそのまま伝わる） | mm_vim_ctrl_u[0] (Shift は本 mod-morph 検知外) → &kp LC(Z)（物理 Shift は HID にそのまま伝わる） | &none | mm_vim_shift_o[1] (Shift 検知) → macro_vim_shift_o | &kp LC(V)（物理 Shift は HID にそのまま伝わる） | &none |
-| Ctrl+ | &none | &none | &kp LC(RIGHT)（物理 Ctrl は HID にそのまま伝わる） | &kp LC(RIGHT)（物理 Ctrl は HID にそのまま伝わる） | mm_vim_ctrl_r[1] (Ctrl 検知) → &kp LC(Y) | &none | td_vim_y[0] (tap-dance は mods 検知なし) → &kp LC(C)（物理 Ctrl は HID にそのまま伝わる） | mm_vim_ctrl_u[1] (Ctrl 検知) → &kp PAGE_UP | &none | mm_vim_shift_o[0] (Ctrl は本 mod-morph 検知外) → macro_vim_o | &kp LC(V)（物理 Ctrl は HID にそのまま伝わる） | &none |
+| 単発タップ | &none | &none | &kp LC(RIGHT) | &kp LC(RIGHT) | mm_vim_ctrl_r[0] → &none | &none | mm_vim_shift_y[0] → td_vim_y[0] → &kp LC(C) | mm_vim_ctrl_u[0] → &kp LC(Z) | &none | mm_vim_shift_o[0] → macro_vim_o | &kp LC(V) | &none |
+| ダブルタップ | &none | &none | &kp LC(RIGHT)（tap-dance 未定義、連打） | &kp LC(RIGHT)（tap-dance 未定義、連打） | mm_vim_ctrl_r[0] → &none | &none | mm_vim_shift_y[0] → td_vim_y[1] → macro_vim_yy | mm_vim_ctrl_u[0] → &kp LC(Z)（tap-dance 未定義、連打） | &none | mm_vim_shift_o[0] → macro_vim_o（連打） | &kp LC(V)（tap-dance 未定義、連打） | &none |
+| Shift+ | &none | &none | &kp LC(RIGHT)（物理 Shift は HID にそのまま伝わる） | &kp LC(RIGHT)（物理 Shift は HID にそのまま伝わる） | mm_vim_ctrl_r[0] (Shift は本 mod-morph 検知外) → &none | &none | mm_vim_shift_y[1] (Shift 検知) → macro_vim_shift_y | mm_vim_ctrl_u[0] (Shift は本 mod-morph 検知外) → &kp LC(Z)（物理 Shift は HID にそのまま伝わる） | &none | mm_vim_shift_o[1] (Shift 検知) → macro_vim_shift_o | &kp LC(V)（物理 Shift は HID にそのまま伝わる） | &none |
+| Ctrl+ | &none | &none | &kp LC(RIGHT)（物理 Ctrl は HID にそのまま伝わる） | &kp LC(RIGHT)（物理 Ctrl は HID にそのまま伝わる） | mm_vim_ctrl_r[1] (Ctrl 検知) → &kp LC(Y) | &none | mm_vim_shift_y[0] (Ctrl は本 mod-morph 検知外) → td_vim_y[0] (tap-dance は mods 検知なし) → &kp LC(C)（物理 Ctrl は HID にそのまま伝わる） | mm_vim_ctrl_u[1] (Ctrl 検知) → &kp PAGE_UP | &none | mm_vim_shift_o[0] (Ctrl は本 mod-morph 検知外) → macro_vim_o | &kp LC(V)（物理 Ctrl は HID にそのまま伝わる） | &none |
 
 ### Row 2 (home row)
 
