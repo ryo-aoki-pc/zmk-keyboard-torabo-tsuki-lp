@@ -26,18 +26,21 @@ jobs:
       - name: Install dependencies
         run: pip install openpyxl
 
-      - name: Regenerate KEYMAP.md
-        run: python tools/keymap_docgen.py config/keymap.keymap VIM_NORMAL_1 -o KEYMAP.xlsx
+      - name: Regenerate KEYMAP docs
+        run: |
+          python tools/keymap_docgen.py config/keymap.keymap VIM_NORMAL_1 -o KEYMAP.xlsx
+          python tools/keymap_docgen.py config/keymap.keymap VIM_NORMAL_2 -o KEYMAP_VIM_NORMAL_2.xlsx
+          python tools/keymap_docgen.py config/keymap.keymap VIM_VISUAL   -o KEYMAP_VIM_VISUAL.xlsx
 
-      - name: Commit KEYMAP.md if changed
+      - name: Commit KEYMAP docs if changed
         if: github.event_name != 'pull_request'
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- KEYMAP.md; then
-            echo "KEYMAP.md is up to date."
+          if git diff --quiet -- KEYMAP.md KEYMAP_VIM_NORMAL_2.md KEYMAP_VIM_VISUAL.md; then
+            echo "KEYMAP docs are up to date."
           else
-            git add KEYMAP.md
-            git commit -m "docs: regenerate KEYMAP.md from keymap"
+            git add KEYMAP.md KEYMAP_VIM_NORMAL_2.md KEYMAP_VIM_VISUAL.md
+            git commit -m "docs: regenerate KEYMAP docs from keymap"
             git push origin HEAD:${GITHUB_REF#refs/heads/}
           fi
