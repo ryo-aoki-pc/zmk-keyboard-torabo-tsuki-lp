@@ -1,13 +1,15 @@
 """
 keymap_docgen.py
 
-ZMK keymap (.keymap) の指定したレイヤーの全キー割り当てを以下 2 形式で出力する
+ZMK keymap (.keymap) の指定した 1 つ以上のレイヤーの全キー割り当てを以下 2 形式で出力する
 ドキュメンテーション生成ツール：
 
   1. Excel ファイル (.xlsx)
-       - "動作" シートと "経路" シートを生成（QWERTY 物理配列）
+       - 単一レイヤー指定時: "動作" シートと "経路" シートを生成（QWERTY 物理配列）
+       - 複数レイヤー指定時: 各レイヤーごとに "<layer> 動作"/"<layer> 経路" シートを生成
   2. Markdown ファイル (.md)
        - 同じ内容を Markdown の表で出力（セル内改行に <br> を使用）
+       - 複数レイヤー指定時は 1 ファイル内に各レイヤーを H2 セクションとして並べる
 
 それぞれの表は、キーボード物理行ごとに以下の構造を持つ：
   - 左端 1 列: 「操作」 = 単発タップ / ダブルタップ / Shift+ / Ctrl+
@@ -17,14 +19,15 @@ mod-morph (LSHIFT/RSHIFT, LCTL/RCTL), tap-dance, layer-tap, momentary-layer
 など標準的な ZMK behavior を解析し、再帰的に動作を解決する。
 
 Usage:
-    python keymap_docgen.py <keymap_file> <layer_name> [-o output.xlsx]
+    python keymap_docgen.py <keymap_file> <layer_name> [<layer_name> ...] [-o output.xlsx]
 
 出力先：
     -o で指定した .xlsx と同じディレクトリ／同じベース名で .md も生成される
-    （-o を省略すると <layer>_keymap.xlsx と <layer>_keymap.md）
+    （-o を省略するとレイヤー単独時は <layer>_keymap.xlsx、複数時は keymap.xlsx）
 
-Example:
+Examples:
     python tools/keymap_docgen.py config/keymap.keymap VIM_NORMAL_1 -o KEYMAP.xlsx
+    python tools/keymap_docgen.py config/keymap.keymap VIM_NORMAL_1 VIM_NORMAL_2 VIM_VISUAL -o KEYMAP.xlsx
 """
 
 import argparse
@@ -536,17 +539,24 @@ def write_qwerty_sheet(ws, layer_name: str, bindings: list[str],
         binding_idx += count
 
 
-def write_excel(layer_name: str, bindings: list[str],
+def write_excel(layers_data: list[tuple[str, list[str]]],
                 behaviors: dict, macros: dict, output_path: Path) -> None:
-    """Generate the Excel file with 2 sheets: 動作 and 経路, both in QWERTY layout."""
+    """Generate one Excel file. Single layer => sheets '動作'/'経路'.
+    Multiple layers => sheets '<layer> 動作'/'<layer> 経路' per layer."""
     wb = Workbook()
-    ws_action = wb.active
-    ws_action.title = '動作'
-    write_qwerty_sheet(ws_action, layer_name, bindings, behaviors, macros, 'action')
-
-    ws_path = wb.create_sheet('経路')
-    write_qwerty_sheet(ws_path, layer_name, bindings, behaviors, macros, 'path')
-
+    is_single = len(layers_data) == 1
+    first = True
+    for layer_name, bindings in layers_data:
+        for mode_label, mode in [('動作', 'action'), ('経路', 'path')]:
+            sheet_name = mode_label if is_single else f'{layer_name} {mode_label}'
+            sheet_name = sheet_name[:31]  # Excel sheet name limit
+            if first:
+                ws = wb.active
+                ws.title = sheet_name
+                first = False
+            else:
+                ws = wb.create_sheet(sheet_name)
+            write_qwerty_sheet(ws, layer_name, bindings, behaviors, macros, mode)
     wb.save(output_path)
 
 
@@ -561,17 +571,18 @@ def _escape_md_cell(s) -> str:
     return str(s).replace('|', '\\|').replace('\n', '<br>')
 
 
-def write_markdown(layer_name: str, bindings: list[str],
-                   behaviors: dict, macros: dict, output_path: Path) -> None:
-    """
-    Generate a Markdown file with 2 sections (動作 / 経路).
-    Each section contains one Markdown table per keyboard physical row.
-    Header cells use <br> to display the key label on top and the raw binding below.
-    """
-    layout = get_row_layout(len(bindings))
+def _markdown_layer_section(layer_name: str, bindings: list[str],
+                            behaviors: dict, macros: dict,
+                            header_offset: int = 0) -> list[str]:
+    """Return markdown lines for one layer. header_offset shifts all headings down."""
+    h1 = '#' * (1 + header_offset)
+    h2 = '#' * (2 + header_offset)
+    h3 = '#' * (3 + header_offset)
 
+    layout = get_row_layout(len(bindings))
     lines: list[str] = []
-    lines.append(f'# {layer_name} レイヤー キー割り当て一覧')
+
+    lines.append(f'{h1} {layer_name} レイヤー キー割り当て一覧')
     lines.append('')
     lines.append(
         f'※ {len(bindings)} 個のバインディング位置。物理キーボード行ごとに '
@@ -583,18 +594,17 @@ def write_markdown(layer_name: str, bindings: list[str],
     lines.append('')
 
     for mode_label, mode in [('動作', 'action'), ('経路', 'path')]:
-        lines.append(f'## {mode_label}')
+        lines.append(f'{h2} {mode_label}')
         lines.append('')
 
         binding_idx = 0
         for phys_row, count in layout:
             desc = ROW_DESCRIPTIONS.get(phys_row, f'Row {phys_row}')
-            lines.append(f'### {desc}')
+            lines.append(f'{h3} {desc}')
             lines.append('')
 
             labels = ROW_LABELS.get(phys_row, [])
 
-            # Header row
             header_cells = ['操作']
             for p in range(count):
                 label = labels[p] if p < len(labels) else f'pos {p}'
@@ -603,11 +613,8 @@ def write_markdown(layer_name: str, bindings: list[str],
                     f'{_escape_md_cell(label)}<br>`{_escape_md_cell(binding)}`'
                 )
             lines.append('| ' + ' | '.join(header_cells) + ' |')
-
-            # Separator (one --- per column)
             lines.append('|' + '|'.join(['---'] * (count + 1)) + '|')
 
-            # Data rows
             for op in OPS:
                 row_cells = [_escape_md_cell(op)]
                 for p in range(count):
@@ -620,6 +627,26 @@ def write_markdown(layer_name: str, bindings: list[str],
             lines.append('')
             binding_idx += count
 
+    return lines
+
+
+def write_markdown(layers_data: list[tuple[str, list[str]]],
+                   behaviors: dict, macros: dict, output_path: Path) -> None:
+    """Generate one Markdown file. Single layer => layer title at H1.
+    Multiple layers => top title at H1, each layer nested at H2/H3/H4."""
+    if len(layers_data) == 1:
+        layer_name, bindings = layers_data[0]
+        lines = _markdown_layer_section(layer_name, bindings, behaviors, macros,
+                                        header_offset=0)
+    else:
+        lines = ['# キー割り当て一覧', '']
+        lines.append(f'{len(layers_data)} 個のレイヤーのキー割り当てを 1 ファイルに集約。')
+        lines.append('')
+        for layer_name, bindings in layers_data:
+            lines.extend(_markdown_layer_section(layer_name, bindings,
+                                                 behaviors, macros,
+                                                 header_offset=1))
+
     output_path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
 
 
@@ -629,11 +656,12 @@ def write_markdown(layer_name: str, bindings: list[str],
 
 def main() -> int:
     p = argparse.ArgumentParser(
-        description='Generate Excel (.xlsx) and Markdown (.md) docs for a ZMK keymap layer'
+        description='Generate Excel (.xlsx) and Markdown (.md) docs for one or more ZMK keymap layers'
     )
     p.add_argument('keymap', help='Path to .keymap file')
-    p.add_argument('layer', help='Layer name (e.g., VIM_NORMAL_1)')
-    p.add_argument('-o', '--output', help='Output .xlsx path (default: <layer>_keymap.xlsx)')
+    p.add_argument('layers', nargs='+',
+                   help='One or more layer names (e.g., VIM_NORMAL_1 VIM_NORMAL_2 VIM_VISUAL)')
+    p.add_argument('-o', '--output', help='Output .xlsx path (default: <layer>_keymap.xlsx or keymap.xlsx)')
     args = p.parse_args()
 
     keymap_path = Path(args.keymap)
@@ -645,22 +673,31 @@ def main() -> int:
 
     macros = parse_macros(content)
     behaviors = parse_behaviors(content)
-    layer_text = parse_layer(content, args.layer)
-    if layer_text is None:
-        print(f'error: layer "{args.layer}" not found.', file=sys.stderr)
-        return 1
 
-    bindings = split_layer_bindings(layer_text)
+    layers_data: list[tuple[str, list[str]]] = []
+    for layer_name in args.layers:
+        layer_text = parse_layer(content, layer_name)
+        if layer_text is None:
+            print(f'error: layer "{layer_name}" not found.', file=sys.stderr)
+            return 1
+        bindings = split_layer_bindings(layer_text)
+        layers_data.append((layer_name, bindings))
+        print(f'layer {layer_name}: {len(bindings)} bindings')
 
     print(f'parsed: {len(macros)} macros, {len(behaviors)} behaviors')
-    print(f'layer {args.layer}: {len(bindings)} bindings')
 
-    output_path = Path(args.output) if args.output else Path(f'{args.layer}_keymap.xlsx')
-    write_excel(args.layer, bindings, behaviors, macros, output_path)
+    if args.output:
+        output_path = Path(args.output)
+    elif len(args.layers) == 1:
+        output_path = Path(f'{args.layers[0]}_keymap.xlsx')
+    else:
+        output_path = Path('keymap.xlsx')
+
+    write_excel(layers_data, behaviors, macros, output_path)
     print(f'saved: {output_path}')
 
     md_path = output_path.with_suffix('.md')
-    write_markdown(args.layer, bindings, behaviors, macros, md_path)
+    write_markdown(layers_data, behaviors, macros, md_path)
     print(f'saved: {md_path}')
     return 0
 
