@@ -22,12 +22,12 @@
 
 #### Row 1 (QWERTY 上段)
 
-| 操作 | (outer)<br>`&none` | Q<br>`&mm_vim_q` | W<br>`&kp LC(RIGHT)` | E<br>`&kp LC(BACKSPACE)` | R<br>`&mm_vim_ctrl_r` | T<br>`&none` | Y<br>`&mm_vim_shift_y` | U<br>`&mm_vim_ctrl_u` | I<br>`&kp HOME` | O<br>`&mm_vim_shift_o` | P<br>`&kp LC(V)` | (outer)<br>`&none` |
+| 操作 | (outer)<br>`&none` | Q<br>`&mm_vim_q` | W<br>`&mm_vim_w` | E<br>`&kp LC(RIGHT)` | R<br>`&mm_vim_ctrl_r` | T<br>`&none` | Y<br>`&mm_vim_shift_y` | U<br>`&mm_vim_ctrl_u` | I<br>`&kp HOME` | O<br>`&mm_vim_shift_o` | P<br>`&kp LC(V)` | (outer)<br>`&none` |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 単発タップ | 何もしない | ESC 入力 | Ctrl+→ 入力 | Ctrl+BACKSPACE 入力 | 何もしない | 何もしない | Ctrl+C 入力 | Ctrl+Z 入力 | HOME 入力 | END → ENTER | Ctrl+V 入力 | 何もしない |
-| ダブルタップ | 何もしない | ESC 入力 × 2 | Ctrl+→ 入力 × 2 | Ctrl+BACKSPACE 入力 × 2 | 何もしない | 何もしない | HOME → Shift+END → Ctrl+C | Ctrl+Z 入力 × 2 | HOME 入力 × 2 | END → ENTER（2 回実行） | Ctrl+V 入力 × 2 | 何もしない |
-| Shift+ | 何もしない | Ctrl+Q 入力 | Shift + Ctrl+→（OS で合成） | Shift + Ctrl+BACKSPACE（OS で合成） | 何もしない | 何もしない | Shift+END → Ctrl+C | Shift + Ctrl+Z（OS で合成） | Shift + HOME（OS で合成） | HOME → ENTER → ↑ | Shift + Ctrl+V（OS で合成） | 何もしない |
-| Ctrl+ | 何もしない | Ctrl + ESC（OS で合成） | Ctrl + Ctrl+→（OS で合成） | Ctrl + Ctrl+BACKSPACE（OS で合成） | Ctrl+Y 入力 | 何もしない | Ctrl + Ctrl+C（OS で合成） | PAGE_UP 入力 | Ctrl + HOME（OS で合成） | END → ENTER（Ctrl 物理保持で実行） | Ctrl + Ctrl+V（OS で合成） | 何もしない |
+| 単発タップ | 何もしない | ESC 入力 | Ctrl+→ 入力 | Ctrl+→ 入力 | 何もしない | 何もしない | Ctrl+C 入力 | Ctrl+Z 入力 | HOME 入力 | END → ENTER | Ctrl+V 入力 | 何もしない |
+| ダブルタップ | 何もしない | ESC 入力 × 2 | Ctrl+→ 入力 × 2 | Ctrl+→ 入力 × 2 | 何もしない | 何もしない | HOME → Shift+END → Ctrl+C | Ctrl+Z 入力 × 2 | HOME 入力 × 2 | END → ENTER（2 回実行） | Ctrl+V 入力 × 2 | 何もしない |
+| Shift+ | 何もしない | Ctrl+Q 入力 | Shift + Ctrl+→（OS で合成） | Shift + Ctrl+→（OS で合成） | 何もしない | 何もしない | Shift+END → Ctrl+C | Shift + Ctrl+Z（OS で合成） | Shift + HOME（OS で合成） | HOME → ENTER → ↑ | Shift + Ctrl+V（OS で合成） | 何もしない |
+| Ctrl+ | 何もしない | Ctrl + ESC（OS で合成） | Ctrl+BACKSPACE 入力 | Ctrl + Ctrl+→（OS で合成） | Ctrl+Y 入力 | 何もしない | Ctrl + Ctrl+C（OS で合成） | PAGE_UP 入力 | Ctrl + HOME（OS で合成） | END → ENTER（Ctrl 物理保持で実行） | Ctrl + Ctrl+V（OS で合成） | 何もしない |
 
 #### Row 2 (home row)
 
@@ -69,12 +69,12 @@
 
 #### Row 1 (QWERTY 上段)
 
-| 操作 | (outer)<br>`&none` | Q<br>`&mm_vim_q` | W<br>`&kp LC(RIGHT)` | E<br>`&kp LC(BACKSPACE)` | R<br>`&mm_vim_ctrl_r` | T<br>`&none` | Y<br>`&mm_vim_shift_y` | U<br>`&mm_vim_ctrl_u` | I<br>`&kp HOME` | O<br>`&mm_vim_shift_o` | P<br>`&kp LC(V)` | (outer)<br>`&none` |
+| 操作 | (outer)<br>`&none` | Q<br>`&mm_vim_q` | W<br>`&mm_vim_w` | E<br>`&kp LC(RIGHT)` | R<br>`&mm_vim_ctrl_r` | T<br>`&none` | Y<br>`&mm_vim_shift_y` | U<br>`&mm_vim_ctrl_u` | I<br>`&kp HOME` | O<br>`&mm_vim_shift_o` | P<br>`&kp LC(V)` | (outer)<br>`&none` |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 単発タップ | &none | mm_vim_q[0] → &kp ESCAPE | &kp LC(RIGHT) | &kp LC(BACKSPACE) | mm_vim_ctrl_r[0] → &none | &none | mm_vim_shift_y[0] → td_vim_y[0] → &kp LC(C) | mm_vim_ctrl_u[0] → &kp LC(Z) | &kp HOME | mm_vim_shift_o[0] → macro_vim_o | &kp LC(V) | &none |
-| ダブルタップ | &none | mm_vim_q[0] → &kp ESCAPE（tap-dance 未定義、連打） | &kp LC(RIGHT)（tap-dance 未定義、連打） | &kp LC(BACKSPACE)（tap-dance 未定義、連打） | mm_vim_ctrl_r[0] → &none | &none | mm_vim_shift_y[0] → td_vim_y[1] → macro_vim_yy | mm_vim_ctrl_u[0] → &kp LC(Z)（tap-dance 未定義、連打） | &kp HOME（tap-dance 未定義、連打） | mm_vim_shift_o[0] → macro_vim_o（連打） | &kp LC(V)（tap-dance 未定義、連打） | &none |
-| Shift+ | &none | mm_vim_q[1] (Shift 検知) → &kp LC(Q) | &kp LC(RIGHT)（物理 Shift は HID にそのまま伝わる） | &kp LC(BACKSPACE)（物理 Shift は HID にそのまま伝わる） | mm_vim_ctrl_r[0] (Shift は本 mod-morph 検知外) → &none | &none | mm_vim_shift_y[1] (Shift 検知) → macro_vim_shift_y | mm_vim_ctrl_u[0] (Shift は本 mod-morph 検知外) → &kp LC(Z)（物理 Shift は HID にそのまま伝わる） | &kp HOME（物理 Shift は HID にそのまま伝わる） | mm_vim_shift_o[1] (Shift 検知) → macro_vim_shift_o | &kp LC(V)（物理 Shift は HID にそのまま伝わる） | &none |
-| Ctrl+ | &none | mm_vim_q[0] (Ctrl は本 mod-morph 検知外) → &kp ESCAPE（物理 Ctrl は HID にそのまま伝わる） | &kp LC(RIGHT)（物理 Ctrl は HID にそのまま伝わる） | &kp LC(BACKSPACE)（物理 Ctrl は HID にそのまま伝わる） | mm_vim_ctrl_r[1] (Ctrl 検知) → &kp LC(Y) | &none | mm_vim_shift_y[0] (Ctrl は本 mod-morph 検知外) → td_vim_y[0] (tap-dance は mods 検知なし) → &kp LC(C)（物理 Ctrl は HID にそのまま伝わる） | mm_vim_ctrl_u[1] (Ctrl 検知) → &kp PAGE_UP | &kp HOME（物理 Ctrl は HID にそのまま伝わる） | mm_vim_shift_o[0] (Ctrl は本 mod-morph 検知外) → macro_vim_o | &kp LC(V)（物理 Ctrl は HID にそのまま伝わる） | &none |
+| 単発タップ | &none | mm_vim_q[0] → &kp ESCAPE | mm_vim_w[0] → &kp LC(RIGHT) | &kp LC(RIGHT) | mm_vim_ctrl_r[0] → &none | &none | mm_vim_shift_y[0] → td_vim_y[0] → &kp LC(C) | mm_vim_ctrl_u[0] → &kp LC(Z) | &kp HOME | mm_vim_shift_o[0] → macro_vim_o | &kp LC(V) | &none |
+| ダブルタップ | &none | mm_vim_q[0] → &kp ESCAPE（tap-dance 未定義、連打） | mm_vim_w[0] → &kp LC(RIGHT)（tap-dance 未定義、連打） | &kp LC(RIGHT)（tap-dance 未定義、連打） | mm_vim_ctrl_r[0] → &none | &none | mm_vim_shift_y[0] → td_vim_y[1] → macro_vim_yy | mm_vim_ctrl_u[0] → &kp LC(Z)（tap-dance 未定義、連打） | &kp HOME（tap-dance 未定義、連打） | mm_vim_shift_o[0] → macro_vim_o（連打） | &kp LC(V)（tap-dance 未定義、連打） | &none |
+| Shift+ | &none | mm_vim_q[1] (Shift 検知) → &kp LC(Q) | mm_vim_w[0] (Shift は本 mod-morph 検知外) → &kp LC(RIGHT)（物理 Shift は HID にそのまま伝わる） | &kp LC(RIGHT)（物理 Shift は HID にそのまま伝わる） | mm_vim_ctrl_r[0] (Shift は本 mod-morph 検知外) → &none | &none | mm_vim_shift_y[1] (Shift 検知) → macro_vim_shift_y | mm_vim_ctrl_u[0] (Shift は本 mod-morph 検知外) → &kp LC(Z)（物理 Shift は HID にそのまま伝わる） | &kp HOME（物理 Shift は HID にそのまま伝わる） | mm_vim_shift_o[1] (Shift 検知) → macro_vim_shift_o | &kp LC(V)（物理 Shift は HID にそのまま伝わる） | &none |
+| Ctrl+ | &none | mm_vim_q[0] (Ctrl は本 mod-morph 検知外) → &kp ESCAPE（物理 Ctrl は HID にそのまま伝わる） | mm_vim_w[1] (Ctrl 検知) → &kp LC(BACKSPACE) | &kp LC(RIGHT)（物理 Ctrl は HID にそのまま伝わる） | mm_vim_ctrl_r[1] (Ctrl 検知) → &kp LC(Y) | &none | mm_vim_shift_y[0] (Ctrl は本 mod-morph 検知外) → td_vim_y[0] (tap-dance は mods 検知なし) → &kp LC(C)（物理 Ctrl は HID にそのまま伝わる） | mm_vim_ctrl_u[1] (Ctrl 検知) → &kp PAGE_UP | &kp HOME（物理 Ctrl は HID にそのまま伝わる） | mm_vim_shift_o[0] (Ctrl は本 mod-morph 検知外) → macro_vim_o | &kp LC(V)（物理 Ctrl は HID にそのまま伝わる） | &none |
 
 #### Row 2 (home row)
 
