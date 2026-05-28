@@ -1,15 +1,13 @@
 # キー割り当て一覧
 
-3 個のレイヤーのキー割り当てを 1 ファイルに集約。
-
-## VIM_NORMAL_1 レイヤー キー割り当て一覧
-
-※ 66 個のバインディング位置。物理キーボード行ごとに 4 操作 × N キーの表で出力（QWERTY 配列）。
+※ 3 個のレイヤーのキー割り当てを 1 ファイルに集約。各レイヤー 66 バインディング位置を「動作」セクションでまとめてから「経路」セクションに進む。
 
 - 列ヘッダーは「キーラベル」と「バインディング (`&...`)」の 2 段表示。
 - 各表の左端 1 列が「操作」（単発タップ / ダブルタップ / Shift+ / Ctrl+）。
 
-### 動作
+## 動作
+
+### VIM_NORMAL_1 レイヤー
 
 #### Row 0 (top wing)
 
@@ -56,61 +54,7 @@
 | Shift+ | 何もしない | 何もしない | 下位レイヤーの同位置にフォールスルー | 下位レイヤーの同位置にフォールスルー | 何もしない | 何もしない | レイヤー 3 を momentary（押下中のみ）有効化 | 何もしない | Shift + ENTER（ホールドでレイヤー 3） | 何もしない | 何もしない | 下位レイヤーの同位置にフォールスルー | 何もしない | 何もしない |
 | Ctrl+ | 何もしない | 何もしない | 下位レイヤーの同位置にフォールスルー | 下位レイヤーの同位置にフォールスルー | 何もしない | 何もしない | レイヤー 3 を momentary（押下中のみ）有効化 | 何もしない | Ctrl + ENTER（ホールドでレイヤー 3） | 何もしない | 何もしない | 下位レイヤーの同位置にフォールスルー | 何もしない | 何もしない |
 
-### 経路
-
-#### Row 0 (top wing)
-
-| 操作 | (outer)<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | (outer)<br>`&none` |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 単発タップ | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none |
-| ダブルタップ | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none |
-| Shift+ | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none |
-| Ctrl+ | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none |
-
-#### Row 1 (QWERTY 上段)
-
-| 操作 | (outer)<br>`&none` | Q<br>`&mm_vim_q` | W<br>`&mm_vim_w` | E<br>`&kp LC(RIGHT)` | R<br>`&mm_vim_ctrl_r` | T<br>`&none` | Y<br>`&mm_vim_shift_y` | U<br>`&mm_vim_ctrl_u` | I<br>`&kp HOME` | O<br>`&mm_vim_shift_o` | P<br>`&kp LC(V)` | (outer)<br>`&none` |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 単発タップ | &none | mm_vim_q[0] → &kp ESCAPE | mm_vim_w[0] → &kp LC(RIGHT) | &kp LC(RIGHT) | mm_vim_ctrl_r[0] → &none | &none | mm_vim_shift_y[0] → td_vim_y[0] → &kp LC(C) | mm_vim_ctrl_u[0] → &kp LC(Z) | &kp HOME | mm_vim_shift_o[0] → macro_vim_o | &kp LC(V) | &none |
-| ダブルタップ | &none | mm_vim_q[0] → &kp ESCAPE（tap-dance 未定義、連打） | mm_vim_w[0] → &kp LC(RIGHT)（tap-dance 未定義、連打） | &kp LC(RIGHT)（tap-dance 未定義、連打） | mm_vim_ctrl_r[0] → &none | &none | mm_vim_shift_y[0] → td_vim_y[1] → macro_vim_yy | mm_vim_ctrl_u[0] → &kp LC(Z)（tap-dance 未定義、連打） | &kp HOME（tap-dance 未定義、連打） | mm_vim_shift_o[0] → macro_vim_o（連打） | &kp LC(V)（tap-dance 未定義、連打） | &none |
-| Shift+ | &none | mm_vim_q[1] (Shift 検知) → &kp LC(Q) | mm_vim_w[0] (Shift は本 mod-morph 検知外) → &kp LC(RIGHT)（物理 Shift は HID にそのまま伝わる） | &kp LC(RIGHT)（物理 Shift は HID にそのまま伝わる） | mm_vim_ctrl_r[0] (Shift は本 mod-morph 検知外) → &none | &none | mm_vim_shift_y[1] (Shift 検知) → macro_vim_shift_y | mm_vim_ctrl_u[0] (Shift は本 mod-morph 検知外) → &kp LC(Z)（物理 Shift は HID にそのまま伝わる） | &kp HOME（物理 Shift は HID にそのまま伝わる） | mm_vim_shift_o[1] (Shift 検知) → macro_vim_shift_o | &kp LC(V)（物理 Shift は HID にそのまま伝わる） | &none |
-| Ctrl+ | &none | mm_vim_q[0] (Ctrl は本 mod-morph 検知外) → &kp ESCAPE（物理 Ctrl は HID にそのまま伝わる） | mm_vim_w[1] (Ctrl 検知) → &kp LC(BACKSPACE) | &kp LC(RIGHT)（物理 Ctrl は HID にそのまま伝わる） | mm_vim_ctrl_r[1] (Ctrl 検知) → &kp LC(Y) | &none | mm_vim_shift_y[0] (Ctrl は本 mod-morph 検知外) → td_vim_y[0] (tap-dance は mods 検知なし) → &kp LC(C)（物理 Ctrl は HID にそのまま伝わる） | mm_vim_ctrl_u[1] (Ctrl 検知) → &kp PAGE_UP | &kp HOME（物理 Ctrl は HID にそのまま伝わる） | mm_vim_shift_o[0] (Ctrl は本 mod-morph 検知外) → macro_vim_o | &kp LC(V)（物理 Ctrl は HID にそのまま伝わる） | &none |
-
-#### Row 2 (home row)
-
-| 操作 | (outer)<br>`&none` | A<br>`&kp LCTRL` | S<br>`&none` | D<br>`&mm_vim_ctrl_then_shift_d` | F<br>`&none` | G<br>`&mm_vim_g` | (center L)<br>`&none` | (center R)<br>`&none` | H<br>`&kp LEFT` | J<br>`&mm_vim_j` | K<br>`&kp UP_ARROW` | L<br>`&kp RIGHT` | MINUS<br>`&kp RCTRL` | (outer)<br>`&none` |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 単発タップ | &none | &kp LCTRL | &none | mm_vim_ctrl_then_shift_d[0] → mm_vim_shift_d[0] → td_vim_d[0] → &none | &none | mm_vim_g[0] → td_vim_g[0] → &none | &none | &none | &kp LEFT | mm_vim_j[0] → &kp DOWN | &kp UP_ARROW | &kp RIGHT | &kp RCTRL | &none |
-| ダブルタップ | &none | &kp LCTRL（tap-dance 未定義、連打） | &none | mm_vim_ctrl_then_shift_d[0] → mm_vim_shift_d[0] → td_vim_d[1] → macro_vim_dd | &none | mm_vim_g[0] → td_vim_g[1] → &kp LC(HOME) | &none | &none | &kp LEFT（tap-dance 未定義、連打） | mm_vim_j[0] → &kp DOWN（tap-dance 未定義、連打） | &kp UP_ARROW（tap-dance 未定義、連打） | &kp RIGHT（tap-dance 未定義、連打） | &kp RCTRL（tap-dance 未定義、連打） | &none |
-| Shift+ | &none | &kp LCTRL（物理 Shift は HID にそのまま伝わる） | &none | mm_vim_ctrl_then_shift_d[0] (Shift は本 mod-morph 検知外) → mm_vim_shift_d[1] (Shift 検知) → macro_vim_shift_d | &none | mm_vim_g[1] (Shift 検知) → &kp LC(END) | &none | &none | &kp LEFT（物理 Shift は HID にそのまま伝わる） | mm_vim_j[1] (Shift 検知) → macro_vim_join | &kp UP_ARROW（物理 Shift は HID にそのまま伝わる） | &kp RIGHT（物理 Shift は HID にそのまま伝わる） | &kp RCTRL（物理 Shift は HID にそのまま伝わる） | &none |
-| Ctrl+ | &none | &kp LCTRL（物理 Ctrl は HID にそのまま伝わる） | &none | mm_vim_ctrl_then_shift_d[1] (Ctrl 検知) → &kp PAGE_DOWN | &none | mm_vim_g[0] (Ctrl は本 mod-morph 検知外) → td_vim_g[0] (tap-dance は mods 検知なし) → &none | &none | &none | &kp LEFT（物理 Ctrl は HID にそのまま伝わる） | mm_vim_j[0] (Ctrl は本 mod-morph 検知外) → &kp DOWN（物理 Ctrl は HID にそのまま伝わる） | &kp UP_ARROW（物理 Ctrl は HID にそのまま伝わる） | &kp RIGHT（物理 Ctrl は HID にそのまま伝わる） | &kp RCTRL（物理 Ctrl は HID にそのまま伝わる） | &none |
-
-#### Row 3 (Z row)
-
-| 操作 | (outer)<br>`&none` | Z<br>`&kp LEFT_SHIFT` | X<br>`&kp DELETE` | C<br>`&none` | V<br>`&mm_vim_v` | B<br>`&kp LC(LEFT)` | (center L)<br>`&none` | (center R)<br>`&none` | N<br>`&mm_vim_n` | M<br>`&none` | COMMA<br>`&none` | PERIOD<br>`&none` | SLASH<br>`&kp RIGHT_SHIFT` | (outer)<br>`&none` |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 単発タップ | &none | &kp LEFT_SHIFT | &kp DELETE | &none | mm_vim_v[0] → &to 8 | &kp LC(LEFT) | &none | &none | mm_vim_n[0] → &kp F3 | &none | &none | &none | &kp RIGHT_SHIFT | &none |
-| ダブルタップ | &none | &kp LEFT_SHIFT（tap-dance 未定義、連打） | &kp DELETE（tap-dance 未定義、連打） | &none | mm_vim_v[0] → &to 8 | &kp LC(LEFT)（tap-dance 未定義、連打） | &none | &none | mm_vim_n[0] → &kp F3（tap-dance 未定義、連打） | &none | &none | &none | &kp RIGHT_SHIFT（tap-dance 未定義、連打） | &none |
-| Shift+ | &none | &kp LEFT_SHIFT（物理 Shift は HID にそのまま伝わる） | &kp DELETE（物理 Shift は HID にそのまま伝わる） | &none | mm_vim_v[1] (Shift 検知) → macro_vim_v_line | &kp LC(LEFT)（物理 Shift は HID にそのまま伝わる） | &none | &none | mm_vim_n[1] (Shift 検知) → &kp LS(F3) | &none | &none | &none | &kp RIGHT_SHIFT（物理 Shift は HID にそのまま伝わる） | &none |
-| Ctrl+ | &none | &kp LEFT_SHIFT（物理 Ctrl は HID にそのまま伝わる） | &kp DELETE（物理 Ctrl は HID にそのまま伝わる） | &none | mm_vim_v[0] (Ctrl は本 mod-morph 検知外) → &to 8 | &kp LC(LEFT)（物理 Ctrl は HID にそのまま伝わる） | &none | &none | mm_vim_n[0] (Ctrl は本 mod-morph 検知外) → &kp F3（物理 Ctrl は HID にそのまま伝わる） | &none | &none | &none | &kp RIGHT_SHIFT（物理 Ctrl は HID にそのまま伝わる） | &none |
-
-#### Row 4 (thumb)
-
-| 操作 | (outer)<br>`&none` | mo6 (outer)<br>`&none` | LEFT_WIN<br>`&trans` | LEFT_ALT<br>`&trans` | lt2 SPACE<br>`&none` | lt2 SPACE<br>`&none` | (mo1 center)<br>`&mo 3` | (mo2 center)<br>`&none` | lt1 ENTER<br>`&lt 3 ENTER` | (none)<br>`&none` | (none)<br>`&none` | mo6<br>`&trans` | mo6 (outer)<br>`&none` | (outer)<br>`&none` |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 単発タップ | &none | &none | &trans | &trans | &none | &none | &mo 3 | &none | &lt 3 ENTER | &none | &none | &trans | &none | &none |
-| ダブルタップ | &none | &none | &trans | &trans | &none | &none | &mo 3 | &none | &lt 3 ENTER（連打） | &none | &none | &trans | &none | &none |
-| Shift+ | &none | &none | &trans | &trans | &none | &none | &mo 3 | &none | &lt 3 ENTER | &none | &none | &trans | &none | &none |
-| Ctrl+ | &none | &none | &trans | &trans | &none | &none | &mo 3 | &none | &lt 3 ENTER | &none | &none | &trans | &none | &none |
-
-## VIM_NORMAL_2 レイヤー キー割り当て一覧
-
-※ 66 個のバインディング位置。物理キーボード行ごとに 4 操作 × N キーの表で出力（QWERTY 配列）。
-
-- 列ヘッダーは「キーラベル」と「バインディング (`&...`)」の 2 段表示。
-- 各表の左端 1 列が「操作」（単発タップ / ダブルタップ / Shift+ / Ctrl+）。
-
-### 動作
+### VIM_NORMAL_2 レイヤー
 
 #### Row 0 (top wing)
 
@@ -157,61 +101,7 @@
 | Shift+ | 何もしない | 何もしない | 下位レイヤーの同位置にフォールスルー | 下位レイヤーの同位置にフォールスルー | 下位レイヤーの同位置にフォールスルー | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 下位レイヤーの同位置にフォールスルー | 何もしない | 何もしない |
 | Ctrl+ | 何もしない | 何もしない | 下位レイヤーの同位置にフォールスルー | 下位レイヤーの同位置にフォールスルー | 下位レイヤーの同位置にフォールスルー | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 下位レイヤーの同位置にフォールスルー | 何もしない | 何もしない |
 
-### 経路
-
-#### Row 0 (top wing)
-
-| 操作 | (outer)<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | (outer)<br>`&none` |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 単発タップ | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none |
-| ダブルタップ | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none |
-| Shift+ | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none |
-| Ctrl+ | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none |
-
-#### Row 1 (QWERTY 上段)
-
-| 操作 | (outer)<br>`&none` | Q<br>`&trans` | W<br>`&none` | E<br>`&trans` | R<br>`&mm_vim_shift_4` | T<br>`&trans` | Y<br>`&mm_vim_shift_6` | U<br>`&kp PAGE_UP` | I<br>`&trans` | O<br>`&none` | P<br>`&kp HOME` | (outer)<br>`&none` |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 単発タップ | &none | &trans | &none | &trans | mm_vim_shift_4[0] → &none | &trans | mm_vim_shift_6[0] → &none | &kp PAGE_UP | &trans | &none | &kp HOME | &none |
-| ダブルタップ | &none | &trans | &none | &trans | mm_vim_shift_4[0] → &none | &trans | mm_vim_shift_6[0] → &none | &kp PAGE_UP（tap-dance 未定義、連打） | &trans | &none | &kp HOME（tap-dance 未定義、連打） | &none |
-| Shift+ | &none | &trans | &none | &trans | mm_vim_shift_4[1] (Shift 検知) → &kp END | &trans | mm_vim_shift_6[1] (Shift 検知) → &kp HOME | &kp PAGE_UP（物理 Shift は HID にそのまま伝わる） | &trans | &none | &kp HOME（物理 Shift は HID にそのまま伝わる） | &none |
-| Ctrl+ | &none | &trans | &none | &trans | mm_vim_shift_4[0] (Ctrl は本 mod-morph 検知外) → &none | &trans | mm_vim_shift_6[0] (Ctrl は本 mod-morph 検知外) → &none | &kp PAGE_UP（物理 Ctrl は HID にそのまま伝わる） | &trans | &none | &kp HOME（物理 Ctrl は HID にそのまま伝わる） | &none |
-
-#### Row 2 (home row)
-
-| 操作 | (outer)<br>`&none` | A<br>`&kp LCTRL` | S<br>`&trans` | D<br>`&kp PAGE_DOWN` | F<br>`&trans` | G<br>`&none` | (center L)<br>`&none` | (center R)<br>`&none` | H<br>`&trans` | J<br>`&trans` | K<br>`&trans` | L<br>`&trans` | MINUS<br>`&kp RCTRL` | (outer)<br>`&none` |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 単発タップ | &none | &kp LCTRL | &trans | &kp PAGE_DOWN | &trans | &none | &none | &none | &trans | &trans | &trans | &trans | &kp RCTRL | &none |
-| ダブルタップ | &none | &kp LCTRL（tap-dance 未定義、連打） | &trans | &kp PAGE_DOWN（tap-dance 未定義、連打） | &trans | &none | &none | &none | &trans | &trans | &trans | &trans | &kp RCTRL（tap-dance 未定義、連打） | &none |
-| Shift+ | &none | &kp LCTRL（物理 Shift は HID にそのまま伝わる） | &trans | &kp PAGE_DOWN（物理 Shift は HID にそのまま伝わる） | &trans | &none | &none | &none | &trans | &trans | &trans | &trans | &kp RCTRL（物理 Shift は HID にそのまま伝わる） | &none |
-| Ctrl+ | &none | &kp LCTRL（物理 Ctrl は HID にそのまま伝わる） | &trans | &kp PAGE_DOWN（物理 Ctrl は HID にそのまま伝わる） | &trans | &none | &none | &none | &trans | &trans | &trans | &trans | &kp RCTRL（物理 Ctrl は HID にそのまま伝わる） | &none |
-
-#### Row 3 (Z row)
-
-| 操作 | (outer)<br>`&none` | Z<br>`&kp LEFT_SHIFT` | X<br>`&none` | C<br>`&none` | V<br>`&none` | B<br>`&none` | (center L)<br>`&none` | (center R)<br>`&none` | N<br>`&trans` | M<br>`&trans` | COMMA<br>`&trans` | PERIOD<br>`&trans` | SLASH<br>`&kp RIGHT_SHIFT` | (outer)<br>`&none` |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 単発タップ | &none | &kp LEFT_SHIFT | &none | &none | &none | &none | &none | &none | &trans | &trans | &trans | &trans | &kp RIGHT_SHIFT | &none |
-| ダブルタップ | &none | &kp LEFT_SHIFT（tap-dance 未定義、連打） | &none | &none | &none | &none | &none | &none | &trans | &trans | &trans | &trans | &kp RIGHT_SHIFT（tap-dance 未定義、連打） | &none |
-| Shift+ | &none | &kp LEFT_SHIFT（物理 Shift は HID にそのまま伝わる） | &none | &none | &none | &none | &none | &none | &trans | &trans | &trans | &trans | &kp RIGHT_SHIFT（物理 Shift は HID にそのまま伝わる） | &none |
-| Ctrl+ | &none | &kp LEFT_SHIFT（物理 Ctrl は HID にそのまま伝わる） | &none | &none | &none | &none | &none | &none | &trans | &trans | &trans | &trans | &kp RIGHT_SHIFT（物理 Ctrl は HID にそのまま伝わる） | &none |
-
-#### Row 4 (thumb)
-
-| 操作 | (outer)<br>`&none` | mo6 (outer)<br>`&none` | LEFT_WIN<br>`&trans` | LEFT_ALT<br>`&trans` | lt2 SPACE<br>`&trans` | lt2 SPACE<br>`&none` | (mo1 center)<br>`&none` | (mo2 center)<br>`&none` | lt1 ENTER<br>`&none` | (none)<br>`&none` | (none)<br>`&none` | mo6<br>`&trans` | mo6 (outer)<br>`&none` | (outer)<br>`&none` |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 単発タップ | &none | &none | &trans | &trans | &trans | &none | &none | &none | &none | &none | &none | &trans | &none | &none |
-| ダブルタップ | &none | &none | &trans | &trans | &trans | &none | &none | &none | &none | &none | &none | &trans | &none | &none |
-| Shift+ | &none | &none | &trans | &trans | &trans | &none | &none | &none | &none | &none | &none | &trans | &none | &none |
-| Ctrl+ | &none | &none | &trans | &trans | &trans | &none | &none | &none | &none | &none | &none | &trans | &none | &none |
-
-## VIM_VISUAL レイヤー キー割り当て一覧
-
-※ 66 個のバインディング位置。物理キーボード行ごとに 4 操作 × N キーの表で出力（QWERTY 配列）。
-
-- 列ヘッダーは「キーラベル」と「バインディング (`&...`)」の 2 段表示。
-- 各表の左端 1 列が「操作」（単発タップ / ダブルタップ / Shift+ / Ctrl+）。
-
-### 動作
+### VIM_VISUAL レイヤー
 
 #### Row 0 (top wing)
 
@@ -258,7 +148,103 @@
 | Shift+ | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | Left Shift 解放 → Right Shift 解放 → → → レイヤー 0 へ（Shift 物理保持で実行） | Left Shift 解放 → Right Shift 解放 → → → レイヤー 0 へ（Shift 物理保持で実行） | Left Shift 解放 → Right Shift 解放 → → → レイヤー 0 へ（Shift 物理保持で実行） | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない |
 | Ctrl+ | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | Left Shift 解放 → Right Shift 解放 → → → レイヤー 0 へ（Ctrl 物理保持で実行） | Left Shift 解放 → Right Shift 解放 → → → レイヤー 0 へ（Ctrl 物理保持で実行） | Left Shift 解放 → Right Shift 解放 → → → レイヤー 0 へ（Ctrl 物理保持で実行） | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない |
 
-### 経路
+## 経路
+
+### VIM_NORMAL_1 レイヤー
+
+#### Row 0 (top wing)
+
+| 操作 | (outer)<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | (outer)<br>`&none` |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 単発タップ | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none |
+| ダブルタップ | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none |
+| Shift+ | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none |
+| Ctrl+ | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none |
+
+#### Row 1 (QWERTY 上段)
+
+| 操作 | (outer)<br>`&none` | Q<br>`&mm_vim_q` | W<br>`&mm_vim_w` | E<br>`&kp LC(RIGHT)` | R<br>`&mm_vim_ctrl_r` | T<br>`&none` | Y<br>`&mm_vim_shift_y` | U<br>`&mm_vim_ctrl_u` | I<br>`&kp HOME` | O<br>`&mm_vim_shift_o` | P<br>`&kp LC(V)` | (outer)<br>`&none` |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 単発タップ | &none | mm_vim_q[0] → &kp ESCAPE | mm_vim_w[0] → &kp LC(RIGHT) | &kp LC(RIGHT) | mm_vim_ctrl_r[0] → &none | &none | mm_vim_shift_y[0] → td_vim_y[0] → &kp LC(C) | mm_vim_ctrl_u[0] → &kp LC(Z) | &kp HOME | mm_vim_shift_o[0] → macro_vim_o | &kp LC(V) | &none |
+| ダブルタップ | &none | mm_vim_q[0] → &kp ESCAPE（tap-dance 未定義、連打） | mm_vim_w[0] → &kp LC(RIGHT)（tap-dance 未定義、連打） | &kp LC(RIGHT)（tap-dance 未定義、連打） | mm_vim_ctrl_r[0] → &none | &none | mm_vim_shift_y[0] → td_vim_y[1] → macro_vim_yy | mm_vim_ctrl_u[0] → &kp LC(Z)（tap-dance 未定義、連打） | &kp HOME（tap-dance 未定義、連打） | mm_vim_shift_o[0] → macro_vim_o（連打） | &kp LC(V)（tap-dance 未定義、連打） | &none |
+| Shift+ | &none | mm_vim_q[1] (Shift 検知) → &kp LC(Q) | mm_vim_w[0] (Shift は本 mod-morph 検知外) → &kp LC(RIGHT)（物理 Shift は HID にそのまま伝わる） | &kp LC(RIGHT)（物理 Shift は HID にそのまま伝わる） | mm_vim_ctrl_r[0] (Shift は本 mod-morph 検知外) → &none | &none | mm_vim_shift_y[1] (Shift 検知) → macro_vim_shift_y | mm_vim_ctrl_u[0] (Shift は本 mod-morph 検知外) → &kp LC(Z)（物理 Shift は HID にそのまま伝わる） | &kp HOME（物理 Shift は HID にそのまま伝わる） | mm_vim_shift_o[1] (Shift 検知) → macro_vim_shift_o | &kp LC(V)（物理 Shift は HID にそのまま伝わる） | &none |
+| Ctrl+ | &none | mm_vim_q[0] (Ctrl は本 mod-morph 検知外) → &kp ESCAPE（物理 Ctrl は HID にそのまま伝わる） | mm_vim_w[1] (Ctrl 検知) → &kp LC(BACKSPACE) | &kp LC(RIGHT)（物理 Ctrl は HID にそのまま伝わる） | mm_vim_ctrl_r[1] (Ctrl 検知) → &kp LC(Y) | &none | mm_vim_shift_y[0] (Ctrl は本 mod-morph 検知外) → td_vim_y[0] (tap-dance は mods 検知なし) → &kp LC(C)（物理 Ctrl は HID にそのまま伝わる） | mm_vim_ctrl_u[1] (Ctrl 検知) → &kp PAGE_UP | &kp HOME（物理 Ctrl は HID にそのまま伝わる） | mm_vim_shift_o[0] (Ctrl は本 mod-morph 検知外) → macro_vim_o | &kp LC(V)（物理 Ctrl は HID にそのまま伝わる） | &none |
+
+#### Row 2 (home row)
+
+| 操作 | (outer)<br>`&none` | A<br>`&kp LCTRL` | S<br>`&none` | D<br>`&mm_vim_ctrl_then_shift_d` | F<br>`&none` | G<br>`&mm_vim_g` | (center L)<br>`&none` | (center R)<br>`&none` | H<br>`&kp LEFT` | J<br>`&mm_vim_j` | K<br>`&kp UP_ARROW` | L<br>`&kp RIGHT` | MINUS<br>`&kp RCTRL` | (outer)<br>`&none` |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 単発タップ | &none | &kp LCTRL | &none | mm_vim_ctrl_then_shift_d[0] → mm_vim_shift_d[0] → td_vim_d[0] → &none | &none | mm_vim_g[0] → td_vim_g[0] → &none | &none | &none | &kp LEFT | mm_vim_j[0] → &kp DOWN | &kp UP_ARROW | &kp RIGHT | &kp RCTRL | &none |
+| ダブルタップ | &none | &kp LCTRL（tap-dance 未定義、連打） | &none | mm_vim_ctrl_then_shift_d[0] → mm_vim_shift_d[0] → td_vim_d[1] → macro_vim_dd | &none | mm_vim_g[0] → td_vim_g[1] → &kp LC(HOME) | &none | &none | &kp LEFT（tap-dance 未定義、連打） | mm_vim_j[0] → &kp DOWN（tap-dance 未定義、連打） | &kp UP_ARROW（tap-dance 未定義、連打） | &kp RIGHT（tap-dance 未定義、連打） | &kp RCTRL（tap-dance 未定義、連打） | &none |
+| Shift+ | &none | &kp LCTRL（物理 Shift は HID にそのまま伝わる） | &none | mm_vim_ctrl_then_shift_d[0] (Shift は本 mod-morph 検知外) → mm_vim_shift_d[1] (Shift 検知) → macro_vim_shift_d | &none | mm_vim_g[1] (Shift 検知) → &kp LC(END) | &none | &none | &kp LEFT（物理 Shift は HID にそのまま伝わる） | mm_vim_j[1] (Shift 検知) → macro_vim_join | &kp UP_ARROW（物理 Shift は HID にそのまま伝わる） | &kp RIGHT（物理 Shift は HID にそのまま伝わる） | &kp RCTRL（物理 Shift は HID にそのまま伝わる） | &none |
+| Ctrl+ | &none | &kp LCTRL（物理 Ctrl は HID にそのまま伝わる） | &none | mm_vim_ctrl_then_shift_d[1] (Ctrl 検知) → &kp PAGE_DOWN | &none | mm_vim_g[0] (Ctrl は本 mod-morph 検知外) → td_vim_g[0] (tap-dance は mods 検知なし) → &none | &none | &none | &kp LEFT（物理 Ctrl は HID にそのまま伝わる） | mm_vim_j[0] (Ctrl は本 mod-morph 検知外) → &kp DOWN（物理 Ctrl は HID にそのまま伝わる） | &kp UP_ARROW（物理 Ctrl は HID にそのまま伝わる） | &kp RIGHT（物理 Ctrl は HID にそのまま伝わる） | &kp RCTRL（物理 Ctrl は HID にそのまま伝わる） | &none |
+
+#### Row 3 (Z row)
+
+| 操作 | (outer)<br>`&none` | Z<br>`&kp LEFT_SHIFT` | X<br>`&kp DELETE` | C<br>`&none` | V<br>`&mm_vim_v` | B<br>`&kp LC(LEFT)` | (center L)<br>`&none` | (center R)<br>`&none` | N<br>`&mm_vim_n` | M<br>`&none` | COMMA<br>`&none` | PERIOD<br>`&none` | SLASH<br>`&kp RIGHT_SHIFT` | (outer)<br>`&none` |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 単発タップ | &none | &kp LEFT_SHIFT | &kp DELETE | &none | mm_vim_v[0] → &to 8 | &kp LC(LEFT) | &none | &none | mm_vim_n[0] → &kp F3 | &none | &none | &none | &kp RIGHT_SHIFT | &none |
+| ダブルタップ | &none | &kp LEFT_SHIFT（tap-dance 未定義、連打） | &kp DELETE（tap-dance 未定義、連打） | &none | mm_vim_v[0] → &to 8 | &kp LC(LEFT)（tap-dance 未定義、連打） | &none | &none | mm_vim_n[0] → &kp F3（tap-dance 未定義、連打） | &none | &none | &none | &kp RIGHT_SHIFT（tap-dance 未定義、連打） | &none |
+| Shift+ | &none | &kp LEFT_SHIFT（物理 Shift は HID にそのまま伝わる） | &kp DELETE（物理 Shift は HID にそのまま伝わる） | &none | mm_vim_v[1] (Shift 検知) → macro_vim_v_line | &kp LC(LEFT)（物理 Shift は HID にそのまま伝わる） | &none | &none | mm_vim_n[1] (Shift 検知) → &kp LS(F3) | &none | &none | &none | &kp RIGHT_SHIFT（物理 Shift は HID にそのまま伝わる） | &none |
+| Ctrl+ | &none | &kp LEFT_SHIFT（物理 Ctrl は HID にそのまま伝わる） | &kp DELETE（物理 Ctrl は HID にそのまま伝わる） | &none | mm_vim_v[0] (Ctrl は本 mod-morph 検知外) → &to 8 | &kp LC(LEFT)（物理 Ctrl は HID にそのまま伝わる） | &none | &none | mm_vim_n[0] (Ctrl は本 mod-morph 検知外) → &kp F3（物理 Ctrl は HID にそのまま伝わる） | &none | &none | &none | &kp RIGHT_SHIFT（物理 Ctrl は HID にそのまま伝わる） | &none |
+
+#### Row 4 (thumb)
+
+| 操作 | (outer)<br>`&none` | mo6 (outer)<br>`&none` | LEFT_WIN<br>`&trans` | LEFT_ALT<br>`&trans` | lt2 SPACE<br>`&none` | lt2 SPACE<br>`&none` | (mo1 center)<br>`&mo 3` | (mo2 center)<br>`&none` | lt1 ENTER<br>`&lt 3 ENTER` | (none)<br>`&none` | (none)<br>`&none` | mo6<br>`&trans` | mo6 (outer)<br>`&none` | (outer)<br>`&none` |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 単発タップ | &none | &none | &trans | &trans | &none | &none | &mo 3 | &none | &lt 3 ENTER | &none | &none | &trans | &none | &none |
+| ダブルタップ | &none | &none | &trans | &trans | &none | &none | &mo 3 | &none | &lt 3 ENTER（連打） | &none | &none | &trans | &none | &none |
+| Shift+ | &none | &none | &trans | &trans | &none | &none | &mo 3 | &none | &lt 3 ENTER | &none | &none | &trans | &none | &none |
+| Ctrl+ | &none | &none | &trans | &trans | &none | &none | &mo 3 | &none | &lt 3 ENTER | &none | &none | &trans | &none | &none |
+
+### VIM_NORMAL_2 レイヤー
+
+#### Row 0 (top wing)
+
+| 操作 | (outer)<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | top wing<br>`&none` | (outer)<br>`&none` |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 単発タップ | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none |
+| ダブルタップ | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none |
+| Shift+ | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none |
+| Ctrl+ | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none |
+
+#### Row 1 (QWERTY 上段)
+
+| 操作 | (outer)<br>`&none` | Q<br>`&trans` | W<br>`&none` | E<br>`&trans` | R<br>`&mm_vim_shift_4` | T<br>`&trans` | Y<br>`&mm_vim_shift_6` | U<br>`&kp PAGE_UP` | I<br>`&trans` | O<br>`&none` | P<br>`&kp HOME` | (outer)<br>`&none` |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 単発タップ | &none | &trans | &none | &trans | mm_vim_shift_4[0] → &none | &trans | mm_vim_shift_6[0] → &none | &kp PAGE_UP | &trans | &none | &kp HOME | &none |
+| ダブルタップ | &none | &trans | &none | &trans | mm_vim_shift_4[0] → &none | &trans | mm_vim_shift_6[0] → &none | &kp PAGE_UP（tap-dance 未定義、連打） | &trans | &none | &kp HOME（tap-dance 未定義、連打） | &none |
+| Shift+ | &none | &trans | &none | &trans | mm_vim_shift_4[1] (Shift 検知) → &kp END | &trans | mm_vim_shift_6[1] (Shift 検知) → &kp HOME | &kp PAGE_UP（物理 Shift は HID にそのまま伝わる） | &trans | &none | &kp HOME（物理 Shift は HID にそのまま伝わる） | &none |
+| Ctrl+ | &none | &trans | &none | &trans | mm_vim_shift_4[0] (Ctrl は本 mod-morph 検知外) → &none | &trans | mm_vim_shift_6[0] (Ctrl は本 mod-morph 検知外) → &none | &kp PAGE_UP（物理 Ctrl は HID にそのまま伝わる） | &trans | &none | &kp HOME（物理 Ctrl は HID にそのまま伝わる） | &none |
+
+#### Row 2 (home row)
+
+| 操作 | (outer)<br>`&none` | A<br>`&kp LCTRL` | S<br>`&trans` | D<br>`&kp PAGE_DOWN` | F<br>`&trans` | G<br>`&none` | (center L)<br>`&none` | (center R)<br>`&none` | H<br>`&trans` | J<br>`&trans` | K<br>`&trans` | L<br>`&trans` | MINUS<br>`&kp RCTRL` | (outer)<br>`&none` |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 単発タップ | &none | &kp LCTRL | &trans | &kp PAGE_DOWN | &trans | &none | &none | &none | &trans | &trans | &trans | &trans | &kp RCTRL | &none |
+| ダブルタップ | &none | &kp LCTRL（tap-dance 未定義、連打） | &trans | &kp PAGE_DOWN（tap-dance 未定義、連打） | &trans | &none | &none | &none | &trans | &trans | &trans | &trans | &kp RCTRL（tap-dance 未定義、連打） | &none |
+| Shift+ | &none | &kp LCTRL（物理 Shift は HID にそのまま伝わる） | &trans | &kp PAGE_DOWN（物理 Shift は HID にそのまま伝わる） | &trans | &none | &none | &none | &trans | &trans | &trans | &trans | &kp RCTRL（物理 Shift は HID にそのまま伝わる） | &none |
+| Ctrl+ | &none | &kp LCTRL（物理 Ctrl は HID にそのまま伝わる） | &trans | &kp PAGE_DOWN（物理 Ctrl は HID にそのまま伝わる） | &trans | &none | &none | &none | &trans | &trans | &trans | &trans | &kp RCTRL（物理 Ctrl は HID にそのまま伝わる） | &none |
+
+#### Row 3 (Z row)
+
+| 操作 | (outer)<br>`&none` | Z<br>`&kp LEFT_SHIFT` | X<br>`&none` | C<br>`&none` | V<br>`&none` | B<br>`&none` | (center L)<br>`&none` | (center R)<br>`&none` | N<br>`&trans` | M<br>`&trans` | COMMA<br>`&trans` | PERIOD<br>`&trans` | SLASH<br>`&kp RIGHT_SHIFT` | (outer)<br>`&none` |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 単発タップ | &none | &kp LEFT_SHIFT | &none | &none | &none | &none | &none | &none | &trans | &trans | &trans | &trans | &kp RIGHT_SHIFT | &none |
+| ダブルタップ | &none | &kp LEFT_SHIFT（tap-dance 未定義、連打） | &none | &none | &none | &none | &none | &none | &trans | &trans | &trans | &trans | &kp RIGHT_SHIFT（tap-dance 未定義、連打） | &none |
+| Shift+ | &none | &kp LEFT_SHIFT（物理 Shift は HID にそのまま伝わる） | &none | &none | &none | &none | &none | &none | &trans | &trans | &trans | &trans | &kp RIGHT_SHIFT（物理 Shift は HID にそのまま伝わる） | &none |
+| Ctrl+ | &none | &kp LEFT_SHIFT（物理 Ctrl は HID にそのまま伝わる） | &none | &none | &none | &none | &none | &none | &trans | &trans | &trans | &trans | &kp RIGHT_SHIFT（物理 Ctrl は HID にそのまま伝わる） | &none |
+
+#### Row 4 (thumb)
+
+| 操作 | (outer)<br>`&none` | mo6 (outer)<br>`&none` | LEFT_WIN<br>`&trans` | LEFT_ALT<br>`&trans` | lt2 SPACE<br>`&trans` | lt2 SPACE<br>`&none` | (mo1 center)<br>`&none` | (mo2 center)<br>`&none` | lt1 ENTER<br>`&none` | (none)<br>`&none` | (none)<br>`&none` | mo6<br>`&trans` | mo6 (outer)<br>`&none` | (outer)<br>`&none` |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 単発タップ | &none | &none | &trans | &trans | &trans | &none | &none | &none | &none | &none | &none | &trans | &none | &none |
+| ダブルタップ | &none | &none | &trans | &trans | &trans | &none | &none | &none | &none | &none | &none | &trans | &none | &none |
+| Shift+ | &none | &none | &trans | &trans | &trans | &none | &none | &none | &none | &none | &none | &trans | &none | &none |
+| Ctrl+ | &none | &none | &trans | &trans | &trans | &none | &none | &none | &none | &none | &none | &trans | &none | &none |
+
+### VIM_VISUAL レイヤー
 
 #### Row 0 (top wing)
 

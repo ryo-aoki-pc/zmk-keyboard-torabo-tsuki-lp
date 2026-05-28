@@ -9,7 +9,8 @@ ZMK keymap (.keymap) の指定した 1 つ以上のレイヤーの全キー割�
        - 複数レイヤー指定時: 各レイヤーごとに "<layer> 動作"/"<layer> 経路" シートを生成
   2. Markdown ファイル (.md)
        - 同じ内容を Markdown の表で出力（セル内改行に <br> を使用）
-       - 複数レイヤー指定時は 1 ファイル内に各レイヤーを H2 セクションとして並べる
+       - 複数レイヤー指定時は 1 ファイル内で「## 動作」セクションに全レイヤーを並べた後、
+         「## 経路」セクションに全レイヤーを再度並べる構成
 
 それぞれの表は、キーボード物理行ごとに以下の構造を持つ：
   - 左端 1 列: 「操作」 = 単発タップ / ダブルタップ / Shift+ / Ctrl+
@@ -571,81 +572,92 @@ def _escape_md_cell(s) -> str:
     return str(s).replace('|', '\\|').replace('\n', '<br>')
 
 
-def _markdown_layer_section(layer_name: str, bindings: list[str],
-                            behaviors: dict, macros: dict,
-                            header_offset: int = 0) -> list[str]:
-    """Return markdown lines for one layer. header_offset shifts all headings down."""
-    h1 = '#' * (1 + header_offset)
-    h2 = '#' * (2 + header_offset)
-    h3 = '#' * (3 + header_offset)
-
+def _markdown_layer_mode_rows(layer_name: str, bindings: list[str],
+                              behaviors: dict, macros: dict,
+                              mode: str, row_header_level: int = 3) -> list[str]:
+    """Return the row tables for one (layer, mode) pair starting at the given heading level."""
+    h = '#' * row_header_level
     layout = get_row_layout(len(bindings))
     lines: list[str] = []
 
-    lines.append(f'{h1} {layer_name} レイヤー キー割り当て一覧')
-    lines.append('')
-    lines.append(
-        f'※ {len(bindings)} 個のバインディング位置。物理キーボード行ごとに '
-        f'4 操作 × N キーの表で出力（QWERTY 配列）。'
-    )
-    lines.append('')
-    lines.append('- 列ヘッダーは「キーラベル」と「バインディング (`&...`)」の 2 段表示。')
-    lines.append('- 各表の左端 1 列が「操作」（単発タップ / ダブルタップ / Shift+ / Ctrl+）。')
-    lines.append('')
-
-    for mode_label, mode in [('動作', 'action'), ('経路', 'path')]:
-        lines.append(f'{h2} {mode_label}')
+    binding_idx = 0
+    for phys_row, count in layout:
+        desc = ROW_DESCRIPTIONS.get(phys_row, f'Row {phys_row}')
+        lines.append(f'{h} {desc}')
         lines.append('')
 
-        binding_idx = 0
-        for phys_row, count in layout:
-            desc = ROW_DESCRIPTIONS.get(phys_row, f'Row {phys_row}')
-            lines.append(f'{h3} {desc}')
-            lines.append('')
+        labels = ROW_LABELS.get(phys_row, [])
 
-            labels = ROW_LABELS.get(phys_row, [])
+        header_cells = ['操作']
+        for p in range(count):
+            label = labels[p] if p < len(labels) else f'pos {p}'
+            binding = bindings[binding_idx + p]
+            header_cells.append(
+                f'{_escape_md_cell(label)}<br>`{_escape_md_cell(binding)}`'
+            )
+        lines.append('| ' + ' | '.join(header_cells) + ' |')
+        lines.append('|' + '|'.join(['---'] * (count + 1)) + '|')
 
-            header_cells = ['操作']
+        for op in OPS:
+            row_cells = [_escape_md_cell(op)]
             for p in range(count):
-                label = labels[p] if p < len(labels) else f'pos {p}'
                 binding = bindings[binding_idx + p]
-                header_cells.append(
-                    f'{_escape_md_cell(label)}<br>`{_escape_md_cell(binding)}`'
-                )
-            lines.append('| ' + ' | '.join(header_cells) + ' |')
-            lines.append('|' + '|'.join(['---'] * (count + 1)) + '|')
+                action, path = resolve(binding, behaviors, macros, op)
+                value = action if mode == 'action' else path
+                row_cells.append(_escape_md_cell(value))
+            lines.append('| ' + ' | '.join(row_cells) + ' |')
 
-            for op in OPS:
-                row_cells = [_escape_md_cell(op)]
-                for p in range(count):
-                    binding = bindings[binding_idx + p]
-                    action, path = resolve(binding, behaviors, macros, op)
-                    value = action if mode == 'action' else path
-                    row_cells.append(_escape_md_cell(value))
-                lines.append('| ' + ' | '.join(row_cells) + ' |')
-
-            lines.append('')
-            binding_idx += count
+        lines.append('')
+        binding_idx += count
 
     return lines
 
 
 def write_markdown(layers_data: list[tuple[str, list[str]]],
                    behaviors: dict, macros: dict, output_path: Path) -> None:
-    """Generate one Markdown file. Single layer => layer title at H1.
-    Multiple layers => top title at H1, each layer nested at H2/H3/H4."""
+    """Generate one Markdown file.
+    Single layer  => H1 layer title, then H2 動作 / H2 経路.
+    Multi layers  => H1 top title, H2 動作 (each layer at H3), then H2 経路 (each layer at H3)."""
+    lines: list[str] = []
+
     if len(layers_data) == 1:
         layer_name, bindings = layers_data[0]
-        lines = _markdown_layer_section(layer_name, bindings, behaviors, macros,
-                                        header_offset=0)
-    else:
-        lines = ['# キー割り当て一覧', '']
-        lines.append(f'{len(layers_data)} 個のレイヤーのキー割り当てを 1 ファイルに集約。')
+        lines.append(f'# {layer_name} レイヤー キー割り当て一覧')
         lines.append('')
-        for layer_name, bindings in layers_data:
-            lines.extend(_markdown_layer_section(layer_name, bindings,
-                                                 behaviors, macros,
-                                                 header_offset=1))
+        lines.append(
+            f'※ {len(bindings)} 個のバインディング位置。物理キーボード行ごとに '
+            f'4 操作 × N キーの表で出力（QWERTY 配列）。'
+        )
+        lines.append('')
+        lines.append('- 列ヘッダーは「キーラベル」と「バインディング (`&...`)」の 2 段表示。')
+        lines.append('- 各表の左端 1 列が「操作」（単発タップ / ダブルタップ / Shift+ / Ctrl+）。')
+        lines.append('')
+        for mode_label, mode in [('動作', 'action'), ('経路', 'path')]:
+            lines.append(f'## {mode_label}')
+            lines.append('')
+            lines.extend(_markdown_layer_mode_rows(layer_name, bindings,
+                                                   behaviors, macros, mode,
+                                                   row_header_level=3))
+    else:
+        lines.append('# キー割り当て一覧')
+        lines.append('')
+        lines.append(
+            f'※ {len(layers_data)} 個のレイヤーのキー割り当てを 1 ファイルに集約。'
+            f'各レイヤー 66 バインディング位置を「動作」セクションでまとめてから「経路」セクションに進む。'
+        )
+        lines.append('')
+        lines.append('- 列ヘッダーは「キーラベル」と「バインディング (`&...`)」の 2 段表示。')
+        lines.append('- 各表の左端 1 列が「操作」（単発タップ / ダブルタップ / Shift+ / Ctrl+）。')
+        lines.append('')
+        for mode_label, mode in [('動作', 'action'), ('経路', 'path')]:
+            lines.append(f'## {mode_label}')
+            lines.append('')
+            for layer_name, bindings in layers_data:
+                lines.append(f'### {layer_name} レイヤー')
+                lines.append('')
+                lines.extend(_markdown_layer_mode_rows(layer_name, bindings,
+                                                       behaviors, macros, mode,
+                                                       row_header_level=4))
 
     output_path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
 
