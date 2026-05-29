@@ -574,29 +574,35 @@ def _escape_md_cell(s) -> str:
 
 def _markdown_layer_mode_rows(layer_name: str, bindings: list[str],
                               behaviors: dict, macros: dict,
-                              mode: str, row_header_level: int = 3) -> list[str]:
-    """Return the row tables for one (layer, mode) pair starting at the given heading level."""
-    h = '#' * row_header_level
+                              mode: str) -> list[str]:
+    """Return one consolidated table for a (layer, mode) pair.
+
+    Format: a single table per layer/mode where each physical row appears
+    as a section data row (`■ Row N` + key labels/bindings) followed by
+    the four operation data rows (単発タップ / ダブルタップ / Shift+ / Ctrl+).
+    """
     layout = get_row_layout(len(bindings))
+    max_cols = max(count for _, count in layout) if layout else 0
     lines: list[str] = []
+
+    header_cells = ['操作'] + [str(i + 1) for i in range(max_cols)]
+    lines.append('| ' + ' | '.join(header_cells) + ' |')
+    lines.append('|' + '|'.join(['---'] * (max_cols + 1)) + '|')
 
     binding_idx = 0
     for phys_row, count in layout:
         desc = ROW_DESCRIPTIONS.get(phys_row, f'Row {phys_row}')
-        lines.append(f'{h} {desc}')
-        lines.append('')
-
         labels = ROW_LABELS.get(phys_row, [])
 
-        header_cells = ['操作']
+        section_cells = [f'■ {_escape_md_cell(desc)}']
         for p in range(count):
             label = labels[p] if p < len(labels) else f'pos {p}'
             binding = bindings[binding_idx + p]
-            header_cells.append(
+            section_cells.append(
                 f'{_escape_md_cell(label)}<br>`{_escape_md_cell(binding)}`'
             )
-        lines.append('| ' + ' | '.join(header_cells) + ' |')
-        lines.append('|' + '|'.join(['---'] * (count + 1)) + '|')
+        section_cells.extend([''] * (max_cols - count))
+        lines.append('| ' + ' | '.join(section_cells) + ' |')
 
         for op in OPS:
             row_cells = [_escape_md_cell(op)]
@@ -605,11 +611,12 @@ def _markdown_layer_mode_rows(layer_name: str, bindings: list[str],
                 action, path = resolve(binding, behaviors, macros, op)
                 value = action if mode == 'action' else path
                 row_cells.append(_escape_md_cell(value))
+            row_cells.extend([''] * (max_cols - count))
             lines.append('| ' + ' | '.join(row_cells) + ' |')
 
-        lines.append('')
         binding_idx += count
 
+    lines.append('')
     return lines
 
 
@@ -625,19 +632,18 @@ def write_markdown(layers_data: list[tuple[str, list[str]]],
         lines.append(f'# {layer_name} レイヤー キー割り当て一覧')
         lines.append('')
         lines.append(
-            f'※ {len(bindings)} 個のバインディング位置。物理キーボード行ごとに '
-            f'4 操作 × N キーの表で出力（QWERTY 配列）。'
+            f'※ {len(bindings)} 個のバインディング位置を 1 表に集約。'
+            f'物理キーボード行ごとに「■ Row N」セクション行 + 4 操作行を縦に並べる（QWERTY 配列）。'
         )
         lines.append('')
-        lines.append('- 列ヘッダーは「キーラベル」と「バインディング (`&...`)」の 2 段表示。')
-        lines.append('- 各表の左端 1 列が「操作」（単発タップ / ダブルタップ / Shift+ / Ctrl+）。')
+        lines.append('- 各 row セクション行に「キーラベル」と「バインディング (`&...`)」の 2 段表示でキー位置を示す。')
+        lines.append('- 各表の左端 1 列が「操作」（単発タップ / ダブルタップ / Shift+ / Ctrl+）または「■ Row N」見出し。')
         lines.append('')
         for mode_label, mode in [('動作', 'action'), ('経路', 'path')]:
             lines.append(f'## {mode_label}')
             lines.append('')
             lines.extend(_markdown_layer_mode_rows(layer_name, bindings,
-                                                   behaviors, macros, mode,
-                                                   row_header_level=3))
+                                                   behaviors, macros, mode))
     else:
         lines.append('# キー割り当て一覧')
         lines.append('')
@@ -646,8 +652,8 @@ def write_markdown(layers_data: list[tuple[str, list[str]]],
             f'各レイヤー 66 バインディング位置を「動作」セクションでまとめてから「経路」セクションに進む。'
         )
         lines.append('')
-        lines.append('- 列ヘッダーは「キーラベル」と「バインディング (`&...`)」の 2 段表示。')
-        lines.append('- 各表の左端 1 列が「操作」（単発タップ / ダブルタップ / Shift+ / Ctrl+）。')
+        lines.append('- 各 row セクション行に「キーラベル」と「バインディング (`&...`)」の 2 段表示でキー位置を示す。')
+        lines.append('- 各表の左端 1 列が「操作」（単発タップ / ダブルタップ / Shift+ / Ctrl+）または「■ Row N」見出し。')
         lines.append('')
         for mode_label, mode in [('動作', 'action'), ('経路', 'path')]:
             lines.append(f'## {mode_label}')
@@ -656,8 +662,7 @@ def write_markdown(layers_data: list[tuple[str, list[str]]],
                 lines.append(f'### {layer_name} レイヤー')
                 lines.append('')
                 lines.extend(_markdown_layer_mode_rows(layer_name, bindings,
-                                                       behaviors, macros, mode,
-                                                       row_header_level=4))
+                                                       behaviors, macros, mode))
 
     output_path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
 
