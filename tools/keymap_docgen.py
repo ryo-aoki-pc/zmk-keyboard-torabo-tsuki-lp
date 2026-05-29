@@ -584,6 +584,35 @@ def _escape_md_cell(s) -> str:
     return str(s).replace('|', '\\|').replace('\n', '<br>')
 
 
+def _auto_forms(tap_value: str, op: str) -> set[str]:
+    """Values considered 'auto-derived' from tap for the given non-tap op.
+
+    A non-tap op cell is auto-derived if it matches one of these values —
+    in which case the binding does not provide a distinct assignment for
+    that op (just OS auto-repeat / modifier composition / uniform pass-through).
+    """
+    if not tap_value:
+        return {''}
+    if op == 'ホールド':
+        return {tap_value}
+    if op == 'ダブルタップ':
+        return {tap_value, f'{tap_value}×2'}
+    if op == 'Shift+':
+        return {tap_value, f'⇧{tap_value}'}
+    if op == 'Ctrl+':
+        return {tap_value, f'⌃{tap_value}'}
+    return set()
+
+
+def _normalize_cell(value: str) -> str:
+    """Convert resolve() output strings into their markdown cell form."""
+    if value in ('何もしない', '&none'):
+        return ''
+    if value in ('フォールスルー', '&trans'):
+        return '▽'
+    return value
+
+
 def _markdown_layer_mode_rows(layer_name: str, bindings: list[str],
                               behaviors: dict, macros: dict,
                               mode: str,
@@ -592,7 +621,8 @@ def _markdown_layer_mode_rows(layer_name: str, bindings: list[str],
 
     Format: a single table per layer/mode where each physical row appears
     as a section data row (`■ Row N` + key labels/bindings) followed by
-    the five operation data rows (単発タップ / ホールド / ダブルタップ / Shift+ / Ctrl+).
+    op data rows. Non-tap op rows are dropped per physical row when every
+    cell matches the auto-derived form computed from the tap value.
 
     If active_indices is given, only those binding indices (relative to the
     flat 66-position list) are rendered as columns; rows that end up with
@@ -619,6 +649,8 @@ def _markdown_layer_mode_rows(layer_name: str, bindings: list[str],
     lines.append('| ' + ' | '.join(header_cells) + ' |')
     lines.append('|' + '|'.join(['---'] * (max_cols + 1)) + '|')
 
+    non_tap_ops = ('ホールド', 'ダブルタップ', 'Shift+', 'Ctrl+')
+
     for phys_row, count, base_idx, pos_list in per_row_active:
         if not pos_list:
             continue
@@ -635,18 +667,28 @@ def _markdown_layer_mode_rows(layer_name: str, bindings: list[str],
         section_cells.extend([''] * (max_cols - len(pos_list)))
         lines.append('| ' + ' | '.join(section_cells) + ' |')
 
+        action_by_op: dict[str, list[str]] = {}
         for op in OPS:
+            action_by_op[op] = [
+                _normalize_cell(resolve(bindings[base_idx + p], behaviors, macros, op)[0])
+                for p in pos_list
+            ]
+
+        tap_actions = action_by_op['単発タップ']
+        visible_ops = ['単発タップ']
+        for op in non_tap_ops:
+            cells = action_by_op[op]
+            if any(cells[i] not in _auto_forms(tap_actions[i], op) for i in range(len(cells))):
+                visible_ops.append(op)
+
+        for op in visible_ops:
             row_cells = [_escape_md_cell(op)]
             for p in pos_list:
                 binding = bindings[base_idx + p]
                 action, path = resolve(binding, behaviors, macros, op)
                 value = action if mode == 'action' else path
-                if value in ('何もしない', '&none'):
-                    row_cells.append('')
-                elif value in ('フォールスルー', '&trans'):
-                    row_cells.append('▽')
-                else:
-                    row_cells.append(_escape_md_cell(value))
+                cell = _normalize_cell(value)
+                row_cells.append(cell if cell in ('', '▽') else _escape_md_cell(cell))
             row_cells.extend([''] * (max_cols - len(pos_list)))
             lines.append('| ' + ' | '.join(row_cells) + ' |')
 
