@@ -203,6 +203,11 @@ KEYCODE_LABELS = {
     'LEFT_ALT': 'LAlt', 'RIGHT_ALT': 'RAlt',
     'LEFT_WIN': 'LWin', 'RIGHT_WIN': 'RWin',
     'GREATER_THAN': '>', 'LESS_THAN': '<',
+    'COMMA': ',', 'PERIOD': '.', 'SEMICOLON': ';', 'SLASH': '/',
+    'SINGLE_QUOTE': "'", 'GRAVE': '`', 'BACKSLASH': '\\', 'EQUAL': '=',
+    'MINUS': '-', 'LEFT_BRACKET': '[', 'RIGHT_BRACKET': ']',
+    'N0': '0', 'N1': '1', 'N2': '2', 'N3': '3', 'N4': '4',
+    'N5': '5', 'N6': '6', 'N7': '7', 'N8': '8', 'N9': '9',
 }
 
 MOD_PREFIX = {
@@ -370,9 +375,9 @@ def resolve_macro(name: str, behaviors: dict, macros: dict, op: str, depth: int)
     if op == 'ダブルタップ':
         return (f'{summary}×2', name)
     if op == 'Shift+':
-        return (f'⇧ {summary}', name)
+        return (f'⇧{summary}', name)
     if op == 'Ctrl+':
-        return (f'⌃ {summary}', name)
+        return (f'⌃{summary}', name)
     return (summary, name)
 
 
@@ -412,9 +417,9 @@ ROW_LABELS = {
     0: ['(outer)'] + ['top wing'] * 10 + ['(outer)'],
     1: ['(outer)', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '(outer)'],
     2: ['(outer)', 'A', 'S', 'D', 'F', 'G', '(center L)', '(center R)',
-        'H', 'J', 'K', 'L', 'MINUS', '(outer)'],
+        'H', 'J', 'K', 'L', '-', '(outer)'],
     3: ['(outer)', 'Z', 'X', 'C', 'V', 'B', '(center L)', '(center R)',
-        'N', 'M', 'COMMA', 'PERIOD', 'SLASH', '(outer)'],
+        'N', 'M', ',', '.', '/', '(outer)'],
     4: ['(outer)', 'mo6 (outer)', 'LEFT_WIN', 'LEFT_ALT',
         'lt2 SPACE', 'lt2 SPACE', '(mo1 center)', '(mo2 center)',
         'lt1 ENTER', '(none)', '(none)', 'mo6', 'mo6 (outer)', '(outer)'],
@@ -581,7 +586,11 @@ def _escape_md_cell(s) -> str:
     """Escape a value so it can safely appear inside a Markdown table cell."""
     if s is None:
         return ''
-    return str(s).replace('|', '\\|').replace('\n', '<br>')
+    return (str(s)
+            .replace('\\', '&#92;')
+            .replace('|', '\\|')
+            .replace('`', '&#96;')
+            .replace('\n', '<br>'))
 
 
 def _auto_forms(tap_value: str, op: str) -> set[str]:
@@ -683,7 +692,12 @@ def _markdown_layer_mode_rows(layer_name: str, bindings: list[str],
 
         for op in visible_ops:
             row_cells = [_escape_md_cell(op)]
-            for p in pos_list:
+            for idx, p in enumerate(pos_list):
+                if op != '単発タップ' and action_by_op[op][idx] in _auto_forms(tap_actions[idx], op):
+                    # Derivable from the single-tap value: abbreviate (or leave
+                    # blank when the tap itself is empty / does nothing).
+                    row_cells.append('' if tap_actions[idx] == '' else '〃')
+                    continue
                 binding = bindings[base_idx + p]
                 action, path = resolve(binding, behaviors, macros, op)
                 value = action if mode == 'action' else path
