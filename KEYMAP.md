@@ -76,12 +76,12 @@
 
 #### Row 2 (home row)
 
-| 操作 | (outer)<br>`&none` | A<br>`&kp LCTRL` | S<br>`&none` | D<br>`&none` | F<br>`&none` | G<br>`&none` | (center L)<br>`&none` | (center R)<br>`&none` | H<br>`&none` | J<br>`&none` | K<br>`&none` | L<br>`&none` | MINUS<br>`&kp RCTRL` | (outer)<br>`&none` |
+| 操作 | (outer)<br>`&none` | A<br>`&kp LCTRL` | S<br>`&none` | D<br>`&none` | F<br>`&none` | G<br>`&none` | (center L)<br>`&none` | (center R)<br>`&none` | H<br>`&kp LEFT` | J<br>`&none` | K<br>`&none` | L<br>`&none` | MINUS<br>`&kp RCTRL` | (outer)<br>`&none` |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 単発タップ | 何もしない | Left Ctrl 入力 | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | Right Ctrl 入力 | 何もしない |
-| ダブルタップ | 何もしない | Left Ctrl 入力 × 2 | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | Right Ctrl 入力 × 2 | 何もしない |
-| Shift+ | 何もしない | Shift + Left Ctrl（OS で合成） | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | Shift + Right Ctrl（OS で合成） | 何もしない |
-| Ctrl+ | 何もしない | Ctrl + Left Ctrl（OS で合成） | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | Ctrl + Right Ctrl（OS で合成） | 何もしない |
+| 単発タップ | 何もしない | Left Ctrl 入力 | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | ← 入力 | 何もしない | 何もしない | 何もしない | Right Ctrl 入力 | 何もしない |
+| ダブルタップ | 何もしない | Left Ctrl 入力 × 2 | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | ← 入力 × 2 | 何もしない | 何もしない | 何もしない | Right Ctrl 入力 × 2 | 何もしない |
+| Shift+ | 何もしない | Shift + Left Ctrl（OS で合成） | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | Shift + ←（OS で合成） | 何もしない | 何もしない | 何もしない | Shift + Right Ctrl（OS で合成） | 何もしない |
+| Ctrl+ | 何もしない | Ctrl + Left Ctrl（OS で合成） | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | 何もしない | Ctrl + ←（OS で合成） | 何もしない | 何もしない | 何もしない | Ctrl + Right Ctrl（OS で合成） | 何もしない |
 
 #### Row 3 (Z row)
 
@@ -219,12 +219,12 @@
 
 #### Row 2 (home row)
 
-| 操作 | (outer)<br>`&none` | A<br>`&kp LCTRL` | S<br>`&none` | D<br>`&none` | F<br>`&none` | G<br>`&none` | (center L)<br>`&none` | (center R)<br>`&none` | H<br>`&none` | J<br>`&none` | K<br>`&none` | L<br>`&none` | MINUS<br>`&kp RCTRL` | (outer)<br>`&none` |
+| 操作 | (outer)<br>`&none` | A<br>`&kp LCTRL` | S<br>`&none` | D<br>`&none` | F<br>`&none` | G<br>`&none` | (center L)<br>`&none` | (center R)<br>`&none` | H<br>`&kp LEFT` | J<br>`&none` | K<br>`&none` | L<br>`&none` | MINUS<br>`&kp RCTRL` | (outer)<br>`&none` |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 単発タップ | &none | &kp LCTRL | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &kp RCTRL | &none |
-| ダブルタップ | &none | &kp LCTRL（tap-dance 未定義、連打） | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &kp RCTRL（tap-dance 未定義、連打） | &none |
-| Shift+ | &none | &kp LCTRL（物理 Shift は HID にそのまま伝わる） | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &kp RCTRL（物理 Shift は HID にそのまま伝わる） | &none |
-| Ctrl+ | &none | &kp LCTRL（物理 Ctrl は HID にそのまま伝わる） | &none | &none | &none | &none | &none | &none | &none | &none | &none | &none | &kp RCTRL（物理 Ctrl は HID にそのまま伝わる） | &none |
+| 単発タップ | &none | &kp LCTRL | &none | &none | &none | &none | &none | &none | &kp LEFT | &none | &none | &none | &kp RCTRL | &none |
+| ダブルタップ | &none | &kp LCTRL（tap-dance 未定義、連打） | &none | &none | &none | &none | &none | &none | &kp LEFT（tap-dance 未定義、連打） | &none | &none | &none | &kp RCTRL（tap-dance 未定義、連打） | &none |
+| Shift+ | &none | &kp LCTRL（物理 Shift は HID にそのまま伝わる） | &none | &none | &none | &none | &none | &none | &kp LEFT（物理 Shift は HID にそのまま伝わる） | &none | &none | &none | &kp RCTRL（物理 Shift は HID にそのまま伝わる） | &none |
+| Ctrl+ | &none | &kp LCTRL（物理 Ctrl は HID にそのまま伝わる） | &none | &none | &none | &none | &none | &none | &kp LEFT（物理 Ctrl は HID にそのまま伝わる） | &none | &none | &none | &kp RCTRL（物理 Ctrl は HID にそのまま伝わる） | &none |
 
 #### Row 3 (Z row)
 
