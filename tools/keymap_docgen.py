@@ -245,59 +245,64 @@ def resolve(binding: str, behaviors: dict, macros: dict, op: str, depth: int = 0
     if m:
         kc = m.group(1).strip()
         label = format_keycode(kc)
+        path = f'&kp {kc}'
         if op == '単発タップ':
-            return (f'{label} 入力', f'&kp {kc}')
+            return (label, path)
         if op == 'ホールド':
-            return (f'{label} 押下保持', f'&kp {kc}（押下保持で OS の auto-repeat / 修飾子状態）')
+            return (label, path)
         if op == 'ダブルタップ':
-            return (f'{label} 入力 × 2', f'&kp {kc}（tap-dance 未定義、連打）')
+            return (f'{label}×2', path)
         if op == 'Shift+':
-            return (f'Shift + {label}（OS で合成）', f'&kp {kc}（物理 Shift は HID にそのまま伝わる）')
+            return (f'⇧{label}', path)
         if op == 'Ctrl+':
-            return (f'Ctrl + {label}（OS で合成）', f'&kp {kc}（物理 Ctrl は HID にそのまま伝わる）')
+            return (f'⌃{label}', path)
 
     # &mt MOD KEY
     m = re.match(r'&mt\s+(\S+)\s+(.+)$', b)
     if m:
         mod, key = m.group(1).strip(), m.group(2).strip()
+        key_label = format_keycode(key)
+        mod_label = format_keycode(mod)
+        path = f'&mt {mod} {key}'
         if op == '単発タップ':
-            return (f'{format_keycode(key)} 入力（タップ）', f'&mt {mod} {key}')
+            return (key_label, path)
         if op == 'ホールド':
-            return (f'{format_keycode(mod)} 修飾子保持', f'&mt {mod} {key}（ホールドで修飾子）')
+            return (mod_label, path)
         if op == 'ダブルタップ':
-            return (f'{format_keycode(key)} 入力 × 2', f'&mt {mod} {key}（連打）')
+            return (f'{key_label}×2', path)
         if op == 'Shift+':
-            return (f'Shift + {format_keycode(key)}（または {format_keycode(mod)} ホールドで修飾）', f'&mt {mod} {key}')
+            return (f'⇧{key_label}', path)
         if op == 'Ctrl+':
-            return (f'Ctrl + {format_keycode(key)}', f'&mt {mod} {key}')
+            return (f'⌃{key_label}', path)
 
     # &lt LAYER KEY
     m = re.match(r'&lt\s+(\d+)\s+(.+)$', b)
     if m:
         layer, key = m.group(1), m.group(2).strip()
+        key_label = format_keycode(key)
+        path = f'&lt {layer} {key}'
         if op == '単発タップ':
-            return (f'{format_keycode(key)} 入力（タップ）', f'&lt {layer} {key}')
+            return (key_label, path)
         if op == 'ホールド':
-            return (f'レイヤー {layer} を momentary 有効化', f'&lt {layer} {key}（ホールドでレイヤー切替）')
+            return (f'L{layer}', path)
         if op == 'ダブルタップ':
-            return (f'{format_keycode(key)} 入力 × 2', f'&lt {layer} {key}（連打）')
+            return (f'{key_label}×2', path)
         if op == 'Shift+':
-            return (f'Shift + {format_keycode(key)}（ホールドでレイヤー {layer}）', f'&lt {layer} {key}')
+            return (f'⇧{key_label}', path)
         if op == 'Ctrl+':
-            return (f'Ctrl + {format_keycode(key)}（ホールドでレイヤー {layer}）', f'&lt {layer} {key}')
+            return (f'⌃{key_label}', path)
 
     # &mo X
     m = re.match(r'&mo\s+(\d+)$', b)
     if m:
         layer = m.group(1)
-        msg = f'レイヤー {layer} を momentary（押下中のみ）有効化'
-        return (msg, f'&mo {layer}')
+        return (f'L{layer}', f'&mo {layer}')
 
     # &to X
     m = re.match(r'&to\s+(\d+)$', b)
     if m:
         layer = m.group(1)
-        return (f'レイヤー {layer} に切替', f'&to {layer}')
+        return (f'⇒L{layer}', f'&to {layer}')
 
     # Custom behavior / macro reference like &mm_vim_g, &td_vim_d, &macro_vim_dd
     if b.startswith('&'):
@@ -327,18 +332,18 @@ def resolve_behavior(name: str, behaviors: dict, macros: dict, op: str, depth: i
         if op == 'Shift+':
             if is_shift:
                 sub_a, sub_p = resolve(bindings[1], behaviors, macros, '単発タップ', depth)
-                return (sub_a, f'{name}[1] (Shift 検知) → {sub_p}')
+                return (sub_a, f'{name}[1] → {sub_p}')
             else:
                 sub_a, sub_p = resolve(bindings[0], behaviors, macros, 'Shift+', depth)
-                return (sub_a, f'{name}[0] (Shift は本 mod-morph 検知外) → {sub_p}')
+                return (sub_a, f'{name}[0] → {sub_p}')
 
         if op == 'Ctrl+':
             if is_ctrl:
                 sub_a, sub_p = resolve(bindings[1], behaviors, macros, '単発タップ', depth)
-                return (sub_a, f'{name}[1] (Ctrl 検知) → {sub_p}')
+                return (sub_a, f'{name}[1] → {sub_p}')
             else:
                 sub_a, sub_p = resolve(bindings[0], behaviors, macros, 'Ctrl+', depth)
-                return (sub_a, f'{name}[0] (Ctrl は本 mod-morph 検知外) → {sub_p}')
+                return (sub_a, f'{name}[0] → {sub_p}')
 
     if compat == 'zmk,behavior-tap-dance':
         if op == '単発タップ':
@@ -346,32 +351,28 @@ def resolve_behavior(name: str, behaviors: dict, macros: dict, op: str, depth: i
             return (sub_a, f'{name}[0] → {sub_p}')
         if op == 'ホールド':
             sub_a, sub_p = resolve(bindings[0], behaviors, macros, 'ホールド', depth)
-            return (sub_a, f'{name}[0] (tap-dance は hold を [0] に委譲) → {sub_p}')
+            return (sub_a, f'{name}[0] → {sub_p}')
         if op == 'ダブルタップ':
             sub_a, sub_p = resolve(bindings[1], behaviors, macros, '単発タップ', depth)
             return (sub_a, f'{name}[1] → {sub_p}')
         if op == 'Shift+':
             sub_a, sub_p = resolve(bindings[0], behaviors, macros, 'Shift+', depth)
-            return (sub_a, f'{name}[0] (tap-dance は mods 検知なし) → {sub_p}')
+            return (sub_a, f'{name}[0] → {sub_p}')
         if op == 'Ctrl+':
             sub_a, sub_p = resolve(bindings[0], behaviors, macros, 'Ctrl+', depth)
-            return (sub_a, f'{name}[0] (tap-dance は mods 検知なし) → {sub_p}')
+            return (sub_a, f'{name}[0] → {sub_p}')
 
     return (f'未対応 behavior: {compat}', name)
 
 
 def resolve_macro(name: str, behaviors: dict, macros: dict, op: str, depth: int) -> tuple[str, str]:
     summary = summarize_macro(macros[name]['bindings'])
-    if op == '単発タップ':
-        return (summary, name)
-    if op == 'ホールド':
-        return (f'{summary}（押下時に 1 回実行）', name)
     if op == 'ダブルタップ':
-        return (f'{summary}（2 回実行）', f'{name}（連打）')
+        return (f'{summary}×2', name)
     if op == 'Shift+':
-        return (f'{summary}（Shift 物理保持で実行）', name)
+        return (f'⇧ {summary}', name)
     if op == 'Ctrl+':
-        return (f'{summary}（Ctrl 物理保持で実行）', name)
+        return (f'⌃ {summary}', name)
     return (summary, name)
 
 
@@ -621,9 +622,9 @@ def _markdown_layer_mode_rows(layer_name: str, bindings: list[str],
                 binding = bindings[binding_idx + p]
                 action, path = resolve(binding, behaviors, macros, op)
                 value = action if mode == 'action' else path
-                if value == '何もしない':
+                if value in ('何もしない', '&none'):
                     row_cells.append('')
-                elif value == 'フォールスルー':
+                elif value in ('フォールスルー', '&trans'):
                     row_cells.append('▽')
                 else:
                     row_cells.append(_escape_md_cell(value))
