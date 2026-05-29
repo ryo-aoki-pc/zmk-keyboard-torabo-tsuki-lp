@@ -610,7 +610,12 @@ def _markdown_layer_mode_rows(layer_name: str, bindings: list[str],
                 binding = bindings[binding_idx + p]
                 action, path = resolve(binding, behaviors, macros, op)
                 value = action if mode == 'action' else path
-                row_cells.append(_escape_md_cell(value))
+                if value == '何もしない':
+                    row_cells.append('')
+                elif value == 'フォールスルー':
+                    row_cells.append('▽')
+                else:
+                    row_cells.append(_escape_md_cell(value))
             row_cells.extend([''] * (max_cols - count))
             lines.append('| ' + ' | '.join(row_cells) + ' |')
 
