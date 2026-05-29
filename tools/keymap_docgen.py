@@ -586,40 +586,59 @@ def _escape_md_cell(s) -> str:
 
 def _markdown_layer_mode_rows(layer_name: str, bindings: list[str],
                               behaviors: dict, macros: dict,
-                              mode: str) -> list[str]:
+                              mode: str,
+                              active_indices: set[int] | None = None) -> list[str]:
     """Return one consolidated table for a (layer, mode) pair.
 
     Format: a single table per layer/mode where each physical row appears
     as a section data row (`■ Row N` + key labels/bindings) followed by
     the five operation data rows (単発タップ / ホールド / ダブルタップ / Shift+ / Ctrl+).
+
+    If active_indices is given, only those binding indices (relative to the
+    flat 66-position list) are rendered as columns; rows that end up with
+    zero active positions are skipped entirely.
     """
     layout = get_row_layout(len(bindings))
-    max_cols = max(count for _, count in layout) if layout else 0
     lines: list[str] = []
+
+    binding_idx = 0
+    per_row_active: list[tuple[int, int, int, list[int]]] = []
+    for phys_row, count in layout:
+        if active_indices is None:
+            pos_list = list(range(count))
+        else:
+            pos_list = [p for p in range(count) if (binding_idx + p) in active_indices]
+        per_row_active.append((phys_row, count, binding_idx, pos_list))
+        binding_idx += count
+
+    max_cols = max((len(pl) for _, _, _, pl in per_row_active), default=0)
+    if max_cols == 0:
+        return lines
 
     header_cells = ['操作'] + [str(i + 1) for i in range(max_cols)]
     lines.append('| ' + ' | '.join(header_cells) + ' |')
     lines.append('|' + '|'.join(['---'] * (max_cols + 1)) + '|')
 
-    binding_idx = 0
-    for phys_row, count in layout:
+    for phys_row, count, base_idx, pos_list in per_row_active:
+        if not pos_list:
+            continue
         desc = ROW_DESCRIPTIONS.get(phys_row, f'Row {phys_row}')
         labels = ROW_LABELS.get(phys_row, [])
 
         section_cells = [f'■ {_escape_md_cell(desc)}']
-        for p in range(count):
+        for p in pos_list:
             label = labels[p] if p < len(labels) else f'pos {p}'
-            binding = bindings[binding_idx + p]
+            binding = bindings[base_idx + p]
             section_cells.append(
                 f'{_escape_md_cell(label)}<br>`{_escape_md_cell(binding)}`'
             )
-        section_cells.extend([''] * (max_cols - count))
+        section_cells.extend([''] * (max_cols - len(pos_list)))
         lines.append('| ' + ' | '.join(section_cells) + ' |')
 
         for op in OPS:
             row_cells = [_escape_md_cell(op)]
-            for p in range(count):
-                binding = bindings[binding_idx + p]
+            for p in pos_list:
+                binding = bindings[base_idx + p]
                 action, path = resolve(binding, behaviors, macros, op)
                 value = action if mode == 'action' else path
                 if value in ('何もしない', '&none'):
@@ -628,10 +647,8 @@ def _markdown_layer_mode_rows(layer_name: str, bindings: list[str],
                     row_cells.append('▽')
                 else:
                     row_cells.append(_escape_md_cell(value))
-            row_cells.extend([''] * (max_cols - count))
+            row_cells.extend([''] * (max_cols - len(pos_list)))
             lines.append('| ' + ' | '.join(row_cells) + ' |')
-
-        binding_idx += count
 
     lines.append('')
     return lines
@@ -672,6 +689,17 @@ def write_markdown(layers_data: list[tuple[str, list[str]]],
         lines.append('- 各 row セクション行に「キーラベル」と「バインディング (`&...`)」の 2 段表示でキー位置を示す。')
         lines.append('- 各表の左端 1 列が「操作」（単発タップ / ホールド / ダブルタップ / Shift+ / Ctrl+）または「■ Row N」見出し。')
         lines.append('')
+
+        default_bindings = next(
+            (b for n, b in layers_data if n == 'DEFAULT'),
+            None,
+        )
+        active_indices = (
+            {i for i, b in enumerate(default_bindings) if b.strip() != '&none'}
+            if default_bindings is not None
+            else None
+        )
+
         for mode_label, mode in [('動作', 'action'), ('経路', 'path')]:
             lines.append(f'## {mode_label}')
             lines.append('')
@@ -679,7 +707,8 @@ def write_markdown(layers_data: list[tuple[str, list[str]]],
                 lines.append(f'### {layer_name} レイヤー')
                 lines.append('')
                 lines.extend(_markdown_layer_mode_rows(layer_name, bindings,
-                                                       behaviors, macros, mode))
+                                                       behaviors, macros, mode,
+                                                       active_indices=active_indices))
 
     output_path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
 
