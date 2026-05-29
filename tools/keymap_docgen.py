@@ -1,30 +1,34 @@
 """
 keymap_docgen.py
 
-ZMK keymap (.keymap) の指定したレイヤーの全キー割り当てを以下 2 形式で出力する
+ZMK keymap (.keymap) の指定した 1 つ以上のレイヤーの全キー割り当てを以下 2 形式で出力する
 ドキュメンテーション生成ツール：
 
   1. Excel ファイル (.xlsx)
-       - "動作" シートと "経路" シートを生成（QWERTY 物理配列）
+       - 単一レイヤー指定時: "動作" シートと "経路" シートを生成（QWERTY 物理配列）
+       - 複数レイヤー指定時: 各レイヤーごとに "<layer> 動作"/"<layer> 経路" シートを生成
   2. Markdown ファイル (.md)
        - 同じ内容を Markdown の表で出力（セル内改行に <br> を使用）
+       - 複数レイヤー指定時は 1 ファイル内で「## 動作」セクションに全レイヤーを並べた後、
+         「## 経路」セクションに全レイヤーを再度並べる構成
 
 それぞれの表は、キーボード物理行ごとに以下の構造を持つ：
-  - 左端 1 列: 「操作」 = 単発タップ / ダブルタップ / Shift+ / Ctrl+
+  - 左端 1 列: 「操作」 = 単発タップ / ホールド / ダブルタップ / Shift+ / Ctrl+
   - 右側の列: その物理行のキーを QWERTY 順に並べたもの
 
 mod-morph (LSHIFT/RSHIFT, LCTL/RCTL), tap-dance, layer-tap, momentary-layer
 など標準的な ZMK behavior を解析し、再帰的に動作を解決する。
 
 Usage:
-    python keymap_docgen.py <keymap_file> <layer_name> [-o output.xlsx]
+    python keymap_docgen.py <keymap_file> <layer_name> [<layer_name> ...] [-o output.xlsx]
 
 出力先：
     -o で指定した .xlsx と同じディレクトリ／同じベース名で .md も生成される
-    （-o を省略すると <layer>_keymap.xlsx と <layer>_keymap.md）
+    （-o を省略するとレイヤー単独時は <layer>_keymap.xlsx、複数時は keymap.xlsx）
 
-Example:
+Examples:
     python tools/keymap_docgen.py config/keymap.keymap VIM_NORMAL_1 -o KEYMAP.xlsx
+    python tools/keymap_docgen.py config/keymap.keymap VIM_NORMAL_1 VIM_NORMAL_2 VIM_VISUAL -o KEYMAP.xlsx
 """
 
 import argparse
@@ -188,17 +192,22 @@ def split_layer_bindings(text: str) -> list[str]:
 # ============================================================================
 
 KEYCODE_LABELS = {
-    'LEFT': '←', 'RIGHT': '→', 'UP_ARROW': '↑', 'DOWN': '↓',
-    'HOME': 'HOME', 'END': 'END', 'ENTER': 'ENTER', 'DELETE': 'DELETE',
-    'BACKSPACE': 'BACKSPACE', 'TAB': 'TAB', 'SPACE': 'SPACE', 'ESCAPE': 'ESC',
-    'PAGE_UP': 'PAGE_UP', 'PAGE_DOWN': 'PAGE_DOWN',
-    'LCTRL': 'Left Ctrl', 'RCTRL': 'Right Ctrl',
-    'LSHIFT': 'Left Shift', 'RSHIFT': 'Right Shift',
-    'LEFT_SHIFT': 'Left Shift', 'RIGHT_SHIFT': 'Right Shift',
-    'LEFT_CONTROL': 'Left Ctrl', 'RIGHT_CONTROL': 'Right Ctrl',
-    'LEFT_ALT': 'Left Alt', 'RIGHT_ALT': 'Right Alt',
-    'LEFT_WIN': 'Left Win', 'RIGHT_WIN': 'Right Win',
+    'LEFT': '←', 'RIGHT': '→', 'UP_ARROW': '↑', 'UP': '↑', 'DOWN': '↓',
+    'HOME': 'HOME', 'END': 'END', 'ENTER': 'ENTER', 'DELETE': 'DEL',
+    'BACKSPACE': 'BS', 'TAB': 'TAB', 'SPACE': 'SPACE', 'ESCAPE': 'ESC',
+    'PAGE_UP': 'PgUp', 'PAGE_DOWN': 'PgDn',
+    'LCTRL': 'LCtrl', 'RCTRL': 'RCtrl',
+    'LSHIFT': 'LShift', 'RSHIFT': 'RShift',
+    'LEFT_SHIFT': 'LShift', 'RIGHT_SHIFT': 'RShift',
+    'LEFT_CONTROL': 'LCtrl', 'RIGHT_CONTROL': 'RCtrl',
+    'LEFT_ALT': 'LAlt', 'RIGHT_ALT': 'RAlt',
+    'LEFT_WIN': 'LWin', 'RIGHT_WIN': 'RWin',
     'GREATER_THAN': '>', 'LESS_THAN': '<',
+    'COMMA': ',', 'PERIOD': '.', 'SEMICOLON': ';', 'SLASH': '/',
+    'SINGLE_QUOTE': "'", 'GRAVE': '`', 'BACKSLASH': '\\', 'EQUAL': '=',
+    'MINUS': '-', 'LEFT_BRACKET': '[', 'RIGHT_BRACKET': ']',
+    'N0': '0', 'N1': '1', 'N2': '2', 'N3': '3', 'N4': '4',
+    'N5': '5', 'N6': '6', 'N7': '7', 'N8': '8', 'N9': '9',
 }
 
 MOD_PREFIX = {
@@ -221,7 +230,7 @@ def format_keycode(kc: str) -> str:
 # Resolution: binding × operation -> (action_description, path)
 # ============================================================================
 
-OPS = ('単発タップ', 'ダブルタップ', 'Shift+', 'Ctrl+')
+OPS = ('単発タップ', 'ホールド', 'ダブルタップ', 'Shift+', 'Ctrl+')
 
 
 def resolve(binding: str, behaviors: dict, macros: dict, op: str, depth: int = 0) -> tuple[str, str]:
@@ -234,60 +243,71 @@ def resolve(binding: str, behaviors: dict, macros: dict, op: str, depth: int = 0
         return ('何もしない', '&none')
 
     if b == '&trans':
-        return ('下位レイヤーの同位置にフォールスルー', '&trans')
+        return ('フォールスルー', '&trans')
 
     # &kp X
     m = re.match(r'&kp\s+(.+)$', b)
     if m:
         kc = m.group(1).strip()
         label = format_keycode(kc)
+        path = f'&kp {kc}'
         if op == '単発タップ':
-            return (f'{label} 入力', f'&kp {kc}')
+            return (label, path)
+        if op == 'ホールド':
+            return (label, path)
         if op == 'ダブルタップ':
-            return (f'{label} 入力 × 2', f'&kp {kc}（tap-dance 未定義、連打）')
+            return (f'{label}×2', path)
         if op == 'Shift+':
-            return (f'Shift + {label}（OS で合成）', f'&kp {kc}（物理 Shift は HID にそのまま伝わる）')
+            return (f'⇧{label}', path)
         if op == 'Ctrl+':
-            return (f'Ctrl + {label}（OS で合成）', f'&kp {kc}（物理 Ctrl は HID にそのまま伝わる）')
+            return (f'⌃{label}', path)
 
     # &mt MOD KEY
     m = re.match(r'&mt\s+(\S+)\s+(.+)$', b)
     if m:
         mod, key = m.group(1).strip(), m.group(2).strip()
+        key_label = format_keycode(key)
+        mod_label = format_keycode(mod)
+        path = f'&mt {mod} {key}'
         if op == '単発タップ':
-            return (f'{format_keycode(key)} 入力（タップ）', f'&mt {mod} {key}')
+            return (key_label, path)
+        if op == 'ホールド':
+            return (mod_label, path)
         if op == 'ダブルタップ':
-            return (f'{format_keycode(key)} 入力 × 2', f'&mt {mod} {key}（連打）')
+            return (f'{key_label}×2', path)
         if op == 'Shift+':
-            return (f'Shift + {format_keycode(key)}（または {format_keycode(mod)} ホールドで修飾）', f'&mt {mod} {key}')
+            return (f'⇧{key_label}', path)
         if op == 'Ctrl+':
-            return (f'Ctrl + {format_keycode(key)}', f'&mt {mod} {key}')
+            return (f'⌃{key_label}', path)
 
     # &lt LAYER KEY
     m = re.match(r'&lt\s+(\d+)\s+(.+)$', b)
     if m:
         layer, key = m.group(1), m.group(2).strip()
+        key_label = format_keycode(key)
+        path = f'&lt {layer} {key}'
         if op == '単発タップ':
-            return (f'{format_keycode(key)} 入力（タップ）', f'&lt {layer} {key}')
+            return (key_label, path)
+        if op == 'ホールド':
+            return (f'L{layer}', path)
         if op == 'ダブルタップ':
-            return (f'{format_keycode(key)} 入力 × 2', f'&lt {layer} {key}（連打）')
+            return (f'{key_label}×2', path)
         if op == 'Shift+':
-            return (f'Shift + {format_keycode(key)}（ホールドでレイヤー {layer}）', f'&lt {layer} {key}')
+            return (f'⇧{key_label}', path)
         if op == 'Ctrl+':
-            return (f'Ctrl + {format_keycode(key)}（ホールドでレイヤー {layer}）', f'&lt {layer} {key}')
+            return (f'⌃{key_label}', path)
 
     # &mo X
     m = re.match(r'&mo\s+(\d+)$', b)
     if m:
         layer = m.group(1)
-        msg = f'レイヤー {layer} を momentary（押下中のみ）有効化'
-        return (msg, f'&mo {layer}')
+        return (f'L{layer}', f'&mo {layer}')
 
     # &to X
     m = re.match(r'&to\s+(\d+)$', b)
     if m:
         layer = m.group(1)
-        return (f'レイヤー {layer} に切替', f'&to {layer}')
+        return (f'⇒L{layer}', f'&to {layer}')
 
     # Custom behavior / macro reference like &mm_vim_g, &td_vim_d, &macro_vim_dd
     if b.startswith('&'):
@@ -310,53 +330,54 @@ def resolve_behavior(name: str, behaviors: dict, macros: dict, op: str, depth: i
         is_shift = 'LSFT' in mods or 'RSFT' in mods
         is_ctrl = 'LCTL' in mods or 'RCTL' in mods
 
-        if op in ('単発タップ', 'ダブルタップ'):
+        if op in ('単発タップ', 'ダブルタップ', 'ホールド'):
             sub_a, sub_p = resolve(bindings[0], behaviors, macros, op, depth)
             return (sub_a, f'{name}[0] → {sub_p}')
 
         if op == 'Shift+':
             if is_shift:
                 sub_a, sub_p = resolve(bindings[1], behaviors, macros, '単発タップ', depth)
-                return (sub_a, f'{name}[1] (Shift 検知) → {sub_p}')
+                return (sub_a, f'{name}[1] → {sub_p}')
             else:
                 sub_a, sub_p = resolve(bindings[0], behaviors, macros, 'Shift+', depth)
-                return (sub_a, f'{name}[0] (Shift は本 mod-morph 検知外) → {sub_p}')
+                return (sub_a, f'{name}[0] → {sub_p}')
 
         if op == 'Ctrl+':
             if is_ctrl:
                 sub_a, sub_p = resolve(bindings[1], behaviors, macros, '単発タップ', depth)
-                return (sub_a, f'{name}[1] (Ctrl 検知) → {sub_p}')
+                return (sub_a, f'{name}[1] → {sub_p}')
             else:
                 sub_a, sub_p = resolve(bindings[0], behaviors, macros, 'Ctrl+', depth)
-                return (sub_a, f'{name}[0] (Ctrl は本 mod-morph 検知外) → {sub_p}')
+                return (sub_a, f'{name}[0] → {sub_p}')
 
     if compat == 'zmk,behavior-tap-dance':
         if op == '単発タップ':
             sub_a, sub_p = resolve(bindings[0], behaviors, macros, '単発タップ', depth)
+            return (sub_a, f'{name}[0] → {sub_p}')
+        if op == 'ホールド':
+            sub_a, sub_p = resolve(bindings[0], behaviors, macros, 'ホールド', depth)
             return (sub_a, f'{name}[0] → {sub_p}')
         if op == 'ダブルタップ':
             sub_a, sub_p = resolve(bindings[1], behaviors, macros, '単発タップ', depth)
             return (sub_a, f'{name}[1] → {sub_p}')
         if op == 'Shift+':
             sub_a, sub_p = resolve(bindings[0], behaviors, macros, 'Shift+', depth)
-            return (sub_a, f'{name}[0] (tap-dance は mods 検知なし) → {sub_p}')
+            return (sub_a, f'{name}[0] → {sub_p}')
         if op == 'Ctrl+':
             sub_a, sub_p = resolve(bindings[0], behaviors, macros, 'Ctrl+', depth)
-            return (sub_a, f'{name}[0] (tap-dance は mods 検知なし) → {sub_p}')
+            return (sub_a, f'{name}[0] → {sub_p}')
 
     return (f'未対応 behavior: {compat}', name)
 
 
 def resolve_macro(name: str, behaviors: dict, macros: dict, op: str, depth: int) -> tuple[str, str]:
     summary = summarize_macro(macros[name]['bindings'])
-    if op == '単発タップ':
-        return (summary, name)
     if op == 'ダブルタップ':
-        return (f'{summary}（2 回実行）', f'{name}（連打）')
+        return (f'{summary}×2', name)
     if op == 'Shift+':
-        return (f'{summary}（Shift 物理保持で実行）', name)
+        return (f'⇧{summary}', name)
     if op == 'Ctrl+':
-        return (f'{summary}（Ctrl 物理保持で実行）', name)
+        return (f'⌃{summary}', name)
     return (summary, name)
 
 
@@ -367,7 +388,8 @@ def summarize_macro(bindings: list[str]) -> str:
         if b.startswith('&macro_wait_time'):
             continue
         if b.startswith('&kp '):
-            parts.append(format_keycode(b[4:].strip()))
+            for kc in re.findall(r'&kp\s+([A-Z0-9_()]+)', b):
+                parts.append(format_keycode(kc))
         elif b.startswith('&macro_release'):
             inner = re.search(r'&kp\s+(\S+)', b)
             if inner:
@@ -384,7 +406,7 @@ def summarize_macro(bindings: list[str]) -> str:
             parts.append(f'レイヤー {b[4:].strip()} へ')
         else:
             parts.append(b)
-    return ' → '.join(parts)
+    return ' ▸ '.join(parts)
 
 
 # ============================================================================
@@ -396,9 +418,9 @@ ROW_LABELS = {
     0: ['(outer)'] + ['top wing'] * 10 + ['(outer)'],
     1: ['(outer)', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '(outer)'],
     2: ['(outer)', 'A', 'S', 'D', 'F', 'G', '(center L)', '(center R)',
-        'H', 'J', 'K', 'L', 'MINUS', '(outer)'],
+        'H', 'J', 'K', 'L', '-', '(outer)'],
     3: ['(outer)', 'Z', 'X', 'C', 'V', 'B', '(center L)', '(center R)',
-        'N', 'M', 'COMMA', 'PERIOD', 'SLASH', '(outer)'],
+        'N', 'M', ',', '.', '/', '(outer)'],
     4: ['(outer)', 'mo6 (outer)', 'LEFT_WIN', 'LEFT_ALT',
         'lt2 SPACE', 'lt2 SPACE', '(mo1 center)', '(mo2 center)',
         'lt1 ENTER', '(none)', '(none)', 'mo6', 'mo6 (outer)', '(outer)'],
@@ -442,7 +464,7 @@ def write_qwerty_sheet(ws, layer_name: str, bindings: list[str],
     Write one sheet in QWERTY layout. mode: 'action' or 'path'.
     Each physical keyboard row gets its own block:
       - Header row: 操作 (label) + key columns (key label + binding)
-      - 4 data rows (単発タップ / ダブルタップ / Shift+ / Ctrl+)
+      - 5 data rows (単発タップ / ホールド / ダブルタップ / Shift+ / Ctrl+)
     """
     title_font = Font(bold=True, size=14, name='Yu Gothic UI')
     subtitle_font = Font(size=10, italic=True, name='Yu Gothic UI', color='666666')
@@ -536,17 +558,24 @@ def write_qwerty_sheet(ws, layer_name: str, bindings: list[str],
         binding_idx += count
 
 
-def write_excel(layer_name: str, bindings: list[str],
+def write_excel(layers_data: list[tuple[str, list[str]]],
                 behaviors: dict, macros: dict, output_path: Path) -> None:
-    """Generate the Excel file with 2 sheets: 動作 and 経路, both in QWERTY layout."""
+    """Generate one Excel file. Single layer => sheets '動作'/'経路'.
+    Multiple layers => sheets '<layer> 動作'/'<layer> 経路' per layer."""
     wb = Workbook()
-    ws_action = wb.active
-    ws_action.title = '動作'
-    write_qwerty_sheet(ws_action, layer_name, bindings, behaviors, macros, 'action')
-
-    ws_path = wb.create_sheet('経路')
-    write_qwerty_sheet(ws_path, layer_name, bindings, behaviors, macros, 'path')
-
+    is_single = len(layers_data) == 1
+    first = True
+    for layer_name, bindings in layers_data:
+        for mode_label, mode in [('動作', 'action'), ('経路', 'path')]:
+            sheet_name = mode_label if is_single else f'{layer_name} {mode_label}'
+            sheet_name = sheet_name[:31]  # Excel sheet name limit
+            if first:
+                ws = wb.active
+                ws.title = sheet_name
+                first = False
+            else:
+                ws = wb.create_sheet(sheet_name)
+            write_qwerty_sheet(ws, layer_name, bindings, behaviors, macros, mode)
     wb.save(output_path)
 
 
@@ -558,67 +587,191 @@ def _escape_md_cell(s) -> str:
     """Escape a value so it can safely appear inside a Markdown table cell."""
     if s is None:
         return ''
-    return str(s).replace('|', '\\|').replace('\n', '<br>')
+    return (str(s)
+            .replace('\\', '&#92;')
+            .replace('|', '\\|')
+            .replace('`', '&#96;')
+            .replace('\n', '<br>'))
 
 
-def write_markdown(layer_name: str, bindings: list[str],
-                   behaviors: dict, macros: dict, output_path: Path) -> None:
+def _auto_forms(tap_value: str, op: str) -> set[str]:
+    """Values considered 'auto-derived' from tap for the given non-tap op.
+
+    A non-tap op cell is auto-derived if it matches one of these values —
+    in which case the binding does not provide a distinct assignment for
+    that op (just OS auto-repeat / modifier composition / uniform pass-through).
     """
-    Generate a Markdown file with 2 sections (動作 / 経路).
-    Each section contains one Markdown table per keyboard physical row.
-    Header cells use <br> to display the key label on top and the raw binding below.
+    if not tap_value:
+        return {''}
+    if op == 'ホールド':
+        return {tap_value}
+    if op == 'ダブルタップ':
+        return {tap_value, f'{tap_value}×2'}
+    if op == 'Shift+':
+        return {tap_value, f'⇧{tap_value}'}
+    if op == 'Ctrl+':
+        return {tap_value, f'⌃{tap_value}'}
+    return set()
+
+
+def _normalize_cell(value: str) -> str:
+    """Convert resolve() output strings into their markdown cell form."""
+    if value in ('何もしない', '&none'):
+        return ''
+    if value in ('フォールスルー', '&trans'):
+        return '▽'
+    if value.startswith('未対応'):
+        return ''
+    return value
+
+
+def _markdown_layer_mode_rows(layer_name: str, bindings: list[str],
+                              behaviors: dict, macros: dict,
+                              mode: str,
+                              active_indices: set[int] | None = None) -> list[str]:
+    """Return one consolidated table for a (layer, mode) pair.
+
+    Format: a single table per layer/mode where each physical row appears
+    as a section data row (`■ Row N` + key labels/bindings) followed by
+    op data rows. Non-tap op rows are dropped per physical row when every
+    cell matches the auto-derived form computed from the tap value.
+
+    If active_indices is given, only those binding indices (relative to the
+    flat 66-position list) are rendered as columns; rows that end up with
+    zero active positions are skipped entirely.
     """
     layout = get_row_layout(len(bindings))
-
     lines: list[str] = []
-    lines.append(f'# {layer_name} レイヤー キー割り当て一覧')
-    lines.append('')
-    lines.append(
-        f'※ {len(bindings)} 個のバインディング位置。物理キーボード行ごとに '
-        f'4 操作 × N キーの表で出力（QWERTY 配列）。'
-    )
-    lines.append('')
-    lines.append('- 列ヘッダーは「キーラベル」と「バインディング (`&...`)」の 2 段表示。')
-    lines.append('- 各表の左端 1 列が「操作」（単発タップ / ダブルタップ / Shift+ / Ctrl+）。')
-    lines.append('')
 
-    for mode_label, mode in [('動作', 'action'), ('経路', 'path')]:
-        lines.append(f'## {mode_label}')
+    binding_idx = 0
+    per_row_active: list[tuple[int, int, int, list[int]]] = []
+    for phys_row, count in layout:
+        if active_indices is None:
+            pos_list = list(range(count))
+        else:
+            pos_list = [p for p in range(count) if (binding_idx + p) in active_indices]
+        per_row_active.append((phys_row, count, binding_idx, pos_list))
+        binding_idx += count
+
+    max_cols = max((len(pl) for _, _, _, pl in per_row_active), default=0)
+    if max_cols == 0:
+        return lines
+
+    header_cells = ['操作'] + [str(i + 1) for i in range(max_cols)]
+    lines.append('| ' + ' | '.join(header_cells) + ' |')
+    lines.append('|' + '|'.join(['---'] * (max_cols + 1)) + '|')
+
+    non_tap_ops = ('ホールド', 'ダブルタップ', 'Shift+', 'Ctrl+')
+
+    for phys_row, count, base_idx, pos_list in per_row_active:
+        if not pos_list:
+            continue
+        desc = ROW_DESCRIPTIONS.get(phys_row, f'Row {phys_row}')
+        labels = ROW_LABELS.get(phys_row, [])
+
+        section_cells = [f'■ {_escape_md_cell(desc)}']
+        for p in pos_list:
+            label = labels[p] if p < len(labels) else f'pos {p}'
+            binding = bindings[base_idx + p]
+            section_cells.append(
+                f'{_escape_md_cell(label)}<br>`{_escape_md_cell(binding)}`'
+            )
+        section_cells.extend([''] * (max_cols - len(pos_list)))
+        lines.append('| ' + ' | '.join(section_cells) + ' |')
+
+        action_by_op: dict[str, list[str]] = {}
+        for op in OPS:
+            action_by_op[op] = [
+                _normalize_cell(resolve(bindings[base_idx + p], behaviors, macros, op)[0])
+                for p in pos_list
+            ]
+
+        tap_actions = action_by_op['単発タップ']
+        visible_ops = ['単発タップ']
+        for op in non_tap_ops:
+            cells = action_by_op[op]
+            if any(cells[i] not in _auto_forms(tap_actions[i], op) for i in range(len(cells))):
+                visible_ops.append(op)
+
+        for op in visible_ops:
+            row_cells = [_escape_md_cell(op)]
+            for idx, p in enumerate(pos_list):
+                if op != '単発タップ' and action_by_op[op][idx] in _auto_forms(tap_actions[idx], op):
+                    # Derivable from the single-tap value: abbreviate (or leave
+                    # blank when the tap itself is empty / does nothing).
+                    row_cells.append('' if tap_actions[idx] == '' else '〃')
+                    continue
+                binding = bindings[base_idx + p]
+                action, path = resolve(binding, behaviors, macros, op)
+                value = action if mode == 'action' else path
+                cell = _normalize_cell(value)
+                row_cells.append(cell if cell in ('', '▽') else _escape_md_cell(cell))
+            row_cells.extend([''] * (max_cols - len(pos_list)))
+            lines.append('| ' + ' | '.join(row_cells) + ' |')
+
+    lines.append('')
+    return lines
+
+
+def write_markdown(layers_data: list[tuple[str, list[str]]],
+                   behaviors: dict, macros: dict, output_path: Path) -> None:
+    """Generate one Markdown file.
+    Single layer  => H1 layer title, then H2 動作 / H2 経路.
+    Multi layers  => H1 top title, H2 動作 (each layer at H3), then H2 経路 (each layer at H3)."""
+    lines: list[str] = []
+
+    if len(layers_data) == 1:
+        layer_name, bindings = layers_data[0]
+        lines.append(f'# {layer_name} レイヤー キー割り当て一覧')
+        lines.append('')
+        lines.append(
+            f'※ {len(bindings)} 個のバインディング位置を 1 表に集約。'
+            f'物理キーボード行ごとに「■ Row N」セクション行 + 4 操作行を縦に並べる（QWERTY 配列）。'
+        )
+        lines.append('')
+        lines.append('- 各 row セクション行に「キーラベル」と「バインディング (`&...`)」の 2 段表示でキー位置を示す。')
+        lines.append('- 各表の左端 1 列が「操作」（単発タップ / ホールド / ダブルタップ / Shift+ / Ctrl+）または「■ Row N」見出し。')
+        lines.append('')
+        for mode_label, mode in [('動作', 'action'), ('経路', 'path')]:
+            lines.append(f'## {mode_label}')
+            lines.append('')
+            lines.extend(_markdown_layer_mode_rows(layer_name, bindings,
+                                                   behaviors, macros, mode))
+    else:
+        lines.append('# キー割り当て一覧')
+        lines.append('')
+        lines.append(
+            f'※ {len(layers_data)} 個のレイヤーのキー割り当てを 1 ファイルに集約。'
+            f'各レイヤー 66 バインディング位置を「動作」セクションでまとめてから「経路」セクションに進む。'
+        )
+        lines.append('')
+        lines.append('- 各 row セクション行に「キーラベル」と「バインディング (`&...`)」の 2 段表示でキー位置を示す。')
+        lines.append('- 各表の左端 1 列が「操作」（単発タップ / ホールド / ダブルタップ / Shift+ / Ctrl+）または「■ Row N」見出し。')
         lines.append('')
 
-        binding_idx = 0
-        for phys_row, count in layout:
-            desc = ROW_DESCRIPTIONS.get(phys_row, f'Row {phys_row}')
-            lines.append(f'### {desc}')
+        default_bindings = next(
+            (b for n, b in layers_data if n == 'DEFAULT'),
+            None,
+        )
+        # Row 3 center L/R (flat indices 44, 45): physical thumb cluster
+        # positions that the user does not press from the Z row; always hide.
+        always_hidden = {44, 45}
+        active_indices = (
+            {i for i, b in enumerate(default_bindings)
+             if b.strip() != '&none' and i not in always_hidden}
+            if default_bindings is not None
+            else None
+        )
+
+        for mode_label, mode in [('動作', 'action'), ('経路', 'path')]:
+            lines.append(f'## {mode_label}')
             lines.append('')
-
-            labels = ROW_LABELS.get(phys_row, [])
-
-            # Header row
-            header_cells = ['操作']
-            for p in range(count):
-                label = labels[p] if p < len(labels) else f'pos {p}'
-                binding = bindings[binding_idx + p]
-                header_cells.append(
-                    f'{_escape_md_cell(label)}<br>`{_escape_md_cell(binding)}`'
-                )
-            lines.append('| ' + ' | '.join(header_cells) + ' |')
-
-            # Separator (one --- per column)
-            lines.append('|' + '|'.join(['---'] * (count + 1)) + '|')
-
-            # Data rows
-            for op in OPS:
-                row_cells = [_escape_md_cell(op)]
-                for p in range(count):
-                    binding = bindings[binding_idx + p]
-                    action, path = resolve(binding, behaviors, macros, op)
-                    value = action if mode == 'action' else path
-                    row_cells.append(_escape_md_cell(value))
-                lines.append('| ' + ' | '.join(row_cells) + ' |')
-
-            lines.append('')
-            binding_idx += count
+            for layer_name, bindings in layers_data:
+                lines.append(f'### {layer_name} レイヤー')
+                lines.append('')
+                lines.extend(_markdown_layer_mode_rows(layer_name, bindings,
+                                                       behaviors, macros, mode,
+                                                       active_indices=active_indices))
 
     output_path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
 
@@ -629,11 +782,12 @@ def write_markdown(layer_name: str, bindings: list[str],
 
 def main() -> int:
     p = argparse.ArgumentParser(
-        description='Generate Excel (.xlsx) and Markdown (.md) docs for a ZMK keymap layer'
+        description='Generate Excel (.xlsx) and Markdown (.md) docs for one or more ZMK keymap layers'
     )
     p.add_argument('keymap', help='Path to .keymap file')
-    p.add_argument('layer', help='Layer name (e.g., VIM_NORMAL_1)')
-    p.add_argument('-o', '--output', help='Output .xlsx path (default: <layer>_keymap.xlsx)')
+    p.add_argument('layers', nargs='+',
+                   help='One or more layer names (e.g., VIM_NORMAL_1 VIM_NORMAL_2 VIM_VISUAL)')
+    p.add_argument('-o', '--output', help='Output .xlsx path (default: <layer>_keymap.xlsx or keymap.xlsx)')
     args = p.parse_args()
 
     keymap_path = Path(args.keymap)
@@ -645,22 +799,31 @@ def main() -> int:
 
     macros = parse_macros(content)
     behaviors = parse_behaviors(content)
-    layer_text = parse_layer(content, args.layer)
-    if layer_text is None:
-        print(f'error: layer "{args.layer}" not found.', file=sys.stderr)
-        return 1
 
-    bindings = split_layer_bindings(layer_text)
+    layers_data: list[tuple[str, list[str]]] = []
+    for layer_name in args.layers:
+        layer_text = parse_layer(content, layer_name)
+        if layer_text is None:
+            print(f'error: layer "{layer_name}" not found.', file=sys.stderr)
+            return 1
+        bindings = split_layer_bindings(layer_text)
+        layers_data.append((layer_name, bindings))
+        print(f'layer {layer_name}: {len(bindings)} bindings')
 
     print(f'parsed: {len(macros)} macros, {len(behaviors)} behaviors')
-    print(f'layer {args.layer}: {len(bindings)} bindings')
 
-    output_path = Path(args.output) if args.output else Path(f'{args.layer}_keymap.xlsx')
-    write_excel(args.layer, bindings, behaviors, macros, output_path)
+    if args.output:
+        output_path = Path(args.output)
+    elif len(args.layers) == 1:
+        output_path = Path(f'{args.layers[0]}_keymap.xlsx')
+    else:
+        output_path = Path('keymap.xlsx')
+
+    write_excel(layers_data, behaviors, macros, output_path)
     print(f'saved: {output_path}')
 
     md_path = output_path.with_suffix('.md')
-    write_markdown(args.layer, bindings, behaviors, macros, md_path)
+    write_markdown(layers_data, behaviors, macros, md_path)
     print(f'saved: {md_path}')
     return 0
 
