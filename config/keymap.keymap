@@ -111,9 +111,10 @@
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
             bindings =
-                <&macro_release &kp LSHIFT>,
-                <&macro_release &kp RSHIFT>,
-                <&kp LC(C)>,
+                <&macro_release>,
+                <&kp LSHIFT>,
+                <&macro_release>,
+                <&kp RSHIFT &kp LC(C)>,
                 <&macro_wait_time 50>,
                 <&kp RIGHT>,
                 <&macro_wait_time 50>,
@@ -126,9 +127,10 @@
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
             bindings =
-                <&macro_release &kp LSHIFT>,
-                <&macro_release &kp RSHIFT>,
-                <&kp LC(X)>,
+                <&macro_release>,
+                <&kp LSHIFT>,
+                <&macro_release>,
+                <&kp RSHIFT &kp LC(X)>,
                 <&macro_wait_time 50>,
                 <&to 0>;
 
@@ -139,9 +141,10 @@
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
             bindings =
-                <&macro_release &kp LSHIFT>,
-                <&macro_release &kp RSHIFT>,
-                <&kp LC(V)>,
+                <&macro_release>,
+                <&kp LSHIFT>,
+                <&macro_release>,
+                <&kp RSHIFT &kp LC(V)>,
                 <&macro_wait_time 50>,
                 <&to 0>;
 
@@ -165,9 +168,10 @@
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
             bindings =
-                <&macro_release &kp LSHIFT>,
-                <&macro_release &kp RSHIFT>,
-                <&kp RIGHT>,
+                <&macro_release>,
+                <&kp LSHIFT>,
+                <&macro_release>,
+                <&kp RSHIFT &kp RIGHT>,
                 <&macro_wait_time 50>,
                 <&to 0>;
 
@@ -365,21 +369,21 @@
 
         VIM_NORMAL_1 {
             bindings = <
-&none  &none           &none          &none                      &none           &none                       &none            &none           &none         &none            &none            &none
-&none  &mm_vim_q       &mm_vim_w      &kp LC(RIGHT)              &mm_vim_ctrl_r  &none                       &mm_vim_shift_y  &mm_vim_ctrl_u  &kp HOME      &mm_vim_shift_o  &kp LC(V)        &none
-&none  &kp LCTRL       &none          &mm_vim_ctrl_then_shift_d  &none           &mm_vim_g     &none  &none  &kp LEFT         &mm_vim_j       &kp UP_ARROW  &kp RIGHT        &kp RCTRL        &none
-&none  &kp LEFT_SHIFT  &kp DELETE     &none                      &mm_vim_v       &kp LC(LEFT)  &none  &none  &mm_vim_n        &none           &none         &none            &kp RIGHT_SHIFT  &none
-&none  &none           &trans         &trans                     &none           &none         &mo 3  &none  &lt 3 ENTER      &none           &none         &trans           &none            &none
+&none  &none           &none       &none                      &none           &none                       &none            &none           &none         &none            &none            &none
+&none  &mm_vim_q       &mm_vim_w   &kp LC(RIGHT)              &mm_vim_ctrl_r  &none                       &mm_vim_shift_y  &mm_vim_ctrl_u  &none         &mm_vim_shift_o  &kp LC(V)        &none
+&none  &kp LCTRL       &none       &mm_vim_ctrl_then_shift_d  &none           &mm_vim_g     &none  &none  &kp LEFT         &mm_vim_j       &kp UP_ARROW  &kp RIGHT        &kp RCTRL        &none
+&none  &kp LEFT_SHIFT  &kp DELETE  &none                      &mm_vim_v       &kp LC(LEFT)  &none  &none  &mm_vim_n        &none           &none         &none            &kp RIGHT_SHIFT  &none
+&none  &none           &trans      &trans                     &none           &none         &mo 3  &none  &lt 3 ENTER      &none           &none         &trans           &none            &none
             >;
         };
 
         VIM_NORMAL_2 {
             bindings = <
-&none  &none           &none   &none          &none            &none                       &none            &none        &none   &none   &none            &none
-&none  &trans          &none   &trans         &mm_vim_shift_4  &trans                      &mm_vim_shift_6  &kp PAGE_UP  &trans  &none   &kp HOME         &none
-&none  &kp LCTRL       &trans  &kp PAGE_DOWN  &trans           &none         &none  &none  &trans           &trans       &trans  &trans  &kp RCTRL        &none
-&none  &kp LEFT_SHIFT  &none   &none          &none            &none         &none  &none  &trans           &trans       &trans  &trans  &kp RIGHT_SHIFT  &none
-&none  &none           &trans  &trans         &trans           &none         &none  &none  &none            &none        &none   &trans  &none            &none
+&none  &none           &none   &none   &none            &none                &none            &none  &none  &none   &none            &none
+&none  &none           &none   &none   &mm_vim_shift_4  &none                &mm_vim_shift_6  &none  &none  &none   &kp HOME         &none
+&none  &kp LCTRL       &none   &none   &none            &none  &none  &none  &none            &none  &none  &none   &kp RCTRL        &none
+&none  &kp LEFT_SHIFT  &none   &none   &none            &none  &none  &none  &none            &none  &none  &none   &kp RIGHT_SHIFT  &none
+&none  &none           &trans  &trans  &none            &none  &none  &none  &none            &none  &none  &trans  &none            &none
             >;
         };
 
@@ -425,11 +429,11 @@
 
         VIM_VISUAL {
             bindings = <
-&none  &none           &none                    &none                  &none                   &none                                       &none                &none             &none         &none            &none                  &none
-&none  &macro_vim_visual_exit  &kp LS(LC(RIGHT))  &kp LS(LC(RIGHT))    &kp LS(END)             &none                                        &macro_vim_visual_y  &kp LS(PAGE_UP)   &kp LS(HOME)  &none            &macro_vim_visual_p    &none
-&none  &kp LCTRL       &none                    &macro_vim_visual_cut  &none                   &mm_vim_visual_g            &none   &none   &kp LS(LEFT)         &kp LS(DOWN)      &kp LS(UP)    &kp LS(RIGHT)    &kp RCTRL              &none
-&none  &kp LEFT_SHIFT  &macro_vim_visual_cut    &macro_vim_visual_cut  &macro_vim_visual_exit  &kp LS(LC(LEFT))            &none   &none   &kp F3               &none             &none         &none            &kp RIGHT_SHIFT        &none
-&none  &none           &none                    &none                  &none                   &none                       &macro_vim_visual_exit  &macro_vim_visual_exit  &macro_vim_visual_exit  &none  &none  &none  &none  &none
+&none  &none                   &none                  &none                  &none                   &none                           &none         &none         &none       &none          &none                &none
+&none  &macro_vim_visual_exit  &kp LS(LC(RIGHT))      &kp LS(LC(RIGHT))      &none                   &none                           &none         &none         &none       &none          &macro_vim_visual_p  &none
+&none  &kp LCTRL               &none                  &macro_vim_visual_cut  &none                   &mm_vim_visual_g  &none  &none  &kp LS(LEFT)  &kp LS(DOWN)  &kp LS(UP)  &kp LS(RIGHT)  &kp RCTRL            &none
+&none  &kp LEFT_SHIFT          &macro_vim_visual_cut  &none                  &macro_vim_visual_exit  &kp LS(LC(LEFT))  &none  &none  &kp F3        &none         &none       &none          &kp RIGHT_SHIFT      &none
+&none  &none                   &none                  &none                  &none                   &none             &none  &none  &none         &none         &none       &none          &none                &none
             >;
         };
     };
