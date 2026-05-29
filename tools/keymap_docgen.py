@@ -192,7 +192,7 @@ def split_layer_bindings(text: str) -> list[str]:
 # ============================================================================
 
 KEYCODE_LABELS = {
-    'LEFT': '←', 'RIGHT': '→', 'UP_ARROW': '↑', 'DOWN': '↓',
+    'LEFT': '←', 'RIGHT': '→', 'UP_ARROW': '↑', 'UP': '↑', 'DOWN': '↓',
     'HOME': 'HOME', 'END': 'END', 'ENTER': 'ENTER', 'DELETE': 'DEL',
     'BACKSPACE': 'BS', 'TAB': 'TAB', 'SPACE': 'SPACE', 'ESCAPE': 'ESC',
     'PAGE_UP': 'PgUp', 'PAGE_DOWN': 'PgDn',
@@ -388,7 +388,8 @@ def summarize_macro(bindings: list[str]) -> str:
         if b.startswith('&macro_wait_time'):
             continue
         if b.startswith('&kp '):
-            parts.append(format_keycode(b[4:].strip()))
+            for kc in re.findall(r'&kp\s+([A-Z0-9_()]+)', b):
+                parts.append(format_keycode(kc))
         elif b.startswith('&macro_release'):
             inner = re.search(r'&kp\s+(\S+)', b)
             if inner:
@@ -405,7 +406,7 @@ def summarize_macro(bindings: list[str]) -> str:
             parts.append(f'レイヤー {b[4:].strip()} へ')
         else:
             parts.append(b)
-    return ' → '.join(parts)
+    return ' ▸ '.join(parts)
 
 
 # ============================================================================
