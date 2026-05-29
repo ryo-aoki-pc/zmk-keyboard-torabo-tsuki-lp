@@ -193,15 +193,15 @@ def split_layer_bindings(text: str) -> list[str]:
 
 KEYCODE_LABELS = {
     'LEFT': '←', 'RIGHT': '→', 'UP_ARROW': '↑', 'DOWN': '↓',
-    'HOME': 'HOME', 'END': 'END', 'ENTER': 'ENTER', 'DELETE': 'DELETE',
-    'BACKSPACE': 'BACKSPACE', 'TAB': 'TAB', 'SPACE': 'SPACE', 'ESCAPE': 'ESC',
-    'PAGE_UP': 'PAGE_UP', 'PAGE_DOWN': 'PAGE_DOWN',
-    'LCTRL': 'Left Ctrl', 'RCTRL': 'Right Ctrl',
-    'LSHIFT': 'Left Shift', 'RSHIFT': 'Right Shift',
-    'LEFT_SHIFT': 'Left Shift', 'RIGHT_SHIFT': 'Right Shift',
-    'LEFT_CONTROL': 'Left Ctrl', 'RIGHT_CONTROL': 'Right Ctrl',
-    'LEFT_ALT': 'Left Alt', 'RIGHT_ALT': 'Right Alt',
-    'LEFT_WIN': 'Left Win', 'RIGHT_WIN': 'Right Win',
+    'HOME': 'HOME', 'END': 'END', 'ENTER': 'ENTER', 'DELETE': 'DEL',
+    'BACKSPACE': 'BS', 'TAB': 'TAB', 'SPACE': 'SPACE', 'ESCAPE': 'ESC',
+    'PAGE_UP': 'PgUp', 'PAGE_DOWN': 'PgDn',
+    'LCTRL': 'LCtrl', 'RCTRL': 'RCtrl',
+    'LSHIFT': 'LShift', 'RSHIFT': 'RShift',
+    'LEFT_SHIFT': 'LShift', 'RIGHT_SHIFT': 'RShift',
+    'LEFT_CONTROL': 'LCtrl', 'RIGHT_CONTROL': 'RCtrl',
+    'LEFT_ALT': 'LAlt', 'RIGHT_ALT': 'RAlt',
+    'LEFT_WIN': 'LWin', 'RIGHT_WIN': 'RWin',
     'GREATER_THAN': '>', 'LESS_THAN': '<',
 }
 

@@ -19,22 +19,22 @@
 | Ctrl+ | ⌃Q | ⌃W | ⌃E | ⌃R | ⌃T | ⌃Y | ⌃U | ⌃I | ⌃O | ⌃P |  |  |
 | ■ Row 2 (home row) | A<br>`&mt LEFT_CONTROL A` | S<br>`&kp S` | D<br>`&kp D` | F<br>`&kp F` | G<br>`&kp G` | H<br>`&kp H` | J<br>`&kp J` | K<br>`&kp K` | L<br>`&kp L` | MINUS<br>`&mt RCTRL MINUS` |  |  |
 | 単発タップ | A | S | D | F | G | H | J | K | L | MINUS |  |  |
-| ホールド | Left Ctrl | S | D | F | G | H | J | K | L | Right Ctrl |  |  |
+| ホールド | LCtrl | S | D | F | G | H | J | K | L | RCtrl |  |  |
 | ダブルタップ | A×2 | S×2 | D×2 | F×2 | G×2 | H×2 | J×2 | K×2 | L×2 | MINUS×2 |  |  |
 | Shift+ | ⇧A | ⇧S | ⇧D | ⇧F | ⇧G | ⇧H | ⇧J | ⇧K | ⇧L | ⇧MINUS |  |  |
 | Ctrl+ | ⌃A | ⌃S | ⌃D | ⌃F | ⌃G | ⌃H | ⌃J | ⌃K | ⌃L | ⌃MINUS |  |  |
 | ■ Row 3 (Z row) | Z<br>`&mt LEFT_SHIFT Z` | X<br>`&kp X` | C<br>`&kp C` | V<br>`&kp V` | B<br>`&kp B` | (center L)<br>`&mo 7` | (center R)<br>`&mo 7` | N<br>`&kp N` | M<br>`&kp M` | COMMA<br>`&kp COMMA` | PERIOD<br>`&kp PERIOD` | SLASH<br>`&mt RIGHT_SHIFT SLASH` |
 | 単発タップ | Z | X | C | V | B | L7 | L7 | N | M | COMMA | PERIOD | SLASH |
-| ホールド | Left Shift | X | C | V | B | L7 | L7 | N | M | COMMA | PERIOD | Right Shift |
+| ホールド | LShift | X | C | V | B | L7 | L7 | N | M | COMMA | PERIOD | RShift |
 | ダブルタップ | Z×2 | X×2 | C×2 | V×2 | B×2 | L7 | L7 | N×2 | M×2 | COMMA×2 | PERIOD×2 | SLASH×2 |
 | Shift+ | ⇧Z | ⇧X | ⇧C | ⇧V | ⇧B | L7 | L7 | ⇧N | ⇧M | ⇧COMMA | ⇧PERIOD | ⇧SLASH |
 | Ctrl+ | ⌃Z | ⌃X | ⌃C | ⌃V | ⌃B | L7 | L7 | ⌃N | ⌃M | ⌃COMMA | ⌃PERIOD | ⌃SLASH |
 | ■ Row 4 (thumb) | mo6 (outer)<br>`&mo 6` | LEFT_WIN<br>`&kp LEFT_WIN` | LEFT_ALT<br>`&kp LEFT_ALT` | lt2 SPACE<br>`&lt 2 SPACE` | lt2 SPACE<br>`&lt 2 SPACE` | (mo1 center)<br>`&mo 1` | (mo2 center)<br>`&mo 2` | lt1 ENTER<br>`&lt 1 ENTER` | mo6<br>`&mo 6` | mo6 (outer)<br>`&mo 6` |  |  |
-| 単発タップ | L6 | Left Win | Left Alt | SPACE | SPACE | L1 | L2 | ENTER | L6 | L6 |  |  |
-| ホールド | L6 | Left Win | Left Alt | L2 | L2 | L1 | L2 | L1 | L6 | L6 |  |  |
-| ダブルタップ | L6 | Left Win×2 | Left Alt×2 | SPACE×2 | SPACE×2 | L1 | L2 | ENTER×2 | L6 | L6 |  |  |
-| Shift+ | L6 | ⇧Left Win | ⇧Left Alt | ⇧SPACE | ⇧SPACE | L1 | L2 | ⇧ENTER | L6 | L6 |  |  |
-| Ctrl+ | L6 | ⌃Left Win | ⌃Left Alt | ⌃SPACE | ⌃SPACE | L1 | L2 | ⌃ENTER | L6 | L6 |  |  |
+| 単発タップ | L6 | LWin | LAlt | SPACE | SPACE | L1 | L2 | ENTER | L6 | L6 |  |  |
+| ホールド | L6 | LWin | LAlt | L2 | L2 | L1 | L2 | L1 | L6 | L6 |  |  |
+| ダブルタップ | L6 | LWin×2 | LAlt×2 | SPACE×2 | SPACE×2 | L1 | L2 | ENTER×2 | L6 | L6 |  |  |
+| Shift+ | L6 | ⇧LWin | ⇧LAlt | ⇧SPACE | ⇧SPACE | L1 | L2 | ⇧ENTER | L6 | L6 |  |  |
+| Ctrl+ | L6 | ⌃LWin | ⌃LAlt | ⌃SPACE | ⌃SPACE | L1 | L2 | ⌃ENTER | L6 | L6 |  |  |
 
 ### SYMBOL レイヤー
 
@@ -47,14 +47,14 @@
 | Shift+ | ⇧N1 | ⇧N2 | ⇧N3 | ⇧N4 | ⇧N5 | ⇧N6 | ⇧N7 | ⇧N8 | ⇧N9 | ⇧N0 |  |  |
 | Ctrl+ | ⌃N1 | ⌃N2 | ⌃N3 | ⌃N4 | ⌃N5 | ⌃N6 | ⌃N7 | ⌃N8 | ⌃N9 | ⌃N0 |  |  |
 | ■ Row 2 (home row) | A<br>`&mt LCTRL TAB` | S<br>`&kp GRAVE` | D<br>`&kp LEFT_BRACKET` | F<br>`&kp RIGHT_BRACKET` | G<br>`&kp DELETE` | H<br>`&kp BACKSPACE` | J<br>`&kp SEMICOLON` | K<br>`&kp SINGLE_QUOTE` | L<br>`&kp BACKSLASH` | MINUS<br>`&trans` |  |  |
-| 単発タップ | TAB | GRAVE | LEFT_BRACKET | RIGHT_BRACKET | DELETE | BACKSPACE | SEMICOLON | SINGLE_QUOTE | BACKSLASH | ▽ |  |  |
-| ホールド | Left Ctrl | GRAVE | LEFT_BRACKET | RIGHT_BRACKET | DELETE | BACKSPACE | SEMICOLON | SINGLE_QUOTE | BACKSLASH | ▽ |  |  |
-| ダブルタップ | TAB×2 | GRAVE×2 | LEFT_BRACKET×2 | RIGHT_BRACKET×2 | DELETE×2 | BACKSPACE×2 | SEMICOLON×2 | SINGLE_QUOTE×2 | BACKSLASH×2 | ▽ |  |  |
-| Shift+ | ⇧TAB | ⇧GRAVE | ⇧LEFT_BRACKET | ⇧RIGHT_BRACKET | ⇧DELETE | ⇧BACKSPACE | ⇧SEMICOLON | ⇧SINGLE_QUOTE | ⇧BACKSLASH | ▽ |  |  |
-| Ctrl+ | ⌃TAB | ⌃GRAVE | ⌃LEFT_BRACKET | ⌃RIGHT_BRACKET | ⌃DELETE | ⌃BACKSPACE | ⌃SEMICOLON | ⌃SINGLE_QUOTE | ⌃BACKSLASH | ▽ |  |  |
+| 単発タップ | TAB | GRAVE | LEFT_BRACKET | RIGHT_BRACKET | DEL | BS | SEMICOLON | SINGLE_QUOTE | BACKSLASH | ▽ |  |  |
+| ホールド | LCtrl | GRAVE | LEFT_BRACKET | RIGHT_BRACKET | DEL | BS | SEMICOLON | SINGLE_QUOTE | BACKSLASH | ▽ |  |  |
+| ダブルタップ | TAB×2 | GRAVE×2 | LEFT_BRACKET×2 | RIGHT_BRACKET×2 | DEL×2 | BS×2 | SEMICOLON×2 | SINGLE_QUOTE×2 | BACKSLASH×2 | ▽ |  |  |
+| Shift+ | ⇧TAB | ⇧GRAVE | ⇧LEFT_BRACKET | ⇧RIGHT_BRACKET | ⇧DEL | ⇧BS | ⇧SEMICOLON | ⇧SINGLE_QUOTE | ⇧BACKSLASH | ▽ |  |  |
+| Ctrl+ | ⌃TAB | ⌃GRAVE | ⌃LEFT_BRACKET | ⌃RIGHT_BRACKET | ⌃DEL | ⌃BS | ⌃SEMICOLON | ⌃SINGLE_QUOTE | ⌃BACKSLASH | ▽ |  |  |
 | ■ Row 3 (Z row) | Z<br>`&mt LEFT_SHIFT ESCAPE` | X<br>`&none` | C<br>`&none` | V<br>`&none` | B<br>`&none` | (center L)<br>`&none` | (center R)<br>`&none` | N<br>`&none` | M<br>`&kp EQUAL` | COMMA<br>`&trans` | PERIOD<br>`&trans` | SLASH<br>`&trans` |
 | 単発タップ | ESC |  |  |  |  |  |  |  | EQUAL | ▽ | ▽ | ▽ |
-| ホールド | Left Shift |  |  |  |  |  |  |  | EQUAL | ▽ | ▽ | ▽ |
+| ホールド | LShift |  |  |  |  |  |  |  | EQUAL | ▽ | ▽ | ▽ |
 | ダブルタップ | ESC×2 |  |  |  |  |  |  |  | EQUAL×2 | ▽ | ▽ | ▽ |
 | Shift+ | ⇧ESC |  |  |  |  |  |  |  | ⇧EQUAL | ▽ | ▽ | ▽ |
 | Ctrl+ | ⌃ESC |  |  |  |  |  |  |  | ⌃EQUAL | ▽ | ▽ | ▽ |
@@ -74,19 +74,19 @@
 | ホールド | ESC | Ctrl+→ | Ctrl+→ |  |  | Ctrl+C | Ctrl+Z |  | END → ENTER | Ctrl+V |  |  |
 | ダブルタップ | ESC×2 | Ctrl+→×2 | Ctrl+→×2 |  |  | HOME → Shift+END → Ctrl+C | Ctrl+Z×2 |  | END → ENTER×2 | Ctrl+V×2 |  |  |
 | Shift+ | Ctrl+Q | ⇧Ctrl+→ | ⇧Ctrl+→ |  |  | Shift+END → Ctrl+C | ⇧Ctrl+Z |  | HOME → ENTER → ↑ | ⇧Ctrl+V |  |  |
-| Ctrl+ | ⌃ESC | Ctrl+BACKSPACE | ⌃Ctrl+→ | Ctrl+Y |  | ⌃Ctrl+C | PAGE_UP |  | ⌃ END → ENTER | ⌃Ctrl+V |  |  |
+| Ctrl+ | ⌃ESC | Ctrl+BS | ⌃Ctrl+→ | Ctrl+Y |  | ⌃Ctrl+C | PgUp |  | ⌃ END → ENTER | ⌃Ctrl+V |  |  |
 | ■ Row 2 (home row) | A<br>`&kp LCTRL` | S<br>`&none` | D<br>`&mm_vim_ctrl_then_shift_d` | F<br>`&none` | G<br>`&mm_vim_g` | H<br>`&kp LEFT` | J<br>`&mm_vim_j` | K<br>`&kp UP_ARROW` | L<br>`&kp RIGHT` | MINUS<br>`&kp RCTRL` |  |  |
-| 単発タップ | Left Ctrl |  |  |  |  | ← | ↓ | ↑ | → | Right Ctrl |  |  |
-| ホールド | Left Ctrl |  |  |  |  | ← | ↓ | ↑ | → | Right Ctrl |  |  |
-| ダブルタップ | Left Ctrl×2 |  | HOME → Shift+END → Ctrl+X |  | Ctrl+HOME | ←×2 | ↓×2 | ↑×2 | →×2 | Right Ctrl×2 |  |  |
-| Shift+ | ⇧Left Ctrl |  | Shift+END → Ctrl+X |  | Ctrl+END | ⇧← | END → DELETE → SPACE | ⇧↑ | ⇧→ | ⇧Right Ctrl |  |  |
-| Ctrl+ | ⌃Left Ctrl |  | PAGE_DOWN |  |  | ⌃← | ⌃↓ | ⌃↑ | ⌃→ | ⌃Right Ctrl |  |  |
+| 単発タップ | LCtrl |  |  |  |  | ← | ↓ | ↑ | → | RCtrl |  |  |
+| ホールド | LCtrl |  |  |  |  | ← | ↓ | ↑ | → | RCtrl |  |  |
+| ダブルタップ | LCtrl×2 |  | HOME → Shift+END → Ctrl+X |  | Ctrl+HOME | ←×2 | ↓×2 | ↑×2 | →×2 | RCtrl×2 |  |  |
+| Shift+ | ⇧LCtrl |  | Shift+END → Ctrl+X |  | Ctrl+END | ⇧← | END → DEL → SPACE | ⇧↑ | ⇧→ | ⇧RCtrl |  |  |
+| Ctrl+ | ⌃LCtrl |  | PgDn |  |  | ⌃← | ⌃↓ | ⌃↑ | ⌃→ | ⌃RCtrl |  |  |
 | ■ Row 3 (Z row) | Z<br>`&kp LEFT_SHIFT` | X<br>`&kp DELETE` | C<br>`&none` | V<br>`&mm_vim_v` | B<br>`&kp LC(LEFT)` | (center L)<br>`&none` | (center R)<br>`&none` | N<br>`&mm_vim_n` | M<br>`&none` | COMMA<br>`&none` | PERIOD<br>`&none` | SLASH<br>`&kp RIGHT_SHIFT` |
-| 単発タップ | Left Shift | DELETE |  | ⇒L8 | Ctrl+← |  |  | F3 |  |  |  | Right Shift |
-| ホールド | Left Shift | DELETE |  | ⇒L8 | Ctrl+← |  |  | F3 |  |  |  | Right Shift |
-| ダブルタップ | Left Shift×2 | DELETE×2 |  | ⇒L8 | Ctrl+←×2 |  |  | F3×2 |  |  |  | Right Shift×2 |
-| Shift+ | ⇧Left Shift | ⇧DELETE |  | HOME → Shift+↓ → レイヤー 8 へ | ⇧Ctrl+← |  |  | Shift+F3 |  |  |  | ⇧Right Shift |
-| Ctrl+ | ⌃Left Shift | ⌃DELETE |  | ⇒L8 | ⌃Ctrl+← |  |  | ⌃F3 |  |  |  | ⌃Right Shift |
+| 単発タップ | LShift | DEL |  | ⇒L8 | Ctrl+← |  |  | F3 |  |  |  | RShift |
+| ホールド | LShift | DEL |  | ⇒L8 | Ctrl+← |  |  | F3 |  |  |  | RShift |
+| ダブルタップ | LShift×2 | DEL×2 |  | ⇒L8 | Ctrl+←×2 |  |  | F3×2 |  |  |  | RShift×2 |
+| Shift+ | ⇧LShift | ⇧DEL |  | HOME → Shift+↓ → レイヤー 8 へ | ⇧Ctrl+← |  |  | Shift+F3 |  |  |  | ⇧RShift |
+| Ctrl+ | ⌃LShift | ⌃DEL |  | ⇒L8 | ⌃Ctrl+← |  |  | ⌃F3 |  |  |  | ⌃RShift |
 | ■ Row 4 (thumb) | mo6 (outer)<br>`&none` | LEFT_WIN<br>`&trans` | LEFT_ALT<br>`&trans` | lt2 SPACE<br>`&none` | lt2 SPACE<br>`&none` | (mo1 center)<br>`&mo 3` | (mo2 center)<br>`&none` | lt1 ENTER<br>`&lt 3 ENTER` | mo6<br>`&trans` | mo6 (outer)<br>`&none` |  |  |
 | 単発タップ |  | ▽ | ▽ |  |  | L3 |  | ENTER | ▽ |  |  |  |
 | ホールド |  | ▽ | ▽ |  |  | L3 |  | L3 | ▽ |  |  |  |
@@ -105,17 +105,17 @@
 | Shift+ |  |  |  | END |  | HOME |  |  |  | ⇧HOME |  |  |
 | Ctrl+ |  |  |  |  |  |  |  |  |  | ⌃HOME |  |  |
 | ■ Row 2 (home row) | A<br>`&kp LCTRL` | S<br>`&none` | D<br>`&none` | F<br>`&none` | G<br>`&none` | H<br>`&kp LEFT` | J<br>`&none` | K<br>`&none` | L<br>`&none` | MINUS<br>`&kp RCTRL` |  |  |
-| 単発タップ | Left Ctrl |  |  |  |  | ← |  |  |  | Right Ctrl |  |  |
-| ホールド | Left Ctrl |  |  |  |  | ← |  |  |  | Right Ctrl |  |  |
-| ダブルタップ | Left Ctrl×2 |  |  |  |  | ←×2 |  |  |  | Right Ctrl×2 |  |  |
-| Shift+ | ⇧Left Ctrl |  |  |  |  | ⇧← |  |  |  | ⇧Right Ctrl |  |  |
-| Ctrl+ | ⌃Left Ctrl |  |  |  |  | ⌃← |  |  |  | ⌃Right Ctrl |  |  |
+| 単発タップ | LCtrl |  |  |  |  | ← |  |  |  | RCtrl |  |  |
+| ホールド | LCtrl |  |  |  |  | ← |  |  |  | RCtrl |  |  |
+| ダブルタップ | LCtrl×2 |  |  |  |  | ←×2 |  |  |  | RCtrl×2 |  |  |
+| Shift+ | ⇧LCtrl |  |  |  |  | ⇧← |  |  |  | ⇧RCtrl |  |  |
+| Ctrl+ | ⌃LCtrl |  |  |  |  | ⌃← |  |  |  | ⌃RCtrl |  |  |
 | ■ Row 3 (Z row) | Z<br>`&kp LEFT_SHIFT` | X<br>`&none` | C<br>`&none` | V<br>`&none` | B<br>`&none` | (center L)<br>`&none` | (center R)<br>`&none` | N<br>`&none` | M<br>`&none` | COMMA<br>`&none` | PERIOD<br>`&none` | SLASH<br>`&kp RIGHT_SHIFT` |
-| 単発タップ | Left Shift |  |  |  |  |  |  |  |  |  |  | Right Shift |
-| ホールド | Left Shift |  |  |  |  |  |  |  |  |  |  | Right Shift |
-| ダブルタップ | Left Shift×2 |  |  |  |  |  |  |  |  |  |  | Right Shift×2 |
-| Shift+ | ⇧Left Shift |  |  |  |  |  |  |  |  |  |  | ⇧Right Shift |
-| Ctrl+ | ⌃Left Shift |  |  |  |  |  |  |  |  |  |  | ⌃Right Shift |
+| 単発タップ | LShift |  |  |  |  |  |  |  |  |  |  | RShift |
+| ホールド | LShift |  |  |  |  |  |  |  |  |  |  | RShift |
+| ダブルタップ | LShift×2 |  |  |  |  |  |  |  |  |  |  | RShift×2 |
+| Shift+ | ⇧LShift |  |  |  |  |  |  |  |  |  |  | ⇧RShift |
+| Ctrl+ | ⌃LShift |  |  |  |  |  |  |  |  |  |  | ⌃RShift |
 | ■ Row 4 (thumb) | mo6 (outer)<br>`&none` | LEFT_WIN<br>`&trans` | LEFT_ALT<br>`&trans` | lt2 SPACE<br>`&none` | lt2 SPACE<br>`&none` | (mo1 center)<br>`&none` | (mo2 center)<br>`&none` | lt1 ENTER<br>`&none` | mo6<br>`&trans` | mo6 (outer)<br>`&none` |  |  |
 | 単発タップ |  | ▽ | ▽ |  |  |  |  |  | ▽ |  |  |  |
 | ホールド |  | ▽ | ▽ |  |  |  |  |  | ▽ |  |  |  |
@@ -244,23 +244,23 @@
 | 操作 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | ■ Row 1 (QWERTY 上段) | Q<br>`&macro_vim_visual_exit` | W<br>`&kp LS(LC(RIGHT))` | E<br>`&kp LS(LC(RIGHT))` | R<br>`&none` | T<br>`&none` | Y<br>`&none` | U<br>`&none` | I<br>`&none` | O<br>`&none` | P<br>`&macro_vim_visual_p` |  |  |
-| 単発タップ | Left Shift → RSHIFT &kp RIGHT → レイヤー 0 へ | Shift+Ctrl+→ | Shift+Ctrl+→ |  |  |  |  |  |  | Left Shift → RSHIFT &kp LC(V) → レイヤー 0 へ |  |  |
-| ホールド | Left Shift → RSHIFT &kp RIGHT → レイヤー 0 へ | Shift+Ctrl+→ | Shift+Ctrl+→ |  |  |  |  |  |  | Left Shift → RSHIFT &kp LC(V) → レイヤー 0 へ |  |  |
-| ダブルタップ | Left Shift → RSHIFT &kp RIGHT → レイヤー 0 へ×2 | Shift+Ctrl+→×2 | Shift+Ctrl+→×2 |  |  |  |  |  |  | Left Shift → RSHIFT &kp LC(V) → レイヤー 0 へ×2 |  |  |
-| Shift+ | ⇧ Left Shift → RSHIFT &kp RIGHT → レイヤー 0 へ | ⇧Shift+Ctrl+→ | ⇧Shift+Ctrl+→ |  |  |  |  |  |  | ⇧ Left Shift → RSHIFT &kp LC(V) → レイヤー 0 へ |  |  |
-| Ctrl+ | ⌃ Left Shift → RSHIFT &kp RIGHT → レイヤー 0 へ | ⌃Shift+Ctrl+→ | ⌃Shift+Ctrl+→ |  |  |  |  |  |  | ⌃ Left Shift → RSHIFT &kp LC(V) → レイヤー 0 へ |  |  |
+| 単発タップ | LShift → RSHIFT &kp RIGHT → レイヤー 0 へ | Shift+Ctrl+→ | Shift+Ctrl+→ |  |  |  |  |  |  | LShift → RSHIFT &kp LC(V) → レイヤー 0 へ |  |  |
+| ホールド | LShift → RSHIFT &kp RIGHT → レイヤー 0 へ | Shift+Ctrl+→ | Shift+Ctrl+→ |  |  |  |  |  |  | LShift → RSHIFT &kp LC(V) → レイヤー 0 へ |  |  |
+| ダブルタップ | LShift → RSHIFT &kp RIGHT → レイヤー 0 へ×2 | Shift+Ctrl+→×2 | Shift+Ctrl+→×2 |  |  |  |  |  |  | LShift → RSHIFT &kp LC(V) → レイヤー 0 へ×2 |  |  |
+| Shift+ | ⇧ LShift → RSHIFT &kp RIGHT → レイヤー 0 へ | ⇧Shift+Ctrl+→ | ⇧Shift+Ctrl+→ |  |  |  |  |  |  | ⇧ LShift → RSHIFT &kp LC(V) → レイヤー 0 へ |  |  |
+| Ctrl+ | ⌃ LShift → RSHIFT &kp RIGHT → レイヤー 0 へ | ⌃Shift+Ctrl+→ | ⌃Shift+Ctrl+→ |  |  |  |  |  |  | ⌃ LShift → RSHIFT &kp LC(V) → レイヤー 0 へ |  |  |
 | ■ Row 2 (home row) | A<br>`&kp LCTRL` | S<br>`&none` | D<br>`&macro_vim_visual_cut` | F<br>`&none` | G<br>`&mm_vim_visual_g` | H<br>`&kp LS(LEFT)` | J<br>`&kp LS(DOWN)` | K<br>`&kp LS(UP)` | L<br>`&kp LS(RIGHT)` | MINUS<br>`&kp RCTRL` |  |  |
-| 単発タップ | Left Ctrl |  | Left Shift → RSHIFT &kp LC(X) → レイヤー 0 へ |  |  | Shift+← | Shift+↓ | Shift+UP | Shift+→ | Right Ctrl |  |  |
-| ホールド | Left Ctrl |  | Left Shift → RSHIFT &kp LC(X) → レイヤー 0 へ |  |  | Shift+← | Shift+↓ | Shift+UP | Shift+→ | Right Ctrl |  |  |
-| ダブルタップ | Left Ctrl×2 |  | Left Shift → RSHIFT &kp LC(X) → レイヤー 0 へ×2 |  | Shift+Ctrl+HOME | Shift+←×2 | Shift+↓×2 | Shift+UP×2 | Shift+→×2 | Right Ctrl×2 |  |  |
-| Shift+ | ⇧Left Ctrl |  | ⇧ Left Shift → RSHIFT &kp LC(X) → レイヤー 0 へ |  | Shift+Ctrl+END | ⇧Shift+← | ⇧Shift+↓ | ⇧Shift+UP | ⇧Shift+→ | ⇧Right Ctrl |  |  |
-| Ctrl+ | ⌃Left Ctrl |  | ⌃ Left Shift → RSHIFT &kp LC(X) → レイヤー 0 へ |  |  | ⌃Shift+← | ⌃Shift+↓ | ⌃Shift+UP | ⌃Shift+→ | ⌃Right Ctrl |  |  |
+| 単発タップ | LCtrl |  | LShift → RSHIFT &kp LC(X) → レイヤー 0 へ |  |  | Shift+← | Shift+↓ | Shift+UP | Shift+→ | RCtrl |  |  |
+| ホールド | LCtrl |  | LShift → RSHIFT &kp LC(X) → レイヤー 0 へ |  |  | Shift+← | Shift+↓ | Shift+UP | Shift+→ | RCtrl |  |  |
+| ダブルタップ | LCtrl×2 |  | LShift → RSHIFT &kp LC(X) → レイヤー 0 へ×2 |  | Shift+Ctrl+HOME | Shift+←×2 | Shift+↓×2 | Shift+UP×2 | Shift+→×2 | RCtrl×2 |  |  |
+| Shift+ | ⇧LCtrl |  | ⇧ LShift → RSHIFT &kp LC(X) → レイヤー 0 へ |  | Shift+Ctrl+END | ⇧Shift+← | ⇧Shift+↓ | ⇧Shift+UP | ⇧Shift+→ | ⇧RCtrl |  |  |
+| Ctrl+ | ⌃LCtrl |  | ⌃ LShift → RSHIFT &kp LC(X) → レイヤー 0 へ |  |  | ⌃Shift+← | ⌃Shift+↓ | ⌃Shift+UP | ⌃Shift+→ | ⌃RCtrl |  |  |
 | ■ Row 3 (Z row) | Z<br>`&kp LEFT_SHIFT` | X<br>`&macro_vim_visual_cut` | C<br>`&none` | V<br>`&macro_vim_visual_exit` | B<br>`&kp LS(LC(LEFT))` | (center L)<br>`&none` | (center R)<br>`&none` | N<br>`&kp F3` | M<br>`&none` | COMMA<br>`&none` | PERIOD<br>`&none` | SLASH<br>`&kp RIGHT_SHIFT` |
-| 単発タップ | Left Shift | Left Shift → RSHIFT &kp LC(X) → レイヤー 0 へ |  | Left Shift → RSHIFT &kp RIGHT → レイヤー 0 へ | Shift+Ctrl+← |  |  | F3 |  |  |  | Right Shift |
-| ホールド | Left Shift | Left Shift → RSHIFT &kp LC(X) → レイヤー 0 へ |  | Left Shift → RSHIFT &kp RIGHT → レイヤー 0 へ | Shift+Ctrl+← |  |  | F3 |  |  |  | Right Shift |
-| ダブルタップ | Left Shift×2 | Left Shift → RSHIFT &kp LC(X) → レイヤー 0 へ×2 |  | Left Shift → RSHIFT &kp RIGHT → レイヤー 0 へ×2 | Shift+Ctrl+←×2 |  |  | F3×2 |  |  |  | Right Shift×2 |
-| Shift+ | ⇧Left Shift | ⇧ Left Shift → RSHIFT &kp LC(X) → レイヤー 0 へ |  | ⇧ Left Shift → RSHIFT &kp RIGHT → レイヤー 0 へ | ⇧Shift+Ctrl+← |  |  | ⇧F3 |  |  |  | ⇧Right Shift |
-| Ctrl+ | ⌃Left Shift | ⌃ Left Shift → RSHIFT &kp LC(X) → レイヤー 0 へ |  | ⌃ Left Shift → RSHIFT &kp RIGHT → レイヤー 0 へ | ⌃Shift+Ctrl+← |  |  | ⌃F3 |  |  |  | ⌃Right Shift |
+| 単発タップ | LShift | LShift → RSHIFT &kp LC(X) → レイヤー 0 へ |  | LShift → RSHIFT &kp RIGHT → レイヤー 0 へ | Shift+Ctrl+← |  |  | F3 |  |  |  | RShift |
+| ホールド | LShift | LShift → RSHIFT &kp LC(X) → レイヤー 0 へ |  | LShift → RSHIFT &kp RIGHT → レイヤー 0 へ | Shift+Ctrl+← |  |  | F3 |  |  |  | RShift |
+| ダブルタップ | LShift×2 | LShift → RSHIFT &kp LC(X) → レイヤー 0 へ×2 |  | LShift → RSHIFT &kp RIGHT → レイヤー 0 へ×2 | Shift+Ctrl+←×2 |  |  | F3×2 |  |  |  | RShift×2 |
+| Shift+ | ⇧LShift | ⇧ LShift → RSHIFT &kp LC(X) → レイヤー 0 へ |  | ⇧ LShift → RSHIFT &kp RIGHT → レイヤー 0 へ | ⇧Shift+Ctrl+← |  |  | ⇧F3 |  |  |  | ⇧RShift |
+| Ctrl+ | ⌃LShift | ⌃ LShift → RSHIFT &kp LC(X) → レイヤー 0 へ |  | ⌃ LShift → RSHIFT &kp RIGHT → レイヤー 0 へ | ⌃Shift+Ctrl+← |  |  | ⌃F3 |  |  |  | ⌃RShift |
 | ■ Row 4 (thumb) | mo6 (outer)<br>`&none` | LEFT_WIN<br>`&none` | LEFT_ALT<br>`&none` | lt2 SPACE<br>`&none` | lt2 SPACE<br>`&none` | (mo1 center)<br>`&none` | (mo2 center)<br>`&none` | lt1 ENTER<br>`&none` | mo6<br>`&none` | mo6 (outer)<br>`&none` |  |  |
 | 単発タップ |  |  |  |  |  |  |  |  |  |  |  |  |
 | ホールド |  |  |  |  |  |  |  |  |  |  |  |  |
