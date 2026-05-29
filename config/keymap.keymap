@@ -112,9 +112,9 @@
             #binding-cells = <0>;
             bindings =
                 <&macro_release>,
-                <&kp LSHIFT>,
-                <&macro_release>,
-                <&kp RSHIFT &kp LC(C)>,
+                <&kp LSHIFT &kp RSHIFT>,
+                <&macro_tap>,
+                <&kp LC(C)>,
                 <&macro_wait_time 50>,
                 <&kp RIGHT>,
                 <&macro_wait_time 50>,
@@ -128,9 +128,9 @@
             #binding-cells = <0>;
             bindings =
                 <&macro_release>,
-                <&kp LSHIFT>,
-                <&macro_release>,
-                <&kp RSHIFT &kp LC(X)>,
+                <&kp LSHIFT &kp RSHIFT>,
+                <&macro_tap>,
+                <&kp LC(X)>,
                 <&macro_wait_time 50>,
                 <&to 0>;
 
@@ -142,9 +142,9 @@
             #binding-cells = <0>;
             bindings =
                 <&macro_release>,
-                <&kp LSHIFT>,
-                <&macro_release>,
-                <&kp RSHIFT &kp LC(V)>,
+                <&kp LSHIFT &kp RSHIFT>,
+                <&macro_tap>,
+                <&kp LC(V)>,
                 <&macro_wait_time 50>,
                 <&to 0>;
 
@@ -169,9 +169,9 @@
             #binding-cells = <0>;
             bindings =
                 <&macro_release>,
-                <&kp LSHIFT>,
-                <&macro_release>,
-                <&kp RSHIFT &kp RIGHT>,
+                <&kp LSHIFT &kp RSHIFT>,
+                <&macro_tap>,
+                <&kp RIGHT>,
                 <&macro_wait_time 50>,
                 <&to 0>;
 
