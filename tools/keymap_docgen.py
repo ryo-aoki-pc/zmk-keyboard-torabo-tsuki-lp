@@ -238,7 +238,7 @@ def resolve(binding: str, behaviors: dict, macros: dict, op: str, depth: int = 0
         return ('何もしない', '&none')
 
     if b == '&trans':
-        return ('下位レイヤーの同位置にフォールスルー', '&trans')
+        return ('フォールスルー', '&trans')
 
     # &kp X
     m = re.match(r'&kp\s+(.+)$', b)
