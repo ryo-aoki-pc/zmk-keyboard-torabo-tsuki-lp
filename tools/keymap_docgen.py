@@ -620,6 +620,8 @@ def _normalize_cell(value: str) -> str:
         return ''
     if value in ('フォールスルー', '&trans'):
         return '▽'
+    if value.startswith('未対応'):
+        return ''
     return value
 
 
@@ -751,8 +753,12 @@ def write_markdown(layers_data: list[tuple[str, list[str]]],
             (b for n, b in layers_data if n == 'DEFAULT'),
             None,
         )
+        # Row 3 center L/R (flat indices 44, 45): physical thumb cluster
+        # positions that the user does not press from the Z row; always hide.
+        always_hidden = {44, 45}
         active_indices = (
-            {i for i, b in enumerate(default_bindings) if b.strip() != '&none'}
+            {i for i, b in enumerate(default_bindings)
+             if b.strip() != '&none' and i not in always_hidden}
             if default_bindings is not None
             else None
         )
