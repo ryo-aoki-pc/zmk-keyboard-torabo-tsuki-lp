@@ -13,7 +13,7 @@ ZMK keymap (.keymap) の指定した 1 つ以上のレイヤーの全キー割�
          「## 経路」セクションに全レイヤーを再度並べる構成
 
 それぞれの表は、キーボード物理行ごとに以下の構造を持つ：
-  - 左端 1 列: 「操作」 = 単発タップ / ダブルタップ / Shift+ / Ctrl+
+  - 左端 1 列: 「操作」 = 単発タップ / ホールド / ダブルタップ / Shift+ / Ctrl+
   - 右側の列: その物理行のキーを QWERTY 順に並べたもの
 
 mod-morph (LSHIFT/RSHIFT, LCTL/RCTL), tap-dance, layer-tap, momentary-layer
@@ -225,7 +225,7 @@ def format_keycode(kc: str) -> str:
 # Resolution: binding × operation -> (action_description, path)
 # ============================================================================
 
-OPS = ('単発タップ', 'ダブルタップ', 'Shift+', 'Ctrl+')
+OPS = ('単発タップ', 'ホールド', 'ダブルタップ', 'Shift+', 'Ctrl+')
 
 
 def resolve(binding: str, behaviors: dict, macros: dict, op: str, depth: int = 0) -> tuple[str, str]:
@@ -247,6 +247,8 @@ def resolve(binding: str, behaviors: dict, macros: dict, op: str, depth: int = 0
         label = format_keycode(kc)
         if op == '単発タップ':
             return (f'{label} 入力', f'&kp {kc}')
+        if op == 'ホールド':
+            return (f'{label} 押下保持', f'&kp {kc}（押下保持で OS の auto-repeat / 修飾子状態）')
         if op == 'ダブルタップ':
             return (f'{label} 入力 × 2', f'&kp {kc}（tap-dance 未定義、連打）')
         if op == 'Shift+':
@@ -260,6 +262,8 @@ def resolve(binding: str, behaviors: dict, macros: dict, op: str, depth: int = 0
         mod, key = m.group(1).strip(), m.group(2).strip()
         if op == '単発タップ':
             return (f'{format_keycode(key)} 入力（タップ）', f'&mt {mod} {key}')
+        if op == 'ホールド':
+            return (f'{format_keycode(mod)} 修飾子保持', f'&mt {mod} {key}（ホールドで修飾子）')
         if op == 'ダブルタップ':
             return (f'{format_keycode(key)} 入力 × 2', f'&mt {mod} {key}（連打）')
         if op == 'Shift+':
@@ -273,6 +277,8 @@ def resolve(binding: str, behaviors: dict, macros: dict, op: str, depth: int = 0
         layer, key = m.group(1), m.group(2).strip()
         if op == '単発タップ':
             return (f'{format_keycode(key)} 入力（タップ）', f'&lt {layer} {key}')
+        if op == 'ホールド':
+            return (f'レイヤー {layer} を momentary 有効化', f'&lt {layer} {key}（ホールドでレイヤー切替）')
         if op == 'ダブルタップ':
             return (f'{format_keycode(key)} 入力 × 2', f'&lt {layer} {key}（連打）')
         if op == 'Shift+':
@@ -314,7 +320,7 @@ def resolve_behavior(name: str, behaviors: dict, macros: dict, op: str, depth: i
         is_shift = 'LSFT' in mods or 'RSFT' in mods
         is_ctrl = 'LCTL' in mods or 'RCTL' in mods
 
-        if op in ('単発タップ', 'ダブルタップ'):
+        if op in ('単発タップ', 'ダブルタップ', 'ホールド'):
             sub_a, sub_p = resolve(bindings[0], behaviors, macros, op, depth)
             return (sub_a, f'{name}[0] → {sub_p}')
 
@@ -338,6 +344,9 @@ def resolve_behavior(name: str, behaviors: dict, macros: dict, op: str, depth: i
         if op == '単発タップ':
             sub_a, sub_p = resolve(bindings[0], behaviors, macros, '単発タップ', depth)
             return (sub_a, f'{name}[0] → {sub_p}')
+        if op == 'ホールド':
+            sub_a, sub_p = resolve(bindings[0], behaviors, macros, 'ホールド', depth)
+            return (sub_a, f'{name}[0] (tap-dance は hold を [0] に委譲) → {sub_p}')
         if op == 'ダブルタップ':
             sub_a, sub_p = resolve(bindings[1], behaviors, macros, '単発タップ', depth)
             return (sub_a, f'{name}[1] → {sub_p}')
@@ -355,6 +364,8 @@ def resolve_macro(name: str, behaviors: dict, macros: dict, op: str, depth: int)
     summary = summarize_macro(macros[name]['bindings'])
     if op == '単発タップ':
         return (summary, name)
+    if op == 'ホールド':
+        return (f'{summary}（押下時に 1 回実行）', name)
     if op == 'ダブルタップ':
         return (f'{summary}（2 回実行）', f'{name}（連打）')
     if op == 'Shift+':
@@ -446,7 +457,7 @@ def write_qwerty_sheet(ws, layer_name: str, bindings: list[str],
     Write one sheet in QWERTY layout. mode: 'action' or 'path'.
     Each physical keyboard row gets its own block:
       - Header row: 操作 (label) + key columns (key label + binding)
-      - 4 data rows (単発タップ / ダブルタップ / Shift+ / Ctrl+)
+      - 5 data rows (単発タップ / ホールド / ダブルタップ / Shift+ / Ctrl+)
     """
     title_font = Font(bold=True, size=14, name='Yu Gothic UI')
     subtitle_font = Font(size=10, italic=True, name='Yu Gothic UI', color='666666')
@@ -579,7 +590,7 @@ def _markdown_layer_mode_rows(layer_name: str, bindings: list[str],
 
     Format: a single table per layer/mode where each physical row appears
     as a section data row (`■ Row N` + key labels/bindings) followed by
-    the four operation data rows (単発タップ / ダブルタップ / Shift+ / Ctrl+).
+    the five operation data rows (単発タップ / ホールド / ダブルタップ / Shift+ / Ctrl+).
     """
     layout = get_row_layout(len(bindings))
     max_cols = max(count for _, count in layout) if layout else 0
@@ -642,7 +653,7 @@ def write_markdown(layers_data: list[tuple[str, list[str]]],
         )
         lines.append('')
         lines.append('- 各 row セクション行に「キーラベル」と「バインディング (`&...`)」の 2 段表示でキー位置を示す。')
-        lines.append('- 各表の左端 1 列が「操作」（単発タップ / ダブルタップ / Shift+ / Ctrl+）または「■ Row N」見出し。')
+        lines.append('- 各表の左端 1 列が「操作」（単発タップ / ホールド / ダブルタップ / Shift+ / Ctrl+）または「■ Row N」見出し。')
         lines.append('')
         for mode_label, mode in [('動作', 'action'), ('経路', 'path')]:
             lines.append(f'## {mode_label}')
@@ -658,7 +669,7 @@ def write_markdown(layers_data: list[tuple[str, list[str]]],
         )
         lines.append('')
         lines.append('- 各 row セクション行に「キーラベル」と「バインディング (`&...`)」の 2 段表示でキー位置を示す。')
-        lines.append('- 各表の左端 1 列が「操作」（単発タップ / ダブルタップ / Shift+ / Ctrl+）または「■ Row N」見出し。')
+        lines.append('- 各表の左端 1 列が「操作」（単発タップ / ホールド / ダブルタップ / Shift+ / Ctrl+）または「■ Row N」見出し。')
         lines.append('')
         for mode_label, mode in [('動作', 'action'), ('経路', 'path')]:
             lines.append(f'## {mode_label}')
