@@ -6,6 +6,7 @@
 - 構成: 右手側にトラックボール (PAW3222) を付け、右手側をセントラルにします。左手側にトラックボールを付ける構成と両手にトラックボールを付ける構成は、`build.yaml` のコメントを外すとビルドできます
 - キーマップ: `config/keymap.keymap` (66 ポジション・L レイアウト)。LisM との配列差の吸収ルールはファイル冒頭のコメントにあります。物理配列は `config/info.json` (keymap-editor も使用)
 - スクロール: 他のキーボード (1/16) と違い、`zip_scroll_scaler 1 1` と `CONFIG_ZMK_POINTING_SMOOTH_SCROLLING=y` (スムーズスクロール) で実機に合わせて調整しています
+- カーソルの加速: ボールを転がす速さに応じて移動量に倍率を掛けます (ゆっくり 0.5 倍 → 1000 カウント/秒で等倍 → 4000 カウント/秒以上で 1.3 倍)。値は LisM と同じで、`torabo_tsuki_lp.dtsi` の `trackball_accel` ([zmk-input-processor-xy-accel](https://github.com/ryo-aoki-pc/zmk-input-processor-xy-accel)) で変えられます
 - キーマップは keymap-editor と ZMK Studio (`_studio` 版を書き込んだとき) でも編集できます
 
 ## キー割り当て一覧
