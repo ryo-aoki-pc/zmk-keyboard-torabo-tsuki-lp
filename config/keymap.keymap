@@ -56,10 +56,23 @@
     flavor = "balanced";
 };
 
+/*
+ * AML (MOUSE_MOVE) 中に押しても AML を解除しないキー位置。
+ *   D / K: スクロール用の &mo SCRL。
+ *   A / - / Z / / / Win / Alt: MOUSE_MOVE / MOUSE_SCROLL では修飾キー
+ *     (BASE の &mt / &kp と同じ Ctrl / Shift / Win / Alt)。AML に入ってから
+ *     Shift + クリック、Ctrl + ホイールなどを押せるようにする。
+ */
 &zip_temp_layer {
     excluded-positions = <
-        27 // D
-        34 // K
+        25 // A (左 Ctrl)
+        27 // D (&mo SCRL)
+        34 // K (&mo SCRL)
+        36 // - (右 Ctrl)
+        39 // Z (左 Shift)
+        50 // / (右 Shift)
+        54 // 左 Win
+        55 // 左 Alt
     >;
 
     require-prior-idle-ms = <200>;
@@ -422,7 +435,7 @@
 &none  &kp N1                 &kp N2     &kp N3            &kp N4             &kp N5                                         &kp N6         &kp N7         &kp N8            &kp N9         &kp N0  &none
 &none  &mt LCTRL TAB          &kp GRAVE  &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &kp DELETE         &none  &none                &kp BACKSPACE  &kp SEMICOLON  &kp SINGLE_QUOTE  &kp BACKSLASH  &trans  &none
 &none  &mt LEFT_SHIFT ESCAPE  &none      &none             &none              &none              &none  &none                &none          &kp EQUAL      &trans            &trans         &trans  &none
-&none  &none                  &trans     &trans            &lt VIM_SYM SPACE  &lt VIM_SYM SPACE  &none  &mo VIM_SYM          &none          &none          &none             &trans         &none   &none
+&none  &none                  &trans     &trans            &lt VIM_SYM SPACE  &lt VIM_SYM SPACE  &none  &mo VIM_SYM          &none          &none          &none             &none          &none   &none
             >;
         };
 
@@ -432,7 +445,7 @@
 &none  &none           &mm_vim_w   &kp LC(RIGHT)  &mm_vim_ctrl_r  &none                                    &mm_vim_y          &mm_vim_u  &none         &mm_vim_o  &kp LC(V)        &none
 &none  &kp LCTRL       &none       &mm_vim_d      &none           &mm_vim_g     &none        &none         &kp LEFT           &mm_vim_j  &kp UP_ARROW  &kp RIGHT  &kp RCTRL        &none
 &none  &kp LEFT_SHIFT  &kp DELETE  &none          &mm_vim_v       &kp LC(LEFT)  &none        &none         &mm_vim_n          &none      &none         &none      &kp RIGHT_SHIFT  &none
-&none  &none           &trans      &trans         &none           &none         &mo VIM_SYM  &none         &lt VIM_SYM ENTER  &none      &none         &trans     &none            &none
+&none  &none           &trans      &trans         &none           &none         &mo VIM_SYM  &none         &lt VIM_SYM ENTER  &none      &none         &none      &none            &none
             >;
         };
 
@@ -442,7 +455,7 @@
 &none  &none           &none   &none   &mm_vim_shift_4  &none                        &mm_vim_shift_6  &none  &none  &none   &kp HOME         &none
 &none  &kp LCTRL       &none   &none   &none            &none  &none  &none          &kp LEFT         &none  &none  &none   &kp RCTRL        &none
 &none  &kp LEFT_SHIFT  &none   &none   &none            &none  &none  &none          &none            &none  &none  &none   &kp RIGHT_SHIFT  &none
-&none  &none           &trans  &trans  &none            &none  &none  &none          &none            &none  &none  &trans  &none            &none
+&none  &none           &trans  &trans  &none            &none  &none  &none          &none            &none  &none  &none   &none            &none
             >;
         };
 
@@ -488,21 +501,21 @@
 
         MOUSE_MOVE {
             bindings = <
-&none  &none  &none  &none     &none  &none                        &none  &none  &none     &none  &none  &none
-&none  &none  &none  &none     &none  &none                        &none  &none  &none     &none  &none  &none
-&none  &none  &none  &mo SCRL  &none  &none  &none  &none          &none  &none  &mo SCRL  &none  &none  &none
-&none  &none  &none  &none     &none  &none  &none  &none          &none  &none  &none     &none  &none  &none
-&none  &none  &none  &none     &none  &none  &none  &none          &none  &none  &none     &none  &none  &none
+&none  &none           &none         &none         &none  &none                        &none  &none  &none     &none  &none            &none
+&none  &none           &none         &none         &none  &none                        &none  &none  &none     &none  &none            &none
+&none  &kp LCTRL       &none         &mo SCRL      &none  &none  &none  &none          &none  &none  &mo SCRL  &none  &kp RCTRL        &none
+&none  &kp LEFT_SHIFT  &none         &none         &none  &none  &none  &none          &none  &none  &none     &none  &kp RIGHT_SHIFT  &none
+&none  &none           &kp LEFT_WIN  &kp LEFT_ALT  &none  &none  &none  &none          &none  &none  &none     &none  &none            &none
             >;
         };
 
         MOUSE_SCROLL {
             bindings = <
-&none  &none  &none     &none  &none     &none                        &none  &none     &none  &none     &none  &none
-&none  &none  &none     &none  &none     &none                        &none  &none     &none  &none     &none  &none
-&none  &none  &mkp MB2  &none  &mkp MB1  &none  &none  &none          &none  &mkp MB1  &none  &mkp MB2  &none  &none
-&none  &none  &mkp MB5  &none  &mkp MB4  &none  &none  &none          &none  &mkp MB4  &none  &mkp MB5  &none  &none
-&none  &none  &none     &none  &none     &none  &none  &none          &none  &none     &none  &none     &none  &none
+&none  &none           &none         &none         &none     &none                        &none  &none     &none  &none     &none            &none
+&none  &none           &none         &none         &none     &none                        &none  &none     &none  &none     &none            &none
+&none  &kp LCTRL       &mkp MB2      &none         &mkp MB1  &none  &none  &none          &none  &mkp MB1  &none  &mkp MB2  &kp RCTRL        &none
+&none  &kp LEFT_SHIFT  &mkp MB5      &none         &mkp MB4  &none  &none  &none          &none  &mkp MB4  &none  &mkp MB5  &kp RIGHT_SHIFT  &none
+&none  &none           &kp LEFT_WIN  &kp LEFT_ALT  &none     &none  &none  &none          &none  &none     &none  &none     &none            &none
             >;
         };
     };
