@@ -1,27 +1,56 @@
+# This file generates the GitHub Actions matrix.
+#
+# ブートローダへの切り替え (CONFIG_ZMK_CDC_ACM_BOOTLOADER_TRIGGER) には zephyr,cdc-acm-uart ノードが
+# 必要で、それを定義しているのは studio-rpc-usb-uart スニペットだけなので、Studio 版以外にも付ける。
+# スニペット自体は Studio を有効にしない。Studio 版は cmake-args の -DCONFIG_ZMK_STUDIO=y で作る。
+---
 include:
-  - board: bmp_boost
-    shield: torabo_tsuki_lp_left
-    snippet: "studio-rpc-usb-uart split-central input-trackball input-listener"
-    artifact-name: torabo_tsuki_lp_left_central
-  - board: bmp_boost
-    shield: torabo_tsuki_lp_right
-    snippet: studio-rpc-usb-uart
-    artifact-name: torabo_tsuki_lp_right_peripheral
+# Central = Right (右手側にトラックボール)
   - board: bmp_boost
     shield: torabo_tsuki_lp_left
     snippet: studio-rpc-usb-uart
     artifact-name: torabo_tsuki_lp_left_peripheral
   - board: bmp_boost
     shield: torabo_tsuki_lp_right
-    snippet: "studio-rpc-usb-uart split-central input-trackball input-listener"
+    snippet: "studio-rpc-usb-uart input-trackball input-listener"
     artifact-name: torabo_tsuki_lp_right_central
-  - board: bmp_boost
-    shield: torabo_tsuki_lp_left
-    snippet: "studio-rpc-usb-uart input-trackball input-split"
-    artifact-name: torabo_tsuki_lp_double_ball_left_peripheral
+    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=y
+
   - board: bmp_boost
     shield: torabo_tsuki_lp_right
-    snippet: "studio-rpc-usb-uart split-central input-trackball input-listener input-split-listener"
-    artifact-name: torabo_tsuki_lp_double_ball_right_central
+    snippet: "studio-rpc-usb-uart input-trackball input-listener"
+    artifact-name: torabo_tsuki_lp_right_central_studio
+    cmake-args: -DCONFIG_ZMK_STUDIO=y -DCONFIG_ZMK_STUDIO_LOCKING=n -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=y
+
+# Central = Left (左手側にトラックボール)
+#  - board: bmp_boost
+#    shield: torabo_tsuki_lp_right
+#    snippet: studio-rpc-usb-uart
+#    artifact-name: torabo_tsuki_lp_right_peripheral
+#  - board: bmp_boost
+#    shield: torabo_tsuki_lp_left
+#    snippet: "studio-rpc-usb-uart input-trackball input-listener"
+#    artifact-name: torabo_tsuki_lp_left_central
+#    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=y
+#
+#  - board: bmp_boost
+#    shield: torabo_tsuki_lp_left
+#    snippet: "studio-rpc-usb-uart input-trackball input-listener"
+#    artifact-name: torabo_tsuki_lp_left_central_studio
+#    cmake-args: -DCONFIG_ZMK_STUDIO=y -DCONFIG_ZMK_STUDIO_LOCKING=n -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=y
+
+# Double ball (両手にトラックボール。右手側がセントラル)
+#  - board: bmp_boost
+#    shield: torabo_tsuki_lp_left
+#    snippet: "studio-rpc-usb-uart input-trackball input-split"
+#    artifact-name: torabo_tsuki_lp_double_ball_left_peripheral
+#  - board: bmp_boost
+#    shield: torabo_tsuki_lp_right
+#    snippet: "studio-rpc-usb-uart input-trackball input-listener input-split-listener"
+#    artifact-name: torabo_tsuki_lp_double_ball_right_central
+#    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=y
+
+  # Reset
   - board: bmp_boost
     shield: settings_reset
+    artifact-name: settings_reset-bmp_boost-zmk

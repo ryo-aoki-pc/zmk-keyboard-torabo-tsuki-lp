@@ -1,10 +1,12 @@
-
 file_format: "1"
 id: torabo_tsuki_lp
 name: torabo_tsuki_lp
 type: shield
+url: https://github.com/sekigon-gonnoc/torabo-tsuki-lp
+requires: [bmp_boost]
 features:
   - keys
+  - pointer
   - studio
 outputs:
   - usb
