@@ -12,6 +12,7 @@
     scroller {
         layers = <9>;
         input-processors =
+            <&zip_temp_layer 8 10000>,      // 8 = MOUS (スクロール中も MOUS を維持する)
             <&zip_xy_to_scroll_mapper>,
             <&zip_scroll_transform (INPUT_TRANSFORM_X_INVERT)>,
             <&zip_scroll_scaler 1 1>;

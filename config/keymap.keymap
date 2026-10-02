@@ -11,8 +11,10 @@
  * 物理レイアウトの違い（LisM: 10/10/10/12、torabo-tsuki LP: 12/12/14/14/14）は
  * 次のルールで吸収している:
  *   - 最上段（row0）と各行の外側 1 列はキーが無いため &none で埋める
- *   - LisM 最下段右の最内側親指キー（&mo BT）→ 3 段目中央の 2 キーへ移設
- *   - 親指段は中央 2 キーを SPACE の複製とし、その他は同じ並びのまま
+ *   - ホーム段（A の行）中央の 2 キーは LisM に無いため &none
+ *   - LisM 最下段右の &mo BT（I 列の下）は同じ位置に置き、他の機種と揃えて 3 段目中央の 2 キーにも置く
+ *   - LisM の左親指の空き（&none）に当たるキーは SPACE の複製（&lt VIM_BASE SPACE）とする
+ *   - その他のキーは同じ行・同じ並びのまま（LisM で &none の ENTER の右隣も &none）
  *
  * レイヤー番号の別名定義。
  *   &mo / &lt / &to などの「経路（どのレイヤーへ移動するか）」を
@@ -423,7 +425,7 @@
 &none  &kp Q               &kp W         &kp E         &kp R               &kp T                                            &kp Y          &kp U  &kp I      &kp O       &kp P                  &none
 &none  &mt LEFT_CONTROL A  &kp S         &kp D         &kp F               &kp G               &none    &none               &kp H          &kp J  &kp K      &kp L       &mt RCTRL MINUS        &none
 &none  &mt LEFT_SHIFT Z    &kp X         &kp C         &kp V               &kp B               &mo BT   &mo BT              &kp N          &kp M  &kp COMMA  &kp PERIOD  &mt RIGHT_SHIFT SLASH  &none
-&none  &mo FUNC            &kp LEFT_WIN  &kp LEFT_ALT  &lt VIM_BASE SPACE  &lt VIM_BASE SPACE  &mo SYM  &mo VIM_BASE        &lt SYM ENTER  &none  &none      &mo FUNC    &mo FUNC               &none
+&none  &mo FUNC            &kp LEFT_WIN  &kp LEFT_ALT  &lt VIM_BASE SPACE  &lt VIM_BASE SPACE  &mo SYM  &mo VIM_BASE        &lt SYM ENTER  &none  &mo BT     &mo FUNC    &mo FUNC               &none
             >;
         };
 
