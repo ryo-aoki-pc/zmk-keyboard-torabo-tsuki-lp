@@ -1,3 +1,4 @@
+name: zmk-keyboard-torabo-tsuki-lp
 build:
   cmake: .
   kconfig: Kconfig
