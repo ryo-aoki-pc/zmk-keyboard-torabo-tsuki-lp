@@ -33,7 +33,7 @@ https://htmlpreview.github.io/?https://github.com/ryo-aoki-pc/zmk-keyboard-torab
 | `torabo_tsuki_lp_right_central_logging.uf2` | 右側 セントラル (トラックボールあり、ログ版) |
 | `settings_reset-bmp_boost-zmk.uf2` | 設定リセット用 |
 
-`_logging` 版は、USB の COM ポートにデバッグログ (`zmk-usb-logging`) を出すセントラルです。ZMK Studio は入っていません。[zmk-config-keyboards](https://github.com/ryo-aoki-pc/zmk-config-keyboards) の `tools/keyboard-check.cmd` の「レイヤーの動きを見る」で、押したキーのレイヤーの遷移と解決を表示するのに使います。調べ終わったら通常版に戻してください。ログ版は USB の COM ポートが 2 つ (下のブートローダへの切り替え用と、ログ用) になります。ローカルビルドでは Studio 版と同じく `make` / `make all` では作らず、`make all_studio_p` / `make all_studio` で作ります。
+`_logging` 版は、USB の COM ポートにデバッグログ (`zmk-usb-logging`) を出すセントラルです。ZMK Studio は入っていません。[zmk-config-keyboards](https://github.com/ryo-aoki-pc/zmk-config-keyboards) の `tools/keyboard-check.cmd` の「レイヤーの動きを見る」で、押したキーのレイヤーの遷移と解決を表示するのに使います。ログを出すとスレッドのスタックの使用量が増えるので、ログ版だけスタックを大きくし、スレッドごとのスタックの最大使用量を 30 秒ごとにログに出します (`<inf> thread_analyzer:` の行。設定は `build.yaml`)。調べ終わったら通常版に戻してください。ログ版は USB の COM ポートが 2 つ (下のブートローダへの切り替え用と、ログ用) になります。ローカルビルドでは Studio 版と同じく `make` / `make all` では作らず、`make all_studio_p` / `make all_studio` で作ります。
 
 全エントリに `studio-rpc-usb-uart` スニペットを付けています。ブートローダへの切り替え (`CONFIG_ZMK_CDC_ACM_BOOTLOADER_TRIGGER`) に必要な USB シリアル (CDC-ACM) をこのスニペットが定義しているためで、ZMK Studio が有効になるのは `_studio` 版だけです。
 
